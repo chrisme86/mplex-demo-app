@@ -1,9 +1,10 @@
 package com.cmiethling.mplex.device.service;
 
-import com.cmiethling.mplex.device.api.DeviceCommand;
-import com.cmiethling.mplex.device.api.DeviceEvent;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
+
+import com.cmiethling.mplex.device.api.DeviceCommand;
+import com.cmiethling.mplex.device.api.DeviceEvent;
 
 /**
  * Service to return a Command or an Event.
@@ -14,6 +15,7 @@ public class EventCommandFactory {
      * Returns the desired command.
      *
      * @param commandClass the class for the desired command
+     *
      * @return the command
      */
     public <T extends DeviceCommand> T command(@NonNull final Class<T> commandClass) {
@@ -28,6 +30,7 @@ public class EventCommandFactory {
      * Returns the desired event.
      *
      * @param eventClass the class for the desired event
+     *
      * @return the event
      */
     public <T extends DeviceEvent> T event(@NonNull final Class<T> eventClass) {

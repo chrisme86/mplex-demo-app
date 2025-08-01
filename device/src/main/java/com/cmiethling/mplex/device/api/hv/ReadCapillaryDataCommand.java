@@ -1,11 +1,13 @@
 package com.cmiethling.mplex.device.api.hv;
 
+import org.springframework.lang.NonNull;
+
 import com.cmiethling.mplex.device.DeviceCommandException;
 import com.cmiethling.mplex.device.DeviceMessageException;
 import com.cmiethling.mplex.device.message.RequestMessage;
 import com.cmiethling.mplex.device.message.ResultMessage;
+
 import lombok.Getter;
-import org.springframework.lang.NonNull;
 import lombok.Setter;
 
 /**
@@ -40,8 +42,8 @@ public final class ReadCapillaryDataCommand extends AbstractHighVoltageDeviceCom
     }
 
     @Override
-    public void fromResultMessage(@NonNull final ResultMessage result) throws DeviceMessageException,
-            DeviceCommandException {
+    public void fromResultMessage(@NonNull final ResultMessage result)
+            throws DeviceMessageException, DeviceCommandException {
         super.fromResultMessage(result);
 
         try {

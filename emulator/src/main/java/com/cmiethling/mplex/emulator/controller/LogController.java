@@ -1,10 +1,11 @@
 package com.cmiethling.mplex.emulator.controller;
 
-import com.cmiethling.mplex.emulator.service.LogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import com.cmiethling.mplex.emulator.service.LogService;
 
 @Controller
 public class LogController {

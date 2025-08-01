@@ -1,5 +1,7 @@
 package com.cmiethling.mplex.device.service;
 
+import java.util.concurrent.Future;
+
 import com.cmiethling.mplex.device.DeviceCommunicationException;
 import com.cmiethling.mplex.device.DeviceException;
 import com.cmiethling.mplex.device.DeviceMessageException;
@@ -9,8 +11,6 @@ import com.cmiethling.mplex.device.message.EventMessage;
 import com.cmiethling.mplex.device.message.RequestMessage;
 import com.cmiethling.mplex.device.message.ResultMessage;
 import com.cmiethling.mplex.device.websocket.DeviceEventWrapper;
-
-import java.util.concurrent.Future;
 
 /**
  * Represents an interface between application and hardware.
@@ -31,10 +31,12 @@ public interface WebSocketService {
      *
      * @param <T>     the type of the device command
      * @param command CommandMessage wrapped as a DeviceCommand to be sent to hardware
+     *
      * @return The ResultMessage wrapped as a DeviceCommand or a wrapped Exception
+     *
      * @throws DeviceException if the command cannot be sent: If there is a problem with the WebSocket connection >>
-     *                         {@link DeviceCommunicationException}. If there is a problem evaluating the result
-     *                         message >> {@link DeviceMessageException}.
+     *                         {@link DeviceCommunicationException}. If there is a problem evaluating the result message
+     *                         >> {@link DeviceMessageException}.
      */
     <T extends DeviceCommand> Future<T> sendCommand(T command) throws DeviceException;
 

@@ -1,12 +1,13 @@
 package com.cmiethling.mplex.device.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.cmiethling.mplex.device.DeviceMessageException;
 import com.cmiethling.mplex.device.message.AbstractDeviceMessage;
 import com.cmiethling.mplex.device.message.DeviceMessage;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 /**
  * Service to transform a JSON to a {@link com.cmiethling.mplex.device.message.EventMessage},

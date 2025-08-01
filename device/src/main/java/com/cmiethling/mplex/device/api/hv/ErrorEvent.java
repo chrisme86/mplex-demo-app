@@ -1,11 +1,13 @@
 package com.cmiethling.mplex.device.api.hv;
 
+import org.springframework.lang.NonNull;
+
 import com.cmiethling.mplex.device.DeviceMessageException;
 import com.cmiethling.mplex.device.api.AbstractDeviceEvent;
 import com.cmiethling.mplex.device.message.EventMessage;
 import com.cmiethling.mplex.device.message.Subsystem;
+
 import lombok.Getter;
-import org.springframework.lang.NonNull;
 
 /**
  * If there is an error or if the error is cleared this event is sent by the device.
@@ -30,8 +32,8 @@ public final class ErrorEvent extends AbstractDeviceEvent {
         super.fromEventMessage(message);
 
         final var code = message.parameters().getRequiredInt(ERRORCODE);
-        this.errorCode = HighVoltageError.ofCode(code)
-                .orElseThrow(() -> new DeviceMessageException("eventUnknownErrorCode: message=%s, code=%s".formatted(message, code)));
+        this.errorCode = HighVoltageError.ofCode(code).orElseThrow(() -> new DeviceMessageException(
+                "eventUnknownErrorCode: message=%s, code=%s".formatted(message, code)));
     }
 }
 

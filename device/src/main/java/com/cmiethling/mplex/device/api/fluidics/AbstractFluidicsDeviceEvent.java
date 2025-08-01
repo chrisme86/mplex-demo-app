@@ -1,8 +1,9 @@
 package com.cmiethling.mplex.device.api.fluidics;
 
+import org.springframework.lang.NonNull;
+
 import com.cmiethling.mplex.device.api.AbstractDeviceEvent;
 import com.cmiethling.mplex.device.message.Subsystem;
-import org.springframework.lang.NonNull;
 
 abstract class AbstractFluidicsDeviceEvent extends AbstractDeviceEvent {
 

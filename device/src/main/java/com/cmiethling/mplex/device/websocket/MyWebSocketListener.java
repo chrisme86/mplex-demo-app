@@ -1,5 +1,15 @@
 package com.cmiethling.mplex.device.websocket;
 
+import java.net.http.WebSocket;
+import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
+import java.util.concurrent.CompletionStage;
+import java.util.concurrent.ConcurrentMap;
+
+import org.slf4j.Logger;
+import org.springframework.context.ApplicationEventPublisher;
+
 import com.cmiethling.mplex.device.DeviceMessageException;
 import com.cmiethling.mplex.device.DeviceModule;
 import com.cmiethling.mplex.device.api.DeviceCommand;
@@ -8,15 +18,6 @@ import com.cmiethling.mplex.device.message.DeviceMessage;
 import com.cmiethling.mplex.device.message.EventMessage;
 import com.cmiethling.mplex.device.message.ResultMessage;
 import com.cmiethling.mplex.device.service.DeviceMessageService;
-import org.slf4j.Logger;
-import org.springframework.context.ApplicationEventPublisher;
-
-import java.net.http.WebSocket;
-import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CompletionException;
-import java.util.concurrent.CompletionStage;
-import java.util.concurrent.ConcurrentMap;
 
 public class MyWebSocketListener implements WebSocket.Listener {
 
@@ -28,9 +29,8 @@ public class MyWebSocketListener implements WebSocket.Listener {
 
     private final StringBuilder textData = new StringBuilder();
 
-    public MyWebSocketListener(final ConcurrentMap<UUID,
-            CommandTaskInfo<? extends DeviceCommand>> commandTasks, final DeviceMessageService deviceMessageService,
-                               final ApplicationEventPublisher eventPublisher) {
+    public MyWebSocketListener(final ConcurrentMap<UUID, CommandTaskInfo<? extends DeviceCommand>> commandTasks,
+            final DeviceMessageService deviceMessageService, final ApplicationEventPublisher eventPublisher) {
         this.commandTasks = commandTasks;
         this.deviceMessageService = deviceMessageService;
         this.eventPublisher = eventPublisher;
@@ -79,29 +79,29 @@ public class MyWebSocketListener implements WebSocket.Listener {
 
     void computeReceivedMessage(final DeviceMessage message) throws DeviceMessageException {
         switch (message) {
-            case final ResultMessage result -> {
-                // log the result with a result-specific logger
-                WebSocketUtils.logMessage(result);
+        case final ResultMessage result -> {
+            // log the result with a result-specific logger
+            WebSocketUtils.logMessage(result);
 
-                // find a waiting task by the id
-                final var messageId = result.getId();
-                final var taskInfo = this.commandTasks.get(messageId);
-                if (taskInfo != null) {
-                    // provide the message to the task
-                    taskInfo.setResultMessage(result);
-                } else
-                    WebSocketUtils.receiveLogger.warn("Unexpected result message, id: {}", messageId);
-            }
-            case final EventMessage eventMessage -> {
-                // log the event with an event-specific logger
-                WebSocketUtils.logMessage(eventMessage);
+            // find a waiting task by the id
+            final var messageId = result.getId();
+            final var taskInfo = this.commandTasks.get(messageId);
+            if (taskInfo != null) {
+                // provide the message to the task
+                taskInfo.setResultMessage(result);
+            } else
+                WebSocketUtils.receiveLogger.warn("Unexpected result message, id: {}", messageId);
+        }
+        case final EventMessage eventMessage -> {
+            // log the event with an event-specific logger
+            WebSocketUtils.logMessage(eventMessage);
 
-                final var event = DeviceEvent.of(eventMessage.getSubsystem(), eventMessage.getTopic());
-                event.fromEventMessage(eventMessage);
+            final var event = DeviceEvent.of(eventMessage.getSubsystem(), eventMessage.getTopic());
+            event.fromEventMessage(eventMessage);
 
-                this.eventPublisher.publishEvent(new DeviceEventWrapper<>(this, event));
-            }
-            default -> throw new DeviceMessageException("invalidMessageType: " + message);
+            this.eventPublisher.publishEvent(new DeviceEventWrapper<>(this, event));
+        }
+        default -> throw new DeviceMessageException("invalidMessageType: " + message);
         }
     }
 

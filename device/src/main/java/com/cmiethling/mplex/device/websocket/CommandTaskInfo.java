@@ -1,10 +1,15 @@
 package com.cmiethling.mplex.device.websocket;
 
+import java.util.concurrent.Callable;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+
 import com.cmiethling.mplex.device.api.DeviceCommand;
 import com.cmiethling.mplex.device.message.ResultMessage;
-import lombok.Getter;
 
-import java.util.concurrent.*;
+import lombok.Getter;
 
 public class CommandTaskInfo<T extends DeviceCommand> {
     private final CountDownLatch lock = new CountDownLatch(1);

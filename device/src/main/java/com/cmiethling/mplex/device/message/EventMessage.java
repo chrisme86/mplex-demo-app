@@ -1,8 +1,9 @@
 package com.cmiethling.mplex.device.message;
 
+import org.springframework.lang.NonNull;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.springframework.lang.NonNull;
 
 /**
  * This class represents an event that is sent from the device interface to the application. Event message do not have
@@ -24,8 +25,8 @@ public final class EventMessage extends AbstractDeviceMessage {
     // for deserialization
     @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
     public EventMessage(@NonNull @JsonProperty(SYSTEM) final Subsystem subsystem,
-                        @NonNull @JsonProperty(TOPIC) final String topic,
-                        @NonNull @JsonProperty(DATA) final MessageParameters params) {
+            @NonNull @JsonProperty(TOPIC) final String topic,
+            @NonNull @JsonProperty(DATA) final MessageParameters params) {
         super(null, subsystem, topic);
         this.parameters().putAll(params);
     }
@@ -40,9 +41,7 @@ public final class EventMessage extends AbstractDeviceMessage {
     public String toString() {
         return String.format("%s [%s, %s=%s]", //
                 getClass().getSimpleName(), //
-                super.toString(),
-                DATA,
-                this.parameters);
+                super.toString(), DATA, this.parameters);
     }
 }
 

@@ -1,9 +1,10 @@
 package com.cmiethling.mplex.device.api.hv;
 
-import com.cmiethling.mplex.device.api.AbstractDeviceEventTest;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import com.cmiethling.mplex.device.api.AbstractDeviceEventTest;
 
 public final class ErrorEventTest extends AbstractDeviceEventTest {
 

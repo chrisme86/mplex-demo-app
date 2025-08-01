@@ -1,8 +1,10 @@
 package com.cmiethling.mplex.device.websocket;
 
-import com.cmiethling.mplex.device.api.DeviceEvent;
-import lombok.Getter;
 import org.springframework.context.ApplicationEvent;
+
+import com.cmiethling.mplex.device.api.DeviceEvent;
+
+import lombok.Getter;
 
 @Getter
 public class DeviceEventWrapper<E extends DeviceEvent> extends ApplicationEvent {

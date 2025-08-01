@@ -1,10 +1,11 @@
 package com.cmiethling.mplex.device.api.fluidics;
 
-import com.cmiethling.mplex.device.api.AbstractDeviceEventTest;
-import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import org.junit.jupiter.api.Test;
+
+import com.cmiethling.mplex.device.api.AbstractDeviceEventTest;
 
 @SuppressWarnings("OptionalGetWithoutIsPresent")
 public final class StatesEventTest extends AbstractDeviceEventTest {

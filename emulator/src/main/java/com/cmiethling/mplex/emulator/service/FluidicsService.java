@@ -1,13 +1,14 @@
 package com.cmiethling.mplex.emulator.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.NonNull;
+import org.springframework.stereotype.Service;
+
 import com.cmiethling.mplex.device.api.SubsystemError;
 import com.cmiethling.mplex.device.api.fluidics.ErrorEvent;
 import com.cmiethling.mplex.device.api.fluidics.FluidicsError;
 import com.cmiethling.mplex.device.message.Subsystem;
 import com.cmiethling.mplex.emulator.model.FluidicsStatus;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.lang.NonNull;
-import org.springframework.stereotype.Service;
 
 @Service
 public class FluidicsService extends AbstractSubsystem {
@@ -19,7 +20,9 @@ public class FluidicsService extends AbstractSubsystem {
         super(Subsystem.FLUIDICS);
     }
 
-    public SubsystemError getFluidicsError() {return this.fluidicsStatus.getFluidicsError();}
+    public SubsystemError getFluidicsError() {
+        return this.fluidicsStatus.getFluidicsError();
+    }
 
     public void processError(@NonNull final String newError) {
         final var error = FluidicsError.valueOf(newError);

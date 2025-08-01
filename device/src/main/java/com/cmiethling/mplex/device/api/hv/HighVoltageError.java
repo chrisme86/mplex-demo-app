@@ -1,9 +1,9 @@
 package com.cmiethling.mplex.device.api.hv;
 
-import com.cmiethling.mplex.device.api.SubsystemError;
-
 import java.util.Optional;
 import java.util.stream.Stream;
+
+import com.cmiethling.mplex.device.api.SubsystemError;
 
 /**
  * Each method referring to the fluidics interface provides a return value describing generic success or failure of the
@@ -11,13 +11,13 @@ import java.util.stream.Stream;
  */
 public enum HighVoltageError implements SubsystemError {
 
-    NONE,
-    CAPILLARY_ERROR;
+    NONE, CAPILLARY_ERROR;
 
     /**
      * Returns the enum value associated with the specified code.
      *
      * @param code the code
+     *
      * @return an optional enum value
      */
     public static Optional<HighVoltageError> ofCode(final int code) {

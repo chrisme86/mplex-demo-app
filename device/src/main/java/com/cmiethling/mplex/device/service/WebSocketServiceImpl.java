@@ -1,20 +1,29 @@
 package com.cmiethling.mplex.device.service;
 
+import static java.util.Objects.requireNonNull;
+
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.WebSocket;
+import java.util.UUID;
+import java.util.concurrent.Callable;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+
+import org.slf4j.Logger;
+
 import com.cmiethling.mplex.device.DeviceCommunicationException;
 import com.cmiethling.mplex.device.DeviceException;
 import com.cmiethling.mplex.device.DeviceModule;
 import com.cmiethling.mplex.device.api.DeviceCommand;
 import com.cmiethling.mplex.device.websocket.CommandTaskInfo;
 import com.cmiethling.mplex.device.websocket.MyWebSocketListener;
-import org.slf4j.Logger;
-
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.WebSocket;
-import java.util.UUID;
-import java.util.concurrent.*;
-
-import static java.util.Objects.requireNonNull;
 
 /**
  * Implementation of the websocket client interface.
@@ -33,9 +42,8 @@ public final class WebSocketServiceImpl implements WebSocketService {
     private ExecutorService executor = Executors.newCachedThreadPool();
 
     public WebSocketServiceImpl(final URI uri,
-                                final ConcurrentMap<UUID, CommandTaskInfo<? extends DeviceCommand>> commandTasks,
-                                final DeviceMessageService deviceMessageService,
-                                final MyWebSocketListener myWebSocketListener) {
+            final ConcurrentMap<UUID, CommandTaskInfo<? extends DeviceCommand>> commandTasks,
+            final DeviceMessageService deviceMessageService, final MyWebSocketListener myWebSocketListener) {
         this.uri = uri;
         this.commandTasks = commandTasks;
         this.deviceMessageService = deviceMessageService;
@@ -77,8 +85,7 @@ public final class WebSocketServiceImpl implements WebSocketService {
 
     @Override
     public boolean isConnected() {
-        return this.webSocketClient != null
-                && !this.webSocketClient.isOutputClosed()
+        return this.webSocketClient != null && !this.webSocketClient.isOutputClosed()
                 && !this.webSocketClient.isInputClosed();
     }
 
@@ -138,8 +145,8 @@ public final class WebSocketServiceImpl implements WebSocketService {
     @Override
     public synchronized void ensureConnected() throws DeviceException {
         if (this.webSocketClient == null || this.webSocketClient.isOutputClosed()) {
-            this.log.info(this.webSocketClient == null ? "Device not connected yet, trying to connect to device..."
-                    : "Device connection was closed, trying to reconnect to device...");
+            this.log.info(this.webSocketClient == null ? "Device not connected yet, trying to connect to device..." :
+                    "Device connection was " + "closed, trying to reconnect to device...");
             openConnection();
         }
         if (this.executor.isShutdown()) // for testing {@code sendClose()} only, can't happen after closing app :)

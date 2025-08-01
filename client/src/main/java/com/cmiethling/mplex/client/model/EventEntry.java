@@ -1,9 +1,11 @@
 package com.cmiethling.mplex.client.model;
 
-import com.cmiethling.mplex.device.message.Subsystem;
-import lombok.Data;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
+
+import com.cmiethling.mplex.device.message.Subsystem;
+
+import lombok.Data;
 
 @Data
 public class EventEntry {

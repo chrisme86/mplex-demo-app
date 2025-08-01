@@ -1,20 +1,21 @@
 package com.cmiethling.mplex.device.api;
 
-import com.cmiethling.mplex.device.DeviceMessageException;
-import com.cmiethling.mplex.device.config.DeviceMessageConfig;
-import com.cmiethling.mplex.device.message.DeviceMessage;
-import com.cmiethling.mplex.device.service.DeviceMessageService;
-import com.cmiethling.mplex.device.service.EventCommandFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
-@SpringJUnitConfig(classes = {DeviceMessageService.class, EventCommandFactory.class, DeviceMessageConfig.class})
+import com.cmiethling.mplex.device.DeviceMessageException;
+import com.cmiethling.mplex.device.config.DeviceMessageConfig;
+import com.cmiethling.mplex.device.message.DeviceMessage;
+import com.cmiethling.mplex.device.service.DeviceMessageService;
+import com.cmiethling.mplex.device.service.EventCommandFactory;
+
+@SpringJUnitConfig(classes = { DeviceMessageService.class, EventCommandFactory.class, DeviceMessageConfig.class })
 public abstract class AbstractDeviceTest {
     @Autowired
     protected DeviceMessageService deviceMessageService;

@@ -1,10 +1,11 @@
 package com.cmiethling.mplex.emulator.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.NonNull;
+
 import com.cmiethling.mplex.device.api.SubsystemError;
 import com.cmiethling.mplex.device.message.EventMessage;
 import com.cmiethling.mplex.device.message.Subsystem;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.lang.NonNull;
 
 public abstract class AbstractSubsystem {
 
@@ -20,7 +21,7 @@ public abstract class AbstractSubsystem {
     }
 
     protected final EventMessage createErrorEvent(final SubsystemError error, final String topic,
-                                                  final String errorcode) {
+            final String errorcode) {
         final var event = createEventMessage(topic);
         event.parameters().putInt(errorcode, error.code());
         return event;

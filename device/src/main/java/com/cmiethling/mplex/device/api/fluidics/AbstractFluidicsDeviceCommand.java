@@ -1,10 +1,11 @@
 package com.cmiethling.mplex.device.api.fluidics;
 
-import com.cmiethling.mplex.device.api.AbstractDeviceCommand;
-import com.cmiethling.mplex.device.message.Subsystem;
+import java.util.Optional;
+
 import org.springframework.lang.NonNull;
 
-import java.util.Optional;
+import com.cmiethling.mplex.device.api.AbstractDeviceCommand;
+import com.cmiethling.mplex.device.message.Subsystem;
 
 /**
  * Abstract base class for all fluidics commands.

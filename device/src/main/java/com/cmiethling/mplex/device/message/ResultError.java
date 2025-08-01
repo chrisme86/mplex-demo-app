@@ -1,8 +1,8 @@
 package com.cmiethling.mplex.device.message;
 
-import lombok.Getter;
-
 import java.util.stream.Stream;
+
+import lombok.Getter;
 
 /**
  * Error given back by device as the "error" parameter of a result (not {@code retVal}!).
@@ -31,14 +31,13 @@ public enum ResultError {
      */
     INVALID_SUBSYSTEM("InvalidSubsystem", true),
     /**
-     * Device reports an invalid topic name. This is a syntax error, meaning the
-     * request sent to device could not be read properly.
+     * Device reports an invalid topic name. This is a syntax error, meaning the request sent to device could not be
+     * read properly.
      */
     INVALID_TOPIC("InvalidTopic", true),
     /**
      * Device reports invalid parameters. At least one parameter (name or type) is invalid. This is a syntax error,
-     * meaning
-     * the request sent to device could not be read properly.
+     * meaning the request sent to device could not be read properly.
      */
     INVALID_PARAMETERS("InvalidParameters", true),
     /**
@@ -60,7 +59,9 @@ public enum ResultError {
      * Converts the String into an ErrorParameter enum-value.
      *
      * @param code the String to convert
+     *
      * @return the ErrorParameter
+     *
      * @throws IllegalArgumentException if the input-String was not a valid ErrorParameter-String
      */
     public static ResultError ofCode(final String code) {

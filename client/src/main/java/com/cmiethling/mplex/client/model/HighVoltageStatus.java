@@ -1,9 +1,11 @@
 package com.cmiethling.mplex.client.model;
 
+import org.springframework.stereotype.Component;
+
 import com.cmiethling.mplex.device.api.hv.HighVoltageError;
+
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.stereotype.Component;
 
 @Setter
 @Getter

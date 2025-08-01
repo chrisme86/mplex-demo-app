@@ -1,12 +1,13 @@
 package com.cmiethling.mplex.device.api;
 
+import org.springframework.lang.NonNull;
+
 import com.cmiethling.mplex.device.DeviceMessageException;
 import com.cmiethling.mplex.device.api.fluidics.ErrorEvent;
 import com.cmiethling.mplex.device.api.fluidics.StatesEvent;
 import com.cmiethling.mplex.device.api.test.ExampleEvent;
 import com.cmiethling.mplex.device.message.EventMessage;
 import com.cmiethling.mplex.device.message.Subsystem;
-import org.springframework.lang.NonNull;
 
 /**
  * This interface describes an event that could be sent by the device.
@@ -18,11 +19,14 @@ public interface DeviceEvent {
      *
      * @param subsystem the subsystem
      * @param topic     the topic
+     *
      * @return a new event implementation
+     *
      * @throws DeviceMessageException if no event implementation could be found for this subsystem and topic
      */
     @SuppressWarnings("SwitchStatementWithTooFewBranches")
-    static DeviceEvent of(@NonNull final Subsystem subsystem, @NonNull final String topic) throws DeviceMessageException {
+    static DeviceEvent of(@NonNull final Subsystem subsystem, @NonNull final String topic)
+            throws DeviceMessageException {
         return switch (subsystem) {
             case FLUIDICS -> switch (topic) {
                 case ErrorEvent.TOPIC -> new ErrorEvent();
@@ -42,7 +46,8 @@ public interface DeviceEvent {
         };
     }
 
-    private static DeviceEvent throwInvalidTopicDMException(final Subsystem subsystem, final String topic) throws DeviceMessageException {
+    private static DeviceEvent throwInvalidTopicDMException(final Subsystem subsystem, final String topic)
+            throws DeviceMessageException {
         throw new DeviceMessageException("eventUnknownTopic: subsystem=%s, topic=%s".formatted(subsystem, topic));
     }
 
@@ -64,6 +69,7 @@ public interface DeviceEvent {
      * Create an event message for this event <strong>for testing only</strong>. This behavior is not need at runtime.
      *
      * @return a new event message
+     *
      * @throws DeviceMessageException if there is a problem while creating the message
      */
     @SuppressWarnings("RedundantThrows")
@@ -74,6 +80,7 @@ public interface DeviceEvent {
      * the event message matches the subsystem and topic.
      *
      * @param eventMessage the event message received from the device
+     *
      * @throws DeviceMessageException if there is a problem evaluating the event message
      */
     void fromEventMessage(@NonNull EventMessage eventMessage) throws DeviceMessageException;

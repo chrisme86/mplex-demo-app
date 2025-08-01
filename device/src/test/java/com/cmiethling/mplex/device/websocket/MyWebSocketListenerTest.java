@@ -1,5 +1,24 @@
 package com.cmiethling.mplex.device.websocket;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.CompletionException;
+import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.Executors;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.event.EventListener;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
+
 import com.cmiethling.mplex.device.DeviceMessageException;
 import com.cmiethling.mplex.device.TestConfig;
 import com.cmiethling.mplex.device.api.DeviceCommand;
@@ -11,25 +30,10 @@ import com.cmiethling.mplex.device.message.ResultMessage;
 import com.cmiethling.mplex.device.message.Subsystem;
 import com.cmiethling.mplex.device.service.DeviceMessageService;
 import com.cmiethling.mplex.device.service.WebSocketServiceImpl;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.event.EventListener;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
-
-import java.util.List;
-import java.util.UUID;
-import java.util.concurrent.CompletionException;
-import java.util.concurrent.ConcurrentMap;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.Executors;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @TestPropertySource(locations = "classpath:application.properties")
 // include MyWebSocketListenerTest as it shall listen to the device events with @EventListener
-@SpringJUnitConfig(classes = {TestConfig.class, MyWebSocketListenerTest.class})
+@SpringJUnitConfig(classes = { TestConfig.class, MyWebSocketListenerTest.class })
 public class MyWebSocketListenerTest {
 
     private static final String TEST_EVENT_TOPIC = "ExampleEvent";
@@ -92,8 +96,8 @@ public class MyWebSocketListenerTest {
     @Test
     public void computeReceivedMessageAsCommandTest() {
 
-        final var request = new RequestMessage(UUID.fromString("2e4107c4-8773-4e62-a400-7e7c8195e918"),
-                Subsystem.TEST, "topic");
+        final var request = new RequestMessage(UUID.fromString("2e4107c4-8773-4e62-a400-7e7c8195e918"), Subsystem.TEST,
+                "topic");
         request.parameters().putString("name", "parameter name");
 
         final var message = assertThrows(DeviceMessageException.class,

@@ -5,7 +5,12 @@ import com.cmiethling.mplex.device.api.AbstractDeviceEvent;
 import com.cmiethling.mplex.device.api.DeviceEvent;
 import com.cmiethling.mplex.device.message.EventMessage;
 import com.cmiethling.mplex.device.message.Subsystem;
-import lombok.*;
+
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.Setter;
+import lombok.ToString;
 
 /**
  * This command can be used with the simulated hardware.

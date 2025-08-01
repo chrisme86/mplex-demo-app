@@ -1,9 +1,10 @@
 package com.cmiethling.mplex.device.api.fluidics;
 
-import com.cmiethling.mplex.device.api.AbstractDeviceCommandTest;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import com.cmiethling.mplex.device.api.AbstractDeviceCommandTest;
 
 public final class ReadGelPumpPressureCommandTest extends AbstractDeviceCommandTest {
 

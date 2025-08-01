@@ -1,13 +1,14 @@
 package com.cmiethling.mplex.client;
 
+import java.util.concurrent.ExecutionException;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.NonNull;
+
 import com.cmiethling.mplex.client.core.DeviceCorePart;
 import com.cmiethling.mplex.device.DeviceException;
 import com.cmiethling.mplex.device.api.DeviceCommand;
 import com.cmiethling.mplex.device.message.Subsystem;
-import org.springframework.lang.NonNull;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.concurrent.ExecutionException;
 
 public abstract class AbstractSubsystem {
 

@@ -2,6 +2,7 @@ package com.cmiethling.mplex.emulator.model;
 
 import com.cmiethling.mplex.device.api.SubsystemError;
 import com.cmiethling.mplex.device.message.Subsystem;
+
 import lombok.Data;
 
 @Data

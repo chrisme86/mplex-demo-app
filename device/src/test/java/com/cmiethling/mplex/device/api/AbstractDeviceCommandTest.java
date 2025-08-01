@@ -1,12 +1,13 @@
 package com.cmiethling.mplex.device.api;
 
-import com.cmiethling.mplex.device.message.ResultMessage;
-import org.springframework.lang.NonNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import org.springframework.lang.NonNull;
+
+import com.cmiethling.mplex.device.message.ResultMessage;
 
 public abstract class AbstractDeviceCommandTest extends AbstractDeviceTest {
     /**
@@ -14,7 +15,8 @@ public abstract class AbstractDeviceCommandTest extends AbstractDeviceTest {
      */
     private static final UUID TESTING_UUID = UUID.fromString("2e4107c4-8773-4e62-a400-7e7c8195e918");
 
-    protected void toRequestMessage(@NonNull final DeviceCommand command, @NonNull final String resourceName) throws Exception {
+    protected void toRequestMessage(@NonNull final DeviceCommand command, @NonNull final String resourceName)
+            throws Exception {
         final var command1 = (AbstractDeviceCommand<?>) command;
         command1.setIdGenerator(() -> TESTING_UUID);
         final var commandMessage = command1.toRequestMessage();
@@ -26,7 +28,7 @@ public abstract class AbstractDeviceCommandTest extends AbstractDeviceTest {
     }
 
     protected <T extends DeviceCommand> T fromResultMessage(@NonNull final T command,
-                                                            @NonNull final String resourceName) throws Exception {
+            @NonNull final String resourceName) throws Exception {
         final var message = loadMessage(resourceName);
         final var result = assertInstanceOf(ResultMessage.class, message);
 

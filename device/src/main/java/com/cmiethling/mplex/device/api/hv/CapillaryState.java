@@ -1,8 +1,8 @@
 package com.cmiethling.mplex.device.api.hv;
 
-import lombok.Getter;
-
 import java.util.stream.Stream;
+
+import lombok.Getter;
 
 /**
  * Describes the state of a capillary. This enum manages an additional index value instead of using
@@ -11,9 +11,7 @@ import java.util.stream.Stream;
 @Getter
 public enum CapillaryState {
 
-    NONE(false, false),
-    GOOD(true, false),
-    BAD(false, true);
+    NONE(false, false), GOOD(true, false), BAD(false, true);
 
     private final boolean good;
     private final boolean bad;
@@ -27,6 +25,7 @@ public enum CapillaryState {
      * Returns a CapillaryState.
      *
      * @param value the int the CapillaryState it represents.
+     *
      * @return a CapillaryState object
      */
     public static CapillaryState ofValue(final int value) {

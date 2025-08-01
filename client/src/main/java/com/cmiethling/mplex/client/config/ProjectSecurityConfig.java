@@ -18,7 +18,7 @@ public class ProjectSecurityConfig {
 
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(final HttpSecurity http,
-                                                   final HandlerMappingIntrospector introspector) throws Exception {
+            final HandlerMappingIntrospector introspector) throws Exception {
         final var builder = new MvcRequestMatcher.Builder(introspector);
         http.authorizeHttpRequests(request -> {
             request.requestMatchers(builder.pattern("/"), builder.pattern(Utils.HOME)).permitAll();
@@ -30,11 +30,8 @@ public class ProjectSecurityConfig {
             request.requestMatchers(builder.pattern(Utils.SERVICE_CLIENT + "/**")).authenticated();
             request.requestMatchers(builder.pattern(Utils.LOGIN), builder.pattern(Utils.LOGOUT)).permitAll();
             // for OpenAPI
-            request.requestMatchers(
-                    builder.pattern("/api-docs/**"),
-                    builder.pattern("/swagger-ui/**"),
-                    builder.pattern("/api/**")
-            ).permitAll();
+            request.requestMatchers(builder.pattern("/api-docs/**"), builder.pattern("/swagger-ui/**"),
+                    builder.pattern("/api/**")).permitAll();
         });
         http.httpBasic(Customizer.withDefaults());
 
@@ -43,20 +40,17 @@ public class ProjectSecurityConfig {
 
         // all POSTS in home controller are allowed
         http.csrf(csrfConfigurer -> {
-                    csrfConfigurer.ignoringRequestMatchers(builder.pattern(Utils.PUBLIC + "/**"));
-                    csrfConfigurer.ignoringRequestMatchers(builder.pattern("/api/**"));
-                }
-        );
+            csrfConfigurer.ignoringRequestMatchers(builder.pattern(Utils.PUBLIC + "/**"));
+            csrfConfigurer.ignoringRequestMatchers(builder.pattern("/api/**"));
+        });
         return http.build();
     }
 
     @Bean
     public InMemoryUserDetailsManager userDetailsService() {
         final var encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-        final var serviceTechnician = User.withUsername("service")
-                .password(encoder.encode("service"))
-                .roles(SERVICE_ROLE)
-                .build();
+        final var serviceTechnician = User.withUsername("service").password(encoder.encode("service"))
+                .roles(SERVICE_ROLE).build();
         return new InMemoryUserDetailsManager(serviceTechnician);
     }
 }

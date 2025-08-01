@@ -1,16 +1,18 @@
 package com.cmiethling.mplex.device.message;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import lombok.Getter;
-import org.springframework.lang.NonNull;
-import lombok.Setter;
+import static com.cmiethling.mplex.device.message.AbstractDeviceMessage.*;
 
 import java.util.Objects;
 import java.util.UUID;
 
-import static com.cmiethling.mplex.device.message.AbstractDeviceMessage.*;
+import org.springframework.lang.NonNull;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * This class represents a result that is sent from the device interface to the application. It is a response to a
@@ -18,7 +20,7 @@ import static com.cmiethling.mplex.device.message.AbstractDeviceMessage.*;
  */
 @Setter
 @Getter
-@JsonPropertyOrder({TYPE, ID, SYSTEM, TOPIC, ERROR, RESULT})
+@JsonPropertyOrder({ TYPE, ID, SYSTEM, TOPIC, ERROR, RESULT })
 public final class ResultMessage extends AbstractDeviceMessage {
 
     /**
@@ -44,10 +46,9 @@ public final class ResultMessage extends AbstractDeviceMessage {
     // for deserialization
     @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
     public ResultMessage(@NonNull @JsonProperty(ID) final UUID id,
-                         @NonNull @JsonProperty(SYSTEM) final Subsystem subsystem,
-                         @NonNull @JsonProperty(TOPIC) final String topic,
-                         @NonNull @JsonProperty(ERROR) final ResultError error,
-                         @NonNull @JsonProperty(RESULT) final MessageParameters params) {
+            @NonNull @JsonProperty(SYSTEM) final Subsystem subsystem, @NonNull @JsonProperty(TOPIC) final String topic,
+            @NonNull @JsonProperty(ERROR) final ResultError error,
+            @NonNull @JsonProperty(RESULT) final MessageParameters params) {
         super(id, subsystem, topic);
         this.parameters().putAll(params);
         this.error = error;
@@ -74,13 +75,8 @@ public final class ResultMessage extends AbstractDeviceMessage {
 
     @Override
     public String toString() {
-        return String.format("%s [%s, %s=%s, %s=%s]",
-                getClass().getSimpleName(),
-                super.toString(),
-                ERROR,
-                this.error,
-                RESULT,
-                this.parameters());
+        return String.format("%s [%s, %s=%s, %s=%s]", getClass().getSimpleName(), super.toString(), ERROR, this.error,
+                RESULT, this.parameters());
     }
 }
 

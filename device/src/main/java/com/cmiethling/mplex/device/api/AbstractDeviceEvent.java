@@ -1,9 +1,10 @@
 package com.cmiethling.mplex.device.api;
 
+import org.springframework.lang.NonNull;
+
 import com.cmiethling.mplex.device.DeviceMessageException;
 import com.cmiethling.mplex.device.message.EventMessage;
 import com.cmiethling.mplex.device.message.Subsystem;
-import org.springframework.lang.NonNull;
 
 /**
  * Base class for implementing device events. Implementing classes of device events should extend this class and add
@@ -55,8 +56,8 @@ public abstract class AbstractDeviceEvent implements DeviceEvent {
             throw new DeviceMessageException("incompatibleSubsystem: this=%s, from message=%s".formatted(this.subsystem,
                     message.getSubsystem()));
         if (!this.topic.equals(message.getTopic()))
-            throw new DeviceMessageException("incompatibleTopic: this=%s, from message=%s".formatted(this.topic,
-                    message.getTopic()));
+            throw new DeviceMessageException(
+                    "incompatibleTopic: this=%s, from message=%s".formatted(this.topic, message.getTopic()));
     }
 
     @Override

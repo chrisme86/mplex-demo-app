@@ -1,15 +1,17 @@
 package com.cmiethling.mplex.emulator.model;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
+
 import com.cmiethling.mplex.device.message.EventMessage;
 import com.cmiethling.mplex.device.message.RequestMessage;
 import com.cmiethling.mplex.device.message.ResultMessage;
 import com.cmiethling.mplex.device.message.Subsystem;
-import lombok.Getter;
-import org.springframework.lang.NonNull;
-import org.springframework.lang.Nullable;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import lombok.Getter;
 
 public class MessageEntry {
 
@@ -29,8 +31,7 @@ public class MessageEntry {
     private final boolean sent;
 
     public MessageEntry(final LocalDateTime timestamp, final MessageEntryType type, final Subsystem subsystem,
-                        final String topic, final String in,
-                        final String out, final boolean sent) {
+            final String topic, final String in, final String out, final boolean sent) {
         this.timestamp = timestamp;
         this.type = type;
         this.subsystem = subsystem;
@@ -55,8 +56,8 @@ public class MessageEntry {
     }
 
     public static MessageEntry ofCommand(final RequestMessage request, final ResultMessage result) {
-        return new MessageEntry(LocalDateTime.now(), MessageEntryType.COMMAND, result.getSubsystem(),
-                result.getTopic(), request.toString(), result.toString(), true);
+        return new MessageEntry(LocalDateTime.now(), MessageEntryType.COMMAND, result.getSubsystem(), result.getTopic(),
+                request.toString(), result.toString(), true);
     }
 
     /**

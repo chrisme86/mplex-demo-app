@@ -1,7 +1,8 @@
 package com.cmiethling.mplex.emulator.controller;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @ControllerAdvice // every exception in the whole emulator app will be sent here!

@@ -1,7 +1,8 @@
 package com.cmiethling.mplex.device.api.fluidics;
 
-import com.cmiethling.mplex.device.api.AbstractDeviceCommandTest;
 import org.junit.jupiter.api.Test;
+
+import com.cmiethling.mplex.device.api.AbstractDeviceCommandTest;
 
 public final class SetGelValveCommandTest extends AbstractDeviceCommandTest {
 

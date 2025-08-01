@@ -6,11 +6,8 @@ import java.util.stream.Stream;
  * Defines the subsystems available in the hardware interface.
  */
 public enum Subsystem {
-    
-    HIGH_VOLTAGE("highvoltage"),
-    MOTOR_CONTROL("motorcontrol"),
-    FLUIDICS("fluidics"),
-    TEST("test");
+
+    HIGH_VOLTAGE("highvoltage"), MOTOR_CONTROL("motorcontrol"), FLUIDICS("fluidics"), TEST("test");
 
     private final String id;
 
@@ -23,7 +20,9 @@ public enum Subsystem {
      * {@link IllegalArgumentException} will be thrown.
      *
      * @param id the id to look for
+     *
      * @return the value associated with this id
+     *
      * @throws IllegalArgumentException if no enum value can be found for this id
      */
     public static Subsystem valueOfId(final String id) {

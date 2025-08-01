@@ -1,11 +1,13 @@
 package com.cmiethling.mplex.device.api.fluidics;
 
-import com.cmiethling.mplex.device.DeviceMessageException;
-import com.cmiethling.mplex.device.message.EventMessage;
-import lombok.Getter;
+import java.util.Optional;
+
 import org.springframework.lang.NonNull;
 
-import java.util.Optional;
+import com.cmiethling.mplex.device.DeviceMessageException;
+import com.cmiethling.mplex.device.message.EventMessage;
+
+import lombok.Getter;
 
 /**
  * If a state change is detected, this event will be transferred.

@@ -1,6 +1,7 @@
 package com.cmiethling.mplex.device.api.fluidics;
 
 import com.cmiethling.mplex.device.message.RequestMessage;
+
 import lombok.Getter;
 import lombok.Setter;
 

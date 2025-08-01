@@ -1,10 +1,18 @@
 package com.cmiethling.mplex.device.message;
 
-import com.cmiethling.mplex.device.DeviceMessageException;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.OptionalDouble;
+import java.util.OptionalInt;
+import java.util.Set;
+
 import org.springframework.lang.NonNull;
 
-import java.util.*;
-import java.util.Map.Entry;
+import com.cmiethling.mplex.device.DeviceMessageException;
 
 /**
  * Implementation of the message parameters.

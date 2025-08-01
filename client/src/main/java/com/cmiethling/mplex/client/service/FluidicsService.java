@@ -1,5 +1,11 @@
 package com.cmiethling.mplex.client.service;
 
+import java.util.concurrent.ExecutionException;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.event.EventListener;
+import org.springframework.stereotype.Service;
+
 import com.cmiethling.mplex.client.AbstractSubsystem;
 import com.cmiethling.mplex.client.model.FluidicsStatus;
 import com.cmiethling.mplex.device.DeviceException;
@@ -8,13 +14,9 @@ import com.cmiethling.mplex.device.api.fluidics.SetGelPumpCommand;
 import com.cmiethling.mplex.device.api.fluidics.StatesEvent;
 import com.cmiethling.mplex.device.message.Subsystem;
 import com.cmiethling.mplex.device.websocket.DeviceEventWrapper;
+
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.event.EventListener;
-import org.springframework.stereotype.Service;
-
-import java.util.concurrent.ExecutionException;
 
 @Getter
 @Slf4j
@@ -40,8 +42,8 @@ public class FluidicsService extends AbstractSubsystem {
     @EventListener
     private void statesEventReceived(final DeviceEventWrapper<StatesEvent> eventWrapper) {
         final var event = eventWrapper.getEvent();
-        log.info("received: {} with isGelPumpOn={}, isGelValveOpen={}",
-                event, event.isGelPumpOn(), event.isGelValveOpen());
+        log.info("received: {} with isGelPumpOn={}, isGelValveOpen={}", event, event.isGelPumpOn(),
+                event.isGelValveOpen());
         event.isGelPumpOn().ifPresent(isOn -> this.fluidicsStatus.setGelPump(isOn));
         event.isGelValveOpen().ifPresent(isOpen -> this.fluidicsStatus.setGelValve(isOpen));
     }

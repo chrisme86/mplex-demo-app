@@ -1,12 +1,13 @@
 package com.cmiethling.mplex.client.controller;
 
-import com.cmiethling.mplex.client_api.openapi.api.FluidicsApi;
-import com.cmiethling.mplex.client_api.openapi.model.fluidics.SetGelPumpRequest;
-import com.cmiethling.mplex.client_api.openapi.model.fluidics.SetGelPumpResponse;
+import java.util.UUID;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.UUID;
+import com.cmiethling.mplex.client_api.openapi.api.FluidicsApi;
+import com.cmiethling.mplex.client_api.openapi.model.fluidics.SetGelPumpRequest;
+import com.cmiethling.mplex.client_api.openapi.model.fluidics.SetGelPumpResponse;
 
 @RestController
 public class FluidicsController implements FluidicsApi {

@@ -1,17 +1,21 @@
 package com.cmiethling.mplex.device.message;
 
-import com.cmiethling.mplex.device.DeviceMessageException;
-import com.cmiethling.mplex.device.config.DeviceMessageConfig;
-import com.cmiethling.mplex.device.service.DeviceMessageService;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+import java.util.UUID;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
-import java.util.UUID;
+import com.cmiethling.mplex.device.DeviceMessageException;
+import com.cmiethling.mplex.device.config.DeviceMessageConfig;
+import com.cmiethling.mplex.device.service.DeviceMessageService;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-@SpringJUnitConfig(classes = {DeviceMessageService.class, DeviceMessageConfig.class})
+@SpringJUnitConfig(classes = { DeviceMessageService.class, DeviceMessageConfig.class })
 public final class ResultMessageTest {
 
     private static final UUID ANY_UUID = UUID.fromString("2e4107c4-8773-4e62-a400-7e7c8195e918");

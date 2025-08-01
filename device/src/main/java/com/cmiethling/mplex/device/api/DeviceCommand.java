@@ -1,11 +1,12 @@
 package com.cmiethling.mplex.device.api;
 
+import org.springframework.lang.NonNull;
+
 import com.cmiethling.mplex.device.DeviceCommandException;
 import com.cmiethling.mplex.device.DeviceMessageException;
 import com.cmiethling.mplex.device.message.RequestMessage;
 import com.cmiethling.mplex.device.message.ResultMessage;
 import com.cmiethling.mplex.device.message.Subsystem;
-import org.springframework.lang.NonNull;
 
 /**
  * This interface describes a command that could be sent to the device. It combines the {@link RequestMessage} with the
@@ -34,6 +35,7 @@ public interface DeviceCommand {
      * parameters.
      *
      * @return a request message to be sent to the device
+     *
      * @throws DeviceMessageException if the request message could not be created, e.g. because of missing properties
      */
     @SuppressWarnings("RedundantThrows")
@@ -44,6 +46,7 @@ public interface DeviceCommand {
      * the result message matches the request message.
      *
      * @param message the result message received from the device
+     *
      * @throws DeviceMessageException if there is a problem evaluating the result message
      * @throws DeviceCommandException if the device returned with an error
      */

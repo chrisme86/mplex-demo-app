@@ -31,6 +31,7 @@ public final class DeviceModule {
      * Return a logger for the specified class. The package name of the class is used as the logger name.
      *
      * @param sourceClass the source class of the logging
+     *
      * @return the logger
      */
     public static Logger logger(final Class<?> sourceClass) {
@@ -41,6 +42,7 @@ public final class DeviceModule {
      * Return a logger with the specified name. The specified name is added to the name of the module logger.
      *
      * @param name the name of the logger
+     *
      * @return the logger
      */
     public static Logger logger(final String name) {

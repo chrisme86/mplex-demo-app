@@ -1,10 +1,11 @@
 package com.cmiethling.mplex.device.message;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.UUID;
+
 import org.springframework.lang.NonNull;
 
-import java.util.UUID;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * This class represents a request that is sent from the application to the device interface.
@@ -18,17 +19,15 @@ public final class RequestMessage extends AbstractDeviceMessage {
      * @param subsystem the subsystem
      * @param topic     the message topic
      */
-    public RequestMessage(@NonNull final UUID id, @NonNull final Subsystem subsystem,
-                          @NonNull final String topic) {
+    public RequestMessage(@NonNull final UUID id, @NonNull final Subsystem subsystem, @NonNull final String topic) {
         super(id, subsystem, topic);
     }
 
     // for deserialization
     @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
     public RequestMessage(@NonNull @JsonProperty(ID) final UUID id,
-                          @NonNull @JsonProperty(SYSTEM) final Subsystem subsystem,
-                          @NonNull @JsonProperty(TOPIC) final String topic,
-                          @NonNull @JsonProperty(PARAMETERS) final MessageParameters params) {
+            @NonNull @JsonProperty(SYSTEM) final Subsystem subsystem, @NonNull @JsonProperty(TOPIC) final String topic,
+            @NonNull @JsonProperty(PARAMETERS) final MessageParameters params) {
         super(id, subsystem, topic);
         this.parameters().putAll(params);
     }

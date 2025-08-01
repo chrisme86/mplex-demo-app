@@ -1,16 +1,18 @@
 package com.cmiethling.mplex.emulator.service;
 
-import com.cmiethling.mplex.device.message.EventMessage;
-import com.cmiethling.mplex.device.message.RequestMessage;
-import com.cmiethling.mplex.device.message.ResultMessage;
-import com.cmiethling.mplex.emulator.model.MessageEntry;
-import lombok.Getter;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.cmiethling.mplex.device.message.EventMessage;
+import com.cmiethling.mplex.device.message.RequestMessage;
+import com.cmiethling.mplex.device.message.ResultMessage;
+import com.cmiethling.mplex.emulator.model.MessageEntry;
+
+import lombok.Getter;
 
 @Getter
 @Service

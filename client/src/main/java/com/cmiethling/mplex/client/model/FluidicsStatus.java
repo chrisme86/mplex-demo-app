@@ -1,11 +1,13 @@
 package com.cmiethling.mplex.client.model;
 
-import com.cmiethling.mplex.device.api.fluidics.ErrorEvent;
-import com.cmiethling.mplex.device.message.Subsystem;
-import lombok.Getter;
+import java.util.List;
+
 import org.springframework.stereotype.Component;
 
-import java.util.List;
+import com.cmiethling.mplex.device.api.fluidics.ErrorEvent;
+import com.cmiethling.mplex.device.message.Subsystem;
+
+import lombok.Getter;
 
 @Component
 public class FluidicsStatus {

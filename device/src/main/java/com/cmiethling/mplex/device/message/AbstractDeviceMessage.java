@@ -1,30 +1,30 @@
 package com.cmiethling.mplex.device.message;
 
-import com.fasterxml.jackson.annotation.*;
-import org.springframework.lang.NonNull;
+import static com.cmiethling.mplex.device.message.AbstractDeviceMessage.*;
 
 import java.util.Objects;
 import java.util.UUID;
 
-import static com.cmiethling.mplex.device.message.AbstractDeviceMessage.*;
+import org.springframework.lang.NonNull;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 /**
  * Base class for all device messages, such as commands messages, result messages and event messages.
  */
-@JsonPropertyOrder({TYPE, ID, SYSTEM, TOPIC, PARAMETERS})
+@JsonPropertyOrder({ TYPE, ID, SYSTEM, TOPIC, PARAMETERS })
 @JsonInclude(JsonInclude.Include.NON_NULL) // at event ID=null >> exclude it from Json
 // Property TYPE is used for determinating the correct Subclass
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        property = TYPE
-)
-@JsonSubTypes({
-        @JsonSubTypes.Type(value = RequestMessage.class, name = REQUEST_TYPE),
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = TYPE)
+@JsonSubTypes({ @JsonSubTypes.Type(value = RequestMessage.class, name = REQUEST_TYPE),
         @JsonSubTypes.Type(value = ResultMessage.class, name = RESULT_TYPE),
-        @JsonSubTypes.Type(value = EventMessage.class, name = EVENT_TYPE)
-})
-public abstract sealed class AbstractDeviceMessage implements DeviceMessage
-        permits RequestMessage, ResultMessage, EventMessage {
+        @JsonSubTypes.Type(value = EventMessage.class, name = EVENT_TYPE) })
+public abstract sealed class AbstractDeviceMessage implements DeviceMessage permits RequestMessage, ResultMessage,
+        EventMessage {
 
     public static final String REQUEST_TYPE = "request";
     public static final String RESULT_TYPE = "result";
@@ -61,9 +61,7 @@ public abstract sealed class AbstractDeviceMessage implements DeviceMessage
      * @param subsystem the system this message is targeted to or originated from
      * @param topic     the topic of this message
      */
-    protected AbstractDeviceMessage(final UUID id,
-                                    @NonNull final Subsystem subsystem,
-                                    @NonNull final String topic) {
+    protected AbstractDeviceMessage(final UUID id, @NonNull final Subsystem subsystem, @NonNull final String topic) {
         this.id = id;
         this.subsystem = subsystem;
         this.topic = topic;
@@ -100,8 +98,8 @@ public abstract sealed class AbstractDeviceMessage implements DeviceMessage
         if (obj == null || getClass() != obj.getClass())
             return false;
         final var other = (AbstractDeviceMessage) obj;
-        return Objects.equals(this.id, other.id) && this.subsystem == other.subsystem
-                && Objects.equals(this.topic, other.topic) && Objects.equals(this.parameters(), other.parameters());
+        return Objects.equals(this.id, other.id) && this.subsystem == other.subsystem && Objects.equals(this.topic,
+                other.topic) && Objects.equals(this.parameters(), other.parameters());
     }
 
     @Override

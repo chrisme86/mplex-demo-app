@@ -1,15 +1,16 @@
 package com.cmiethling.mplex.device.websocket;
 
+import java.util.function.Supplier;
+
+import org.slf4j.Logger;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.lang.NonNull;
+
 import com.cmiethling.mplex.device.DeviceModule;
 import com.cmiethling.mplex.device.message.DeviceMessage;
 import com.cmiethling.mplex.device.message.EventMessage;
 import com.cmiethling.mplex.device.message.RequestMessage;
 import com.cmiethling.mplex.device.message.ResultMessage;
-import org.springframework.lang.NonNull;
-import org.slf4j.Logger;
-import org.springframework.context.annotation.Configuration;
-
-import java.util.function.Supplier;
 
 @Configuration
 public class WebSocketUtils {
@@ -36,19 +37,19 @@ public class WebSocketUtils {
         final String loggerNamePattern;
         final String logMessagePrefix;
         switch (message) {
-            case final RequestMessage requestMessage -> {
-                loggerNamePattern = REQUEST_LOGGER_NAME_PATTERN;
-                logMessagePrefix = "Sending request";
-            }
-            case final ResultMessage resultMessage -> {
-                loggerNamePattern = RESULT_LOGGER_NAME_PATTERN;
-                logMessagePrefix = "Received result";
-            }
-            case final EventMessage eventMessage -> {
-                loggerNamePattern = EVENT_LOGGER_NAME_PATTERN;
-                logMessagePrefix = "Received event";
-            }
-            default -> throw new IllegalArgumentException(message.getClass().getName());
+        case final RequestMessage requestMessage -> {
+            loggerNamePattern = REQUEST_LOGGER_NAME_PATTERN;
+            logMessagePrefix = "Sending request";
+        }
+        case final ResultMessage resultMessage -> {
+            loggerNamePattern = RESULT_LOGGER_NAME_PATTERN;
+            logMessagePrefix = "Received result";
+        }
+        case final EventMessage eventMessage -> {
+            loggerNamePattern = EVENT_LOGGER_NAME_PATTERN;
+            logMessagePrefix = "Received event";
+        }
+        default -> throw new IllegalArgumentException(message.getClass().getName());
         }
 
         // get a message-specific logger
@@ -59,7 +60,7 @@ public class WebSocketUtils {
                 message.getId(), message.getSubsystem(), message.getTopic());
 
         if (logger.isTraceEnabled())
-            logger.trace("{}{}", header.get(), message.parameters().toString());
+            logger.trace("{}{}", header.get(), message.parameters());
         else if (logger.isDebugEnabled())
             logger.debug(header.get());
     }

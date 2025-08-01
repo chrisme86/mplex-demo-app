@@ -1,8 +1,10 @@
 package com.cmiethling.mplex.device.message;
 
-import com.cmiethling.mplex.device.DeviceMessageException;
-import com.cmiethling.mplex.device.config.DeviceMessageConfig;
-import com.cmiethling.mplex.device.service.DeviceMessageService;
+import static org.junit.jupiter.api.Assertions.*;
+
+import java.util.UUID;
+import java.util.stream.Stream;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -10,12 +12,11 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
-import java.util.UUID;
-import java.util.stream.Stream;
+import com.cmiethling.mplex.device.DeviceMessageException;
+import com.cmiethling.mplex.device.config.DeviceMessageConfig;
+import com.cmiethling.mplex.device.service.DeviceMessageService;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-@SpringJUnitConfig(classes = {DeviceMessageService.class, DeviceMessageConfig.class})
+@SpringJUnitConfig(classes = { DeviceMessageService.class, DeviceMessageConfig.class })
 public final class RequestMessageTest {
     private static final UUID ANY_UUID = UUID.fromString("2e4107c4-8773-4e62-a400-7e7c8195e918");
 
@@ -23,8 +24,7 @@ public final class RequestMessageTest {
     private DeviceMessageService deviceMessageService;
 
     public static Stream<Arguments> invalidJson() {
-        return Stream.of(
-                Arguments.of("hello"), //
+        return Stream.of(Arguments.of("hello"), //
                 Arguments.of("{}"), //
                 Arguments.of("""
                         {
@@ -53,8 +53,7 @@ public final class RequestMessageTest {
                             "uuid": "2e4107c4-8773-4e62-a400-7e7c8195e918",
                             "system": "motorcontrol"
                         }
-                        """),
-                Arguments.of("""
+                        """), Arguments.of("""
                         {
                             "type": "command",
                             "uuid": "2e4107c4-8773-4e62-a400-7e7c8195e918",
@@ -147,8 +146,7 @@ public final class RequestMessageTest {
     @ParameterizedTest()
     @MethodSource("invalidJson")
     public void fromInvalidJson(final String json) {
-        assertThrows(DeviceMessageException.class,
-                () -> this.deviceMessageService.deserializeMessage(json));
+        assertThrows(DeviceMessageException.class, () -> this.deviceMessageService.deserializeMessage(json));
     }
 
     @Test

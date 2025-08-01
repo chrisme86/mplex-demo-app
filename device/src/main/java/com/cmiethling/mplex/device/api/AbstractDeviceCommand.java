@@ -1,15 +1,16 @@
 package com.cmiethling.mplex.device.api;
 
+import java.util.Optional;
+import java.util.UUID;
+import java.util.function.Supplier;
+
+import org.springframework.lang.NonNull;
+
 import com.cmiethling.mplex.device.DeviceCommandException;
 import com.cmiethling.mplex.device.DeviceMessageException;
 import com.cmiethling.mplex.device.message.RequestMessage;
 import com.cmiethling.mplex.device.message.ResultMessage;
 import com.cmiethling.mplex.device.message.Subsystem;
-import org.springframework.lang.NonNull;
-
-import java.util.Optional;
-import java.util.UUID;
-import java.util.function.Supplier;
 
 /**
  * Base class for implementing device commands. Implementing classes of device commands should extend this class and add
@@ -68,12 +69,12 @@ public abstract class AbstractDeviceCommand<E extends SubsystemError> implements
     }
 
     /**
-     * This implementation fails if the result does not match the request result. Subclasses should override
-     * this method to evaluate the results.
+     * This implementation fails if the result does not match the request result. Subclasses should override this method
+     * to evaluate the results.
      */
     @Override
-    public void fromResultMessage(@NonNull final ResultMessage result) throws DeviceMessageException,
-            DeviceCommandException {
+    public void fromResultMessage(@NonNull final ResultMessage result)
+            throws DeviceMessageException, DeviceCommandException {
 
         // If this command has an id, check if the result matches.
         // A command may not have an id if it was not send before (like in test cases).
@@ -87,16 +88,16 @@ public abstract class AbstractDeviceCommand<E extends SubsystemError> implements
         // check if there is an error
         final var error = result.getError();
         switch (error) {
-            case NONE -> {
-                // there is no error, just continue
-            }
-            case EMULATOR_BUSY -> throw new DeviceMessageException("general", "EmulatorBusy for request " + this.topic);
-            case UNKNOWN -> throw new DeviceMessageException("resultUnknown", this);
-            case INVALID_SUBSYSTEM -> handleInvalidSubsystem();
-            case INVALID_TOPIC -> handleInvalidTopic();
-            case INVALID_PARAMETERS -> handleInvalidParameters();
-            case COMMAND_ERROR -> handleCommandError(result);
-            default -> throw new IllegalArgumentException(error.name());
+        case NONE -> {
+            // there is no error, just continue
+        }
+        case EMULATOR_BUSY -> throw new DeviceMessageException("general", "EmulatorBusy for request " + this.topic);
+        case UNKNOWN -> throw new DeviceMessageException("resultUnknown", this);
+        case INVALID_SUBSYSTEM -> handleInvalidSubsystem();
+        case INVALID_TOPIC -> handleInvalidTopic();
+        case INVALID_PARAMETERS -> handleInvalidParameters();
+        case COMMAND_ERROR -> handleCommandError(result);
+        default -> throw new IllegalArgumentException(error.name());
         }
     }
 
@@ -135,6 +136,7 @@ public abstract class AbstractDeviceCommand<E extends SubsystemError> implements
      * the retVal parameter. Usually this is an implementation-specific enum value.
      *
      * @param code the code, extracted from the retVal of the message
+     *
      * @return an optional subsystem error
      */
     protected Optional<E> getSubsystemError(final int code) {
@@ -148,7 +150,9 @@ public abstract class AbstractDeviceCommand<E extends SubsystemError> implements
      * @param <T>   the type of the value
      * @param name  the name of the value
      * @param value the value to check
+     *
      * @return the valid value
+     *
      * @throws DeviceMessageException if the required value is not present
      */
     @SuppressWarnings("static-method")

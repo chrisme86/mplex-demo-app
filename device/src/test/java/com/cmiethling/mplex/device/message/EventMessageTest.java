@@ -1,15 +1,19 @@
 package com.cmiethling.mplex.device.message;
 
-import com.cmiethling.mplex.device.DeviceMessageException;
-import com.cmiethling.mplex.device.config.DeviceMessageConfig;
-import com.cmiethling.mplex.device.service.DeviceMessageService;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
-import static org.junit.jupiter.api.Assertions.*;
+import com.cmiethling.mplex.device.DeviceMessageException;
+import com.cmiethling.mplex.device.config.DeviceMessageConfig;
+import com.cmiethling.mplex.device.service.DeviceMessageService;
 
-@SpringJUnitConfig(classes = {DeviceMessageService.class, DeviceMessageConfig.class})
+@SpringJUnitConfig(classes = { DeviceMessageService.class, DeviceMessageConfig.class })
 public final class EventMessageTest {
 
     @Autowired
