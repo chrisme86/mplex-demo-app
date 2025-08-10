@@ -8,6 +8,7 @@ import java.util.UUID;
 import org.springframework.lang.NonNull;
 
 import com.cmiethling.mplex.device.message.ResultMessage;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public abstract class AbstractDeviceCommandTest extends AbstractDeviceTest {
     /**
@@ -19,12 +20,14 @@ public abstract class AbstractDeviceCommandTest extends AbstractDeviceTest {
             throws Exception {
         final var command1 = (AbstractDeviceCommand<?>) command;
         command1.setIdGenerator(() -> TESTING_UUID);
-        final var commandMessage = command1.toRequestMessage();
-        final var json = super.deviceMessageService.serializeMessage(commandMessage);
+        final var requestMessage = command1.toRequestMessage();
+        final var json = super.deviceMessageService.serializeMessage(requestMessage);
 
         final var expectedJson = super.loadJson(resourceName);
 
-        assertEquals(expectedJson, json, resourceName);
+        // maps to JsonNode preventing problems with string literals (ie line separator LF vs CRLF)
+        final var mapper = new ObjectMapper();
+        assertEquals(mapper.readTree(expectedJson), mapper.readTree(json), resourceName);
     }
 
     protected <T extends DeviceCommand> T fromResultMessage(@NonNull final T command,

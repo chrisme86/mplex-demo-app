@@ -15,6 +15,8 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import com.cmiethling.mplex.device.DeviceMessageException;
 import com.cmiethling.mplex.device.config.DeviceMessageConfig;
 import com.cmiethling.mplex.device.service.DeviceMessageService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @SpringJUnitConfig(classes = { DeviceMessageService.class, DeviceMessageConfig.class })
 public final class RequestMessageTest {
@@ -113,7 +115,7 @@ public final class RequestMessageTest {
     }
 
     @Test
-    public void toJson() throws DeviceMessageException {
+    public void toJson() throws DeviceMessageException, JsonProcessingException {
         final var message = new RequestMessage(ANY_UUID, Subsystem.MOTOR_CONTROL, "move");
         message.parameters().putString("mode", "smooth");
         message.parameters().putDouble("x-pos", 42.42);
@@ -140,7 +142,8 @@ public final class RequestMessageTest {
                   }
                 }
                 """;
-        assertEquals(expected, json);
+        final var mapper = new ObjectMapper(); // maps to JsonNode preventing problems with string literals
+        assertEquals(mapper.readTree(expected), mapper.readTree(json));
     }
 
     @ParameterizedTest()

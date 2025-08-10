@@ -7,7 +7,7 @@ spring:
     livereload:
       port=35729
 websocket:
-  uri=ws://localhost:8091/hwAPI
+  uri: ws://localhost:8091/hwAPI
 
 # OpenApi
 springdoc:

@@ -12,6 +12,8 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import com.cmiethling.mplex.device.DeviceMessageException;
 import com.cmiethling.mplex.device.config.DeviceMessageConfig;
 import com.cmiethling.mplex.device.service.DeviceMessageService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @SpringJUnitConfig(classes = { DeviceMessageService.class, DeviceMessageConfig.class })
 public final class EventMessageTest {
@@ -20,7 +22,7 @@ public final class EventMessageTest {
     private DeviceMessageService deviceMessageService;
 
     @Test
-    public void eventToJson() throws DeviceMessageException {
+    public void eventToJson() throws DeviceMessageException, JsonProcessingException {
         final var message = new EventMessage(Subsystem.FLUIDICS, "status");
         message.parameters().putString("sampleDoor", "open");
         message.parameters().putString("consumableDoor", "closed");
@@ -37,7 +39,9 @@ public final class EventMessageTest {
                   }
                 }
                 """;
-        assertEquals(expected, json);
+
+        final var mapper = new ObjectMapper(); // maps to JsonNode preventing problems with string literals
+        assertEquals(mapper.readTree(expected), mapper.readTree(json));
     }
 
     @SuppressWarnings("OptionalGetWithoutIsPresent")

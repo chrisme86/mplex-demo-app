@@ -15,6 +15,7 @@ public class FluidicsController implements FluidicsApi {
         final var request = new SetGelPumpRequest();
         request.setId(UUID.randomUUID());
         request.getParameters().setIsOn(isOn);
+        request.setSubsystem(SetGelPumpRequest.SubsystemEnum.FLUIDICS);
         return sendSetGelPumpCommand(request);
     }
 
