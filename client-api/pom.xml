@@ -10,13 +10,18 @@
     </parent>
 
     <artifactId>client-api</artifactId>
+    <packaging>pom</packaging>
 
     <name>Client API</name>
 
     <properties>
-        <openapi-generator.schemadir>${project.basedir}/src/main/resources/schema</openapi-generator.schemadir>
-        <openapi-generator.modelPackage>${openapi-generator.package}.model</openapi-generator.modelPackage>
+        <openapi-generator.schemadir>${project.parent.basedir}/src/main/resources/schema</openapi-generator.schemadir>
     </properties>
+
+    <modules>
+        <module>rest-api-client</module>
+        <!-- <module>rest-api-server</module> -->
+    </modules>
 
     <dependencies>
         <!-- OpenAPI -->
@@ -35,12 +40,37 @@
         </dependency>
     </dependencies>
 
-    <build>
+    <!-- <build>
         <plugins>
-            <!-- OpenAPI Generator -->
+            &lt;!&ndash; OpenAPI Generator &ndash;&gt;
             <plugin>
                 <groupId>org.openapitools</groupId>
                 <artifactId>openapi-generator-maven-plugin</artifactId>
+                <configuration>
+                    &lt;!&ndash; configuration for all APIs &ndash;&gt;
+                    <generatorName>spring</generatorName>
+                    <generateApiDocumentation>true</generateApiDocumentation>
+                    <supportingFilesToGenerate>ApiUtil.java</supportingFilesToGenerate>
+                    <apiPackage>${openapi-generator.package}.api</apiPackage>
+                    <output>${project.build.directory}/generated-sources/openapi</output>
+                    <configOptions>
+                        <delegatePattern>true</delegatePattern>
+                        <useSpringBoot3>true</useSpringBoot3>
+                        <useSwaggerUI>true</useSwaggerUI>
+                        <useSpringController>true</useSpringController>
+                        <interfaceOnly>true</interfaceOnly>
+                        <useTags>true</useTags>
+                        <dateLibrary>java8</dateLibrary>
+                        <additionalModelTypeAnnotations>
+                            @lombok.Setter
+                            @lombok.Getter
+                            @lombok.RequiredArgsConstructor
+                            &lt;!&ndash; not working... @lombok.SneakyThrows&ndash;&gt;
+                        </additionalModelTypeAnnotations>
+                    </configOptions>
+                </configuration>
+
+
                 <executions>
                     <execution>
                         <id>fluidics</id>
@@ -65,5 +95,5 @@
                 </executions>
             </plugin>
         </plugins>
-    </build>
+    </build> -->
 </project>

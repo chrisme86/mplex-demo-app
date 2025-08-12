@@ -5,10 +5,10 @@ info:
   version: 1.0.0
 
 servers:
-  - url: http://localhost:8080/api
+  - url: http://localhost:8091/restapi
 
 paths:
-  /api/fluidics/ReadCapillaryData:
+  /hv/ReadCapillaryData:
     post:
       tags:
         - hv

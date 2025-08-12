@@ -23,11 +23,31 @@ The project is organized into the following main components:
 - It runs on [http://localhost:8091](http://localhost:8091).
 - It allows the software to be tested without needing the physical device.
 
-**device**
+**client-api**
 
-- This is a shared module that provides services for communication between the client and the hardware (or the
+- A shared module that defines the API for communication between the client and the emulator.
+- It contains separate data structures and interfaces used for:
+    - sending synchronous commands via **HTTP REST**: API first approach
+    - receiving asynchronous events via **WebSocket**
+- technologies:
+    - openapi-generator for generating the API commands on the client and emulator side
+    - Spring REST client for handling the API commands in the client
+- advantages:
+    - Ensures that both the client and emulator are in sync with the API definitions.
+    - Reduces boilerplate code by generating the necessary classes and interfaces.
+    - Benefits of REST for Commands: By adopting HTTP REST for the synchronous calls, we align with a common pattern for
+      microservices public APIs (client-to-service calls). HTTP/JSON is human-readable (easy to log and inspect), and
+      tools like Postman or Swagger-UI can be used to test the emulator’s API. We’ve effectively externalized the device
+      commands as a service API, which is easier to work with than an opaque WebSocket protocol. Additionally, we let
+      Spring handle a lot of work (threads, JSON binding, error handling via exceptions), so we write less custom code.
+
+**device (deprecated)**
+
+- This is a shared module that acts as an interface between the software (client) and the actual or simulated hardware (
   emulator).
-- It acts as an interface between the software (client) and the actual or simulated hardware (emulator).
+- this is replaced by the `client-api` module as it makes use of Spring Boot features like REST and WebSocket for
+  communication, which is more suitable for the current architecture.
+- In the device module the websocket connection handled both commands and events.
 
 ## Current State
 

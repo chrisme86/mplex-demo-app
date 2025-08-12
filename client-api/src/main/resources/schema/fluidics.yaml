@@ -4,16 +4,16 @@ info:
   description: API to interact with the fluidics subsystem commands
   version: 1.0.0
 
-#servers:
-#  - url: http://localhost:8080/api
+servers:
+  - url: http://localhost:8091/restapi
 
 paths:
-  /api/fluidics/SetGelPump:
+  /fluidics/SetGelPump:
     post:
       tags:
         - fluidics
       summary: Send SetGelPump request to the fluidics subsystem
-      operationId: sendSetGelPumpCommand
+      operationId: setGelPumpCommand
       requestBody:
         required: true
         content:
@@ -35,6 +35,9 @@ components:
         - $ref: 'base.yaml#/components/schemas/BaseRequest'
         - type: object
           properties:
+            subsystem:
+              type: string
+              enum: [ fluidics ]
             topic:
               type: string
               enum: [ SetGelPump ]
@@ -50,6 +53,9 @@ components:
         - $ref: 'base.yaml#/components/schemas/BaseResponse'
         - type: object
           properties:
+            subsystem:
+              type: string
+              enum: [ fluidics ]
             topic:
               type: string
               enum: [ SetGelPump ]

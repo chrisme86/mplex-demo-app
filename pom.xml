@@ -28,8 +28,7 @@
         <springdoc.version>2.6.0</springdoc.version>
         <openapi-generator.version>7.9.0</openapi-generator.version>
         <jackson-databind-nullable.version>0.2.6</jackson-databind-nullable.version>
-        <build-helper-maven-plugin.version>3.5.0</build-helper-maven-plugin.version>
-        <openapi-generator.package>com.cmiethling.mplex.client_api.openapi</openapi-generator.package>
+        <build-helper-maven-plugin.version>3.6.1</build-helper-maven-plugin.version>
     </properties>
 
     <distributionManagement>
@@ -43,10 +42,10 @@
 
     <!-- All modules are build with this reactor. -->
     <modules>
+        <module>client-api</module>
         <module>device</module>
         <module>emulator</module>
         <module>client</module>
-        <module>client-api</module>
     </modules>
 
     <dependencyManagement>
@@ -64,6 +63,11 @@
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>client-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>rest-api-client</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
@@ -173,36 +177,13 @@
                     <groupId>org.openapitools</groupId>
                     <artifactId>openapi-generator-maven-plugin</artifactId>
                     <version>${openapi-generator.version}</version>
-                    <configuration>
-                        <!-- configuration for all APIs -->
-                        <generatorName>spring</generatorName>
-                        <generateApiDocumentation>true</generateApiDocumentation>
-                        <supportingFilesToGenerate>ApiUtil.java</supportingFilesToGenerate>
-                        <apiPackage>${openapi-generator.package}.api</apiPackage>
-                        <output>${project.build.directory}/generated-sources/openapi</output>
-                        <configOptions>
-                            <delegatePattern>true</delegatePattern>
-                            <useSpringBoot3>true</useSpringBoot3>
-                            <useSwaggerUI>true</useSwaggerUI>
-                            <useSpringController>true</useSpringController>
-                            <interfaceOnly>true</interfaceOnly>
-                            <useTags>true</useTags>
-                            <dateLibrary>java8</dateLibrary>
-                            <additionalModelTypeAnnotations>
-                                @lombok.Setter
-                                @lombok.Getter
-                                @lombok.RequiredArgsConstructor
-                                <!-- not working... @lombok.SneakyThrows-->
-                            </additionalModelTypeAnnotations>
-                        </configOptions>
-                    </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>
     </build>
 
     <!-- OpenAPI: only remove generated sources -->
-    <profiles>
+    <!-- <profiles>
         <profile>
             <id>clean-generated</id>
             <build>
@@ -226,5 +207,5 @@
                 </plugins>
             </build>
         </profile>
-    </profiles>
+    </profiles> -->
 </project>
