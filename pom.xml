@@ -42,7 +42,7 @@
 
     <!-- All modules are build with this reactor. -->
     <modules>
-        <module>client-api</module>
+        <module>rest-api</module>
         <module>device</module>
         <module>emulator</module>
         <module>client</module>
@@ -62,12 +62,17 @@
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
+                <artifactId>rest-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
                 <artifactId>client-api</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>rest-api-client</artifactId>
+                <artifactId>server-api</artifactId>
                 <version>${project.version}</version>
             </dependency>
 

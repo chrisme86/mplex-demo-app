@@ -10,7 +10,7 @@ websocket:
   uri: ws://localhost:8091/hwAPI
 
 # OpenApi
-# restApiUrl: http://localhost:8091/restapi
+# restApiUrl: http://localhost:8091
 springdoc:
   swagger-ui:
     path: /swagger-ui

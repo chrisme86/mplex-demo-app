@@ -1,71 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns="http://maven.apache.org/POM/4.0.0"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <groupId>com.cmiethling.mplex</groupId>
-        <artifactId>mplex-suite</artifactId>
+        <artifactId>rest-api</artifactId>
         <version>1.0.0</version>
     </parent>
 
-    <artifactId>client-api</artifactId>
-    <packaging>pom</packaging>
-
-    <name>Client API</name>
+    <artifactId>server-api</artifactId>
+    <name>Server API</name>
 
     <properties>
-        <openapi-generator.schemadir>${project.parent.basedir}/src/main/resources/schema</openapi-generator.schemadir>
+        <openapi-generator.package>com.cmiethling.mplex.server_api</openapi-generator.package>
+        <openapi-generator.modelPackage>${openapi-generator.package}.model</openapi-generator.modelPackage>
     </properties>
 
-    <modules>
-        <module>rest-api-client</module>
-        <!-- <module>rest-api-server</module> -->
-    </modules>
-
-    <dependencies>
-        <!-- OpenAPI -->
-        <dependency>
-            <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-        </dependency>
-        <!-- OpenAPI Generator -->
-        <dependency>
-            <groupId>org.openapitools</groupId>
-            <artifactId>openapi-generator</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.openapitools</groupId>
-            <artifactId>jackson-databind-nullable</artifactId>
-        </dependency>
-    </dependencies>
-
-    <!-- <build>
+    <build>
         <plugins>
-            &lt;!&ndash; OpenAPI Generator &ndash;&gt;
+            <!-- OpenAPI for Server stub generation -->
             <plugin>
                 <groupId>org.openapitools</groupId>
                 <artifactId>openapi-generator-maven-plugin</artifactId>
                 <configuration>
-                    &lt;!&ndash; configuration for all APIs &ndash;&gt;
+                    <!-- https://openapi-generator.tech/docs/generators/spring  -->
                     <generatorName>spring</generatorName>
                     <generateApiDocumentation>true</generateApiDocumentation>
                     <supportingFilesToGenerate>ApiUtil.java</supportingFilesToGenerate>
+
                     <apiPackage>${openapi-generator.package}.api</apiPackage>
                     <output>${project.build.directory}/generated-sources/openapi</output>
                     <configOptions>
-                        <delegatePattern>true</delegatePattern>
                         <useSpringBoot3>true</useSpringBoot3>
-                        <useSwaggerUI>true</useSwaggerUI>
-                        <useSpringController>true</useSpringController>
                         <interfaceOnly>true</interfaceOnly>
+                        <useResponseEntity>true</useResponseEntity>
                         <useTags>true</useTags>
+                        <delegatePattern>true</delegatePattern>
+                        <useSpringController>true</useSpringController>
+                        <useSwaggerUI>true</useSwaggerUI>
                         <dateLibrary>java8</dateLibrary>
                         <additionalModelTypeAnnotations>
-                            @lombok.Setter
                             @lombok.Getter
                             @lombok.RequiredArgsConstructor
-                            &lt;!&ndash; not working... @lombok.SneakyThrows&ndash;&gt;
+                            <!-- not working... @lombok.SneakyThrows-->
                         </additionalModelTypeAnnotations>
                     </configOptions>
                 </configuration>
@@ -95,5 +74,5 @@
                 </executions>
             </plugin>
         </plugins>
-    </build> -->
+    </build>
 </project>
