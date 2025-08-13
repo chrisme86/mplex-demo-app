@@ -1,7 +1,5 @@
 package com.cmiethling.mplex.client.controller;
 
-import java.util.UUID;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,8 +11,8 @@ import org.springframework.web.client.RestClientException;
 import com.cmiethling.mplex.client.config.Utils;
 import com.cmiethling.mplex.client.model.FluidicsStatus;
 import com.cmiethling.mplex.client_api.api.FluidicsApi;
-import com.cmiethling.mplex.client_api.model.fluidics.SetGelPumpRequest;
-import com.cmiethling.mplex.client_api.model.fluidics.SetGelPumpRequestAllOfParameters;
+import com.cmiethling.mplex.client_api.model.SetGelPumpRequest;
+import com.cmiethling.mplex.client_api.model.SetGelPumpRequestAllOfParameters;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -39,9 +37,9 @@ public class HomeController {
 
     @PostMapping(Utils.PUBLIC + Utils.SEND_GEL_PUMP_MODE_COMMAND)
     public String sendGelPumpModeCommand(@RequestParam final boolean isOn) {
-        final var request = new SetGelPumpRequest();
-        request.id(UUID.randomUUID()).type(SetGelPumpRequest.TypeEnum.REQUEST)
-                .subsystem(SetGelPumpRequest.SubsystemEnum.FLUIDICS).topic(SetGelPumpRequest.TopicEnum.SET_GEL_PUMP)
+        final var request = new SetGelPumpRequest() //
+                .subsystem(SetGelPumpRequest.SubsystemEnum.FLUIDICS) //
+                .topic(SetGelPumpRequest.TopicEnum.SET_GEL_PUMP) //
                 .parameters(new SetGelPumpRequestAllOfParameters().isOn(isOn));
         log.info("Sending Request: {}", request);
         try {

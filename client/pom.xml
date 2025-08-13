@@ -21,7 +21,7 @@
         <!-- MPlex deps -->
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>mplex-device</artifactId>
+            <artifactId>device</artifactId>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
@@ -45,7 +45,7 @@
         <!-- Test dependencies -->
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>mplex-emulator</artifactId>
+            <artifactId>emulator</artifactId>
         </dependency>
     </dependencies>
 

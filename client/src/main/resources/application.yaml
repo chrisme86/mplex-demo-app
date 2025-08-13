@@ -10,7 +10,6 @@ websocket:
   uri: ws://localhost:8091/hwAPI
 
 # OpenApi
-# restApiUrl: http://localhost:8091
 springdoc:
   swagger-ui:
     path: /swagger-ui
@@ -18,3 +17,5 @@ springdoc:
     tagsSorter: alpha
   api-docs:
     path: /api-docs
+# merged spec always generates 'servers: - url: "http://localhost:8080"'
+restapiUrl: http://localhost:8091

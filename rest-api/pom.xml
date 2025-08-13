@@ -13,10 +13,6 @@
     <packaging>pom</packaging>
     <name>REST API</name>
 
-    <properties>
-        <openapi-generator.schemadir>${project.parent.basedir}/src/main/resources/schema</openapi-generator.schemadir>
-    </properties>
-
     <modules>
         <module>client-api</module>
         <module>server-api</module>
@@ -31,11 +27,34 @@
         <!-- OpenAPI Generator -->
         <dependency>
             <groupId>org.openapitools</groupId>
-            <artifactId>openapi-generator</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.openapitools</groupId>
             <artifactId>jackson-databind-nullable</artifactId>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <!-- OpenAPI generator - general settings -->
+            <plugin>
+                <groupId>org.openapitools</groupId>
+                <artifactId>openapi-generator-maven-plugin</artifactId>
+                <configuration>
+                    <!-- submodules client-api, server-api will fill these values -->
+                    <!--suppress UnresolvedMavenProperty -->
+                    <apiPackage>${openapi-generator.package}.api</apiPackage>
+                    <!--suppress UnresolvedMavenProperty -->
+                    <modelPackage>${openapi-generator.package}.model</modelPackage>
+                    <!-- submodules client-api, server-api will search in (this) parent modul -->
+                    <inputSpecRootDirectory>${project.parent.basedir}/src/main/resources/specs</inputSpecRootDirectory>
+                    <mergedFileName>merged_spec</mergedFileName>
+
+                    <output>${project.build.directory}/generated-sources/openapi</output>
+                    <generateApiTests>false</generateApiTests>
+                    <generateModelTests>false</generateModelTests>
+                    <configOptions>
+                        <dateLibrary>java8</dateLibrary>
+                    </configOptions>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

@@ -15,7 +15,6 @@
 
     <properties>
         <openapi-generator.package>com.cmiethling.mplex.client_api</openapi-generator.package>
-        <openapi-generator.modelPackage>${openapi-generator.package}.model</openapi-generator.modelPackage>
     </properties>
 
     <build>
@@ -27,43 +26,20 @@
                 <configuration>
                     <!-- https://openapi-generator.tech/docs/generators/java -->
                     <generatorName>java</generatorName>
-                    <apiPackage>${openapi-generator.package}.api</apiPackage>
-                    <!-- <output>${project.build.directory}/generated-sources/openapi</output> -->
-                    <generateApiTests>false</generateApiTests>
-                    <generateModelTests>false</generateModelTests>
 
                     <configOptions>
                         <library>resttemplate</library>
                         <useJakartaEe>true</useJakartaEe>
-                        <dateLibrary>java8</dateLibrary>
                         <generateClientAsBean>true</generateClientAsBean>
                     </configOptions>
-                    <!-- <globalProperties> -->
-                    <!--     <apis>true</apis> -->
-                    <!--     <models>true</models> -->
-                    <!--     <supportingFiles>true</supportingFiles> -->
-                    <!-- </globalProperties> -->
                 </configuration>
                 <executions>
+                    <!-- will generate client-api code -->
                     <execution>
-                        <id>fluidics</id>
+                        <id>client</id>
                         <goals>
                             <goal>generate</goal>
                         </goals>
-                        <configuration>
-                            <inputSpec>${openapi-generator.schemadir}/fluidics.yaml</inputSpec>
-                            <modelPackage>${openapi-generator.modelPackage}.fluidics</modelPackage>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>hv</id>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                        <configuration>
-                            <inputSpec>${openapi-generator.schemadir}/hv.yaml</inputSpec>
-                            <modelPackage>${openapi-generator.modelPackage}.hv</modelPackage>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>

@@ -4,8 +4,9 @@ info:
   description: API to interact with the fluidics subsystem commands
   version: 1.0.0
 
-servers:
-  - url: http://localhost:8091
+# merged spec always generates 'servers: - url: "http://localhost:8080"' anyways...
+#servers:
+#  - url: http://localhost:8091
 
 paths:
   /restapi/fluidics/SetGelPump:

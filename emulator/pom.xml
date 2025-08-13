@@ -8,7 +8,7 @@
         <version>1.0.0</version>
     </parent>
 
-    <artifactId>mplex-emulator</artifactId>
+    <artifactId>emulator</artifactId>
 
     <name>Emulator Application</name>
     <description>
@@ -23,7 +23,7 @@
         <!-- MPlex deps -->
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>mplex-device</artifactId>
+            <artifactId>device</artifactId>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>

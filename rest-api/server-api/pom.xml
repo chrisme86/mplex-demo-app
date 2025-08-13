@@ -15,7 +15,6 @@
 
     <properties>
         <openapi-generator.package>com.cmiethling.mplex.server_api</openapi-generator.package>
-        <openapi-generator.modelPackage>${openapi-generator.package}.model</openapi-generator.modelPackage>
     </properties>
 
     <build>
@@ -27,49 +26,27 @@
                 <configuration>
                     <!-- https://openapi-generator.tech/docs/generators/spring  -->
                     <generatorName>spring</generatorName>
-                    <generateApiDocumentation>true</generateApiDocumentation>
-                    <supportingFilesToGenerate>ApiUtil.java</supportingFilesToGenerate>
 
-                    <apiPackage>${openapi-generator.package}.api</apiPackage>
-                    <output>${project.build.directory}/generated-sources/openapi</output>
                     <configOptions>
                         <useSpringBoot3>true</useSpringBoot3>
                         <interfaceOnly>true</interfaceOnly>
                         <useResponseEntity>true</useResponseEntity>
                         <useTags>true</useTags>
-                        <delegatePattern>true</delegatePattern>
-                        <useSpringController>true</useSpringController>
-                        <useSwaggerUI>true</useSwaggerUI>
-                        <dateLibrary>java8</dateLibrary>
                         <additionalModelTypeAnnotations>
                             @lombok.Getter
-                            @lombok.RequiredArgsConstructor
-                            <!-- not working... @lombok.SneakyThrows-->
+                            <!-- @lombok.RequiredArgsConstructor -->
                         </additionalModelTypeAnnotations>
+                        <useSwaggerUI>true</useSwaggerUI>
                     </configOptions>
                 </configuration>
 
-
                 <executions>
+                    <!-- will generate server-api code -->
                     <execution>
-                        <id>fluidics</id>
+                        <id>server</id>
                         <goals>
                             <goal>generate</goal>
                         </goals>
-                        <configuration>
-                            <inputSpec>${openapi-generator.schemadir}/fluidics.yaml</inputSpec>
-                            <modelPackage>${openapi-generator.modelPackage}.fluidics</modelPackage>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>hv</id>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                        <configuration>
-                            <inputSpec>${openapi-generator.schemadir}/hv.yaml</inputSpec>
-                            <modelPackage>${openapi-generator.modelPackage}.hv</modelPackage>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>

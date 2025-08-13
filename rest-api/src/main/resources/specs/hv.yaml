@@ -4,9 +4,6 @@ info:
   description: API to interact with the high voltage subsystem commands
   version: 1.0.0
 
-servers:
-  - url: http://localhost:8091
-
 paths:
   /restapi/hv/ReadCapillaryData:
     post:

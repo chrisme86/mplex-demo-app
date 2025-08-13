@@ -8,9 +8,7 @@
         <version>1.0.0</version>
     </parent>
 
-    <artifactId>mplex-device</artifactId>
-
-    <name>Device Interface Library</name>
+    <artifactId>device</artifactId>
     <description>
         A library that wraps the interface to the Modaplex instrument used by the Controller Application.
     </description>
