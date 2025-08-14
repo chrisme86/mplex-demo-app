@@ -8,7 +8,6 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
 @Configuration
@@ -19,19 +18,17 @@ public class ProjectSecurityConfig {
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(final HttpSecurity http,
             final HandlerMappingIntrospector introspector) throws Exception {
-        final var builder = new MvcRequestMatcher.Builder(introspector);
-        http.authorizeHttpRequests(request -> {
-            request.requestMatchers(builder.pattern("/"), builder.pattern(Utils.HOME)).permitAll();
-            request.requestMatchers(builder.pattern(Utils.PUBLIC + "/**")).permitAll();
+        http.authorizeHttpRequests(auth -> {
+            auth.requestMatchers("/", Utils.HOME).permitAll();
+            auth.requestMatchers(Utils.PUBLIC + "/**").permitAll();
             // so that css in /assets can work
-            request.requestMatchers(builder.pattern("/assets/**")).permitAll();
-            request.requestMatchers(builder.pattern("/error")).permitAll();
+            auth.requestMatchers("/assets/**").permitAll();
+            auth.requestMatchers("/error").permitAll();
 
-            request.requestMatchers(builder.pattern(Utils.SERVICE_CLIENT + "/**")).authenticated();
-            request.requestMatchers(builder.pattern(Utils.LOGIN), builder.pattern(Utils.LOGOUT)).permitAll();
+            auth.requestMatchers(Utils.SERVICE_CLIENT + "/**").authenticated();
+            auth.requestMatchers(Utils.LOGIN, Utils.LOGOUT).permitAll();
             // for OpenAPI
-            request.requestMatchers(builder.pattern("/api-docs/**"), builder.pattern("/swagger-ui/**"),
-                    builder.pattern("/api/**")).permitAll();
+            auth.requestMatchers("/api-docs/**", "/swagger-ui/**", "/api/**").permitAll();
         });
         http.httpBasic(Customizer.withDefaults());
 
@@ -40,8 +37,8 @@ public class ProjectSecurityConfig {
 
         // all POSTS in home controller are allowed
         http.csrf(csrfConfigurer -> {
-            csrfConfigurer.ignoringRequestMatchers(builder.pattern(Utils.PUBLIC + "/**"));
-            csrfConfigurer.ignoringRequestMatchers(builder.pattern("/api/**"));
+            csrfConfigurer.ignoringRequestMatchers(Utils.PUBLIC + "/**");
+            csrfConfigurer.ignoringRequestMatchers("/api/**");
         });
         return http.build();
     }

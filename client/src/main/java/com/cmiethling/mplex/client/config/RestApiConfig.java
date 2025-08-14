@@ -8,8 +8,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
 
-import com.cmiethling.mplex.client_api.ApiClient;
 import com.cmiethling.mplex.client_api.api.FluidicsApi;
+import com.cmiethling.mplex.client_api.invoker.ApiClient;
 
 import lombok.val;
 
@@ -19,8 +19,8 @@ public class RestApiConfig {
     @Bean
     public RestTemplate restTemplate() {
         return new RestTemplateBuilder()//
-                .setConnectTimeout(Duration.ofSeconds(3))//
-                .setReadTimeout(Duration.ofSeconds(10)).build();
+                .connectTimeout(Duration.ofSeconds(3))//
+                .readTimeout(Duration.ofSeconds(10)).build();
     }
 
     @Bean

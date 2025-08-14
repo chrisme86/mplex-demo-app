@@ -11,6 +11,7 @@ import com.cmiethling.mplex.device.message.Subsystem;
  * Abstract base class for all fluidics commands.
  */
 abstract class AbstractFluidicsDeviceCommand extends AbstractDeviceCommand<FluidicsError> {
+    // TODO: remove all command related stuff
 
     /**
      * Creates a new command with the specified name.

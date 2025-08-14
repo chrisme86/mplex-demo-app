@@ -43,6 +43,8 @@
                     <apiPackage>${openapi-generator.package}.api</apiPackage>
                     <!--suppress UnresolvedMavenProperty -->
                     <modelPackage>${openapi-generator.package}.model</modelPackage>
+                    <!--suppress UnresolvedMavenProperty -->
+                    <invokerPackage>${openapi-generator.package}.invoker</invokerPackage>
                     <!-- submodules client-api, server-api will search in (this) parent modul -->
                     <inputSpecRootDirectory>${project.parent.basedir}/src/main/resources/specs</inputSpecRootDirectory>
                     <mergedFileName>merged_spec</mergedFileName>

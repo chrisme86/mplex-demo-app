@@ -12,11 +12,4 @@
     <description>
         A library that wraps the interface to the Modaplex instrument used by the Controller Application.
     </description>
-
-    <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-test</artifactId>
-        </dependency>
-    </dependencies>
 </project>
