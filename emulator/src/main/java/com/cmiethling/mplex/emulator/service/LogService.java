@@ -16,6 +16,7 @@ import lombok.Getter;
 
 @Getter
 @Service
+// XXX remove
 public class LogService {
     private final List<MessageEntry> logEntries = new ArrayList<>();
 

@@ -67,6 +67,7 @@ public class WebSocketServerService extends TextWebSocketHandler {
      */
     @SuppressWarnings("SwitchStatementWithTooFewBranches")
     @Override
+    // XXX remove
     public void handleTextMessage(@NonNull final WebSocketSession session, @NonNull final TextMessage message)
             throws DeviceException {
 

@@ -23,12 +23,19 @@ The project is organized into the following main components:
 - It runs on [http://localhost:8091](http://localhost:8091).
 - It allows the software to be tested without needing the physical device.
 
-**client-api**
+**device (deprecated)**
 
-- A shared module that defines the API for communication between the client and the emulator.
-- It contains separate data structures and interfaces used for:
-    - sending synchronous commands via **HTTP REST**: API first approach
-    - receiving asynchronous events via **WebSocket**
+- This was a shared module that acted as interface between the client and the emulator.
+- It was initially designed to handle both synchronous commands and asynchronous events via one WebSocket connection.
+- this was replaced by the `rest-api` and `websocket` modules as they separate the two communation ways, and they make
+  use of Spring Boot features like Spring REST client and STOMP:
+
+**rest-api**
+
+- A shared module that defines a REST API communication between the client and the emulator. The client sends a
+  request to the emulator, waits while the emulator processes the request and sends a response back. This is
+  synchronous.
+- it does the work of the former commands in the `device` module.
 - technologies:
     - openapi-generator for generating the API commands on the client and emulator side
     - Spring REST client for handling the API commands in the client
@@ -40,14 +47,6 @@ The project is organized into the following main components:
       tools like Postman or Swagger-UI can be used to test the emulator’s API. We’ve effectively externalized the device
       commands as a service API, which is easier to work with than an opaque WebSocket protocol. Additionally, we let
       Spring handle a lot of work (threads, JSON binding, error handling via exceptions), so we write less custom code.
-
-**device (deprecated)**
-
-- This is a shared module that acts as an interface between the software (client) and the actual or simulated hardware (
-  emulator).
-- this is replaced by the `client-api` module as it makes use of Spring Boot features like REST and WebSocket for
-  communication, which is more suitable for the current architecture.
-- In the device module the websocket connection handled both commands and events.
 
 ## Current State
 

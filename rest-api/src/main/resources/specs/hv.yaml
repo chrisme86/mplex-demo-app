@@ -10,7 +10,7 @@ paths:
       tags:
         - hv
       summary: Fetch the data for one capillary
-      operationId: sendReadCapillaryDataCommand
+      operationId: readCapillaryDataCommand
       requestBody:
         required: true
         content:
@@ -32,6 +32,9 @@ components:
         - $ref: 'base.yaml#/components/schemas/BaseRequest'
         - type: object
           properties:
+            subsystem:
+              type: string
+              enum: [ hv ]
             topic:
               type: string
               enum: [ ReadCapillaryData ]
@@ -39,7 +42,7 @@ components:
               type: object
               properties:
                 index:
-                  type: number
+                  type: integer
                   description: Which capillary
 
     ReadCapillaryDataResponse:
@@ -47,6 +50,9 @@ components:
         - $ref: 'base.yaml#/components/schemas/BaseResponse'
         - type: object
           properties:
+            subsystem:
+              type: string
+              enum: [ hv ]
             topic:
               type: string
               enum: [ ReadCapillaryData ]
@@ -59,6 +65,6 @@ components:
                   example: good
                   enum: [ good, bad, unknown ]
                 badRuns:
-                  type: number
+                  type: integer
                   description: The number of bad runs this capillary had so far
                   example: 10

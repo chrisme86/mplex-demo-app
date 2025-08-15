@@ -17,6 +17,7 @@ public class FluidicsApiController implements FluidicsApi {
     @Override
     public ResponseEntity<SetGelPumpResponse> setGelPumpCommand(final SetGelPumpRequest req) {
         log.info("Received request: {}", req);
+        // TODO handle request, eg with 25% error...
         final var response = new SetGelPumpResponse() //
                 .subsystem(SetGelPumpResponse.SubsystemEnum.FLUIDICS) //
                 .topic(SetGelPumpResponse.TopicEnum.SET_GEL_PUMP) //

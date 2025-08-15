@@ -44,7 +44,7 @@ public class ServiceClientController {
     @PostMapping(Utils.SERVICE_CLIENT + "/sendGelPumpModeCommand2")
     public String sendGelPumpModeCommand(@RequestParam final boolean isOn)
             throws DeviceException, ExecutionException, InterruptedException {
-        this.fluidicsService.sendGelPumpMode(isOn);
+        this.fluidicsService.setGelPumpCommand(isOn);
         return "redirect:" + Utils.SERVICE_CLIENT;
     }
 
