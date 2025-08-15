@@ -12,7 +12,6 @@
         Aggregator that manages all modules and parent that defines plugin versions and dependencies.
     </description>
 
-    <!-- TODO add maven profile to maven central website -->
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
