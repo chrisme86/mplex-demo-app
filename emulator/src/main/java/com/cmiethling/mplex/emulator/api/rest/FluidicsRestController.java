@@ -1,4 +1,4 @@
-package com.cmiethling.mplex.emulator.api;
+package com.cmiethling.mplex.emulator.api.rest;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,7 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @Slf4j
-public class FluidicsApiController implements FluidicsApi {
+public class FluidicsRestController implements FluidicsApi {
 
     @Override
     public ResponseEntity<SetGelPumpResponse> setGelPumpCommand(final SetGelPumpRequest req) {

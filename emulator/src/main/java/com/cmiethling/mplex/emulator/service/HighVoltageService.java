@@ -12,7 +12,8 @@ import com.cmiethling.mplex.emulator.model.HighVoltageStatus;
 
 @Service
 public class HighVoltageService extends AbstractSubsystem {
-
+    @Autowired
+    private WebSocketService webSocketService;
     @Autowired
     private HighVoltageStatus highVoltageStatus;
 
@@ -26,8 +27,9 @@ public class HighVoltageService extends AbstractSubsystem {
 
     public void processError(@NonNull final String newError) {
         final var error = HighVoltageError.valueOf(newError);
-        final var event = createErrorEvent(error, ErrorEvent.TOPIC, ErrorEvent.ERRORCODE);
         this.highVoltageStatus.setHighVoltageError(error);
-        sendEvent(event);
+        final var event1 = new ErrorEvent();
+        event1.setErrorCode(error);
+        this.webSocketService.sendEvent(event1);
     }
 }

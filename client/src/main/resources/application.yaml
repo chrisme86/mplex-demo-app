@@ -6,8 +6,6 @@ spring:
   devtools:
     livereload:
       port=35729
-websocket:
-  uri: ws://localhost:8091/hwAPI
 
 # OpenApi
 springdoc:
@@ -19,3 +17,5 @@ springdoc:
     path: /api-docs
 # merged spec always generates 'servers: - url: "http://localhost:8080"'
 restapiUrl: http://localhost:8091
+stomp:
+  url: ws://localhost:8091/stomp

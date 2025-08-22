@@ -86,7 +86,7 @@ public class DeviceMessageConfig {
         @Override
         public Subsystem deserialize(final JsonParser jsonParser, final DeserializationContext ctxt)
                 throws IOException {
-            return Subsystem.valueOfId(jsonParser.getText());
+            return Subsystem.fromJson(jsonParser.getText());
         }
     }
 

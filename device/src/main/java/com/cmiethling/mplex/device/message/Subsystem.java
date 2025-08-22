@@ -2,6 +2,8 @@ package com.cmiethling.mplex.device.message;
 
 import java.util.stream.Stream;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+
 /**
  * Defines the subsystems available in the hardware interface.
  */
@@ -25,7 +27,8 @@ public enum Subsystem {
      *
      * @throws IllegalArgumentException if no enum value can be found for this id
      */
-    public static Subsystem valueOfId(final String id) {
+    @JsonCreator // used by Jackson to deserialize the id
+    public static Subsystem fromJson(final String id) {
         return Stream.of(Subsystem.values()) //
                 .filter(value -> value.id().equals(id)) //
                 .findFirst() //
@@ -37,6 +40,7 @@ public enum Subsystem {
      *
      * @return the id of the subsystem
      */
+    // @JsonValue
     public String id() {
         return this.id;
     }

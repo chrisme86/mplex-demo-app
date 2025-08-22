@@ -15,7 +15,7 @@ import com.cmiethling.mplex.client_api.invoker.ApiClient;
 import lombok.val;
 
 @Configuration
-public class RestApiConfig {
+public class RestApiClientConfig {
 
     @Bean
     public RestTemplate restTemplate() {

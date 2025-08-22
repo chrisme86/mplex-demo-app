@@ -6,11 +6,15 @@ import com.cmiethling.mplex.device.DeviceMessageException;
 import com.cmiethling.mplex.device.message.EventMessage;
 
 import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 /**
  * If there is an error or if the error is cleared this event is sent by the device.
  */
 @Getter
+@Setter
+@ToString(callSuper = true)
 public final class ErrorEvent extends AbstractFluidicsDeviceEvent {
 
     public static final String TOPIC = "errors";

@@ -1,25 +1,38 @@
 package com.cmiethling.mplex.emulator.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.socket.config.annotation.EnableWebSocket;
-import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
-import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
-
-import com.cmiethling.mplex.emulator.service.WebSocketServerService;
+import org.springframework.messaging.simp.config.MessageBrokerRegistry;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
+import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
+import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
+import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 
 @Configuration
-@EnableWebSocket
-public class WebSocketServerConfig implements WebSocketConfigurer {
-    private final WebSocketServerService webSocketServerService;
+@EnableWebSocketMessageBroker
+public class WebSocketServerConfig implements WebSocketMessageBrokerConfigurer {
+    public static final String prefix = "/topic";
 
-    @Autowired
-    public WebSocketServerConfig(final WebSocketServerService webSocketServerService) {
-        this.webSocketServerService = webSocketServerService;
+    @Bean
+    ThreadPoolTaskScheduler brokerScheduler() {
+        final var scheduler = new ThreadPoolTaskScheduler();
+        scheduler.initialize();
+        return scheduler;
     }
 
     @Override
-    public void registerWebSocketHandlers(final WebSocketHandlerRegistry registry) {
-        registry.addHandler(this.webSocketServerService, "/hwAPI").setAllowedOrigins("*");
+    public void configureMessageBroker(final MessageBrokerRegistry cfg) {
+        // messages to these prefixes go to the broker (pub/sub + p2p)
+        cfg.enableSimpleBroker(prefix) //
+                .setHeartbeatValue(new long[] { 10000, 10000 }) //
+                .setTaskScheduler(brokerScheduler());
+        // Not needed as client doesn't send messages via WebSocket
+        // cfg.setApplicationDestinationPrefixes("/app");
+    }
+
+    @Override
+    public void registerStompEndpoints(final StompEndpointRegistry registry) {
+        registry.addEndpoint("/stomp");
+        /*.setAllowedOriginPatterns("https://app.example.com") // tighten CORS */
     }
 }

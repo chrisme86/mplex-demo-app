@@ -8,11 +8,15 @@ import com.cmiethling.mplex.device.message.EventMessage;
 import com.cmiethling.mplex.device.message.Subsystem;
 
 import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 /**
  * If there is an error or if the error is cleared this event is sent by the device.
  */
 @Getter
+@Setter
+@ToString(callSuper = true)
 public final class ErrorEvent extends AbstractDeviceEvent {
 
     public static final String TOPIC = "errors";

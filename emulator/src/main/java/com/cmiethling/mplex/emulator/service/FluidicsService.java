@@ -14,6 +14,8 @@ import com.cmiethling.mplex.emulator.model.FluidicsStatus;
 public class FluidicsService extends AbstractSubsystem {
 
     @Autowired
+    private WebSocketService webSocketService;
+    @Autowired
     private FluidicsStatus fluidicsStatus;
 
     protected FluidicsService() {
@@ -26,8 +28,10 @@ public class FluidicsService extends AbstractSubsystem {
 
     public void processError(@NonNull final String newError) {
         final var error = FluidicsError.valueOf(newError);
-        final var event = createErrorEvent(error, ErrorEvent.TOPIC, ErrorEvent.ERRORCODE);
         this.fluidicsStatus.setFluidicsError(error);
-        sendEvent(event);
+
+        final var event = new ErrorEvent();
+        event.setErrorCode(error);
+        this.webSocketService.sendEvent(event);
     }
 }

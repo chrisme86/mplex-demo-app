@@ -27,8 +27,8 @@ The project is organized into the following main components:
 
 - This was a shared module that acted as interface between the client and the emulator.
 - It was initially designed to handle both synchronous commands and asynchronous events via one WebSocket connection.
-- this was replaced by the `rest-api` and `websocket` modules as they separate the two communation ways, and they make
-  use of Spring Boot features like Spring REST client and STOMP:
+- this was replaced by the `rest-api` and `websocket` modules which separate the two communation ways. They
+  make use of a microservice approach and they use Spring Boot features like STOMP.
 
 **rest-api**
 
@@ -48,6 +48,13 @@ The project is organized into the following main components:
       commands as a service API, which is easier to work with than an opaque WebSocket protocol. Additionally, we let
       Spring handle a lot of work (threads, JSON binding, error handling via exceptions), so we write less custom code.
 
+**websocket**
+
+- the module includes STOMP via WebSocket
+- it lets the emulator send asynchronous events to the client
+- it publishes the events to the destination "/topic/{{subsystem}}.{{topic}}" ie "topic/fluidics.errors"
+-
+
 ## Current State
 
 - The WebSocket connects when the client sends a command.
@@ -58,15 +65,18 @@ The project is organized into the following main components:
 ## Technologies Used
 
 - **Java 21**: The primary programming language.
-    - **_java.net.http_** for WebSocket client connection in the client.
-    - **_Lombok_** for reducing boilerplate code.
+- **OpenAPI Generator**: For generating API client and server code from OpenAPI specifications.
+- **Spring Boot**: For building the RESTful backend services:
+    - **_Spring Security_** for logging in as service technician in client (Username + Password: `service`)
+    - **_Spring REST client_** for synchronous commands from client to emulator.
+    - **_STOMP via Spring WebSocket_** for asynchronous events from emulator to client.
+    - _deprecated_ (used by device):
+        - **_Spring Events_** for receiving events from the device.
+        - **_org.springframework.web.socket_** for WebSocket server connection in the emulator.
+        - **_Jackson_** for device interface API.
+- **Lombok** for reducing boilerplate code.
 - **JUnit**: For unit testing the components.
 - **Maven**: For project management and dependency resolution.
-- **Spring Boot**: For building the RESTful backend services:
-    - **_Jackson_** for device interface API.
-    - **_Spring Security_** for logging in as service technician in client (Username + Password: `service`)
-    - **_Spring Events_** for receiving events from the device.
-    - **_org.springframework.web.socket_** for WebSocket server connection in the emulator.
 
 ## Getting Started
 
