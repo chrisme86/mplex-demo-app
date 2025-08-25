@@ -11,6 +11,8 @@ import org.springframework.messaging.simp.stomp.StompHeaders;
 import org.springframework.messaging.simp.stomp.StompSession;
 import org.springframework.stereotype.Component;
 
+import com.cmiethling.mplex.device_events.api.DeviceEvent;
+
 @Component
 public class SubscriptionRegistry {
     private final Map<String, StompSession.Subscription> subs = new ConcurrentHashMap<>();
@@ -20,7 +22,8 @@ public class SubscriptionRegistry {
         this.session = session;
     }
 
-    public <T> void subscribe(final String destination, final Class<T> type, final Consumer<T> handler) {
+    public <T extends DeviceEvent> void subscribe(final String destination, final Class<T> type,
+            final Consumer<T> handler) {
         // idempotent: avoid duplicate subscriptions for same destination
         this.subs.computeIfAbsent(destination, d -> this.session.subscribe(d, new StompFrameHandler() {
             @Override

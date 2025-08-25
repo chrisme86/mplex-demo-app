@@ -1,9 +1,0 @@
-{
-  "type": "request",
-  "id": "2e4107c4-8773-4e62-a400-7e7c8195e918",
-  "subsystem": "highvoltage",
-  "topic": "ReadCapillaryData",
-  "parameters": {
-    "index": 5
-  }
-}

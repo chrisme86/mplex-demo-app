@@ -8,7 +8,7 @@ import com.cmiethling.mplex.client.model.HighVoltageStatus;
 import com.cmiethling.mplex.client_api.api.HvApi;
 import com.cmiethling.mplex.client_api.model.ReadCapillaryDataRequest;
 import com.cmiethling.mplex.client_api.model.ReadCapillaryDataRequestAllOfParameters;
-import com.cmiethling.mplex.device.api.SubsystemError;
+import com.cmiethling.mplex.device_events.api.SubsystemError;
 
 import lombok.extern.slf4j.Slf4j;
 

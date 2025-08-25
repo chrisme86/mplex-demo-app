@@ -8,10 +8,11 @@ import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBr
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 
+import com.cmiethling.mplex.device_events.api.DeviceEvent;
+
 @Configuration
 @EnableWebSocketMessageBroker
 public class WebSocketServerConfig implements WebSocketMessageBrokerConfigurer {
-    public static final String prefix = "/topic";
 
     @Bean
     ThreadPoolTaskScheduler brokerScheduler() {
@@ -23,7 +24,7 @@ public class WebSocketServerConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void configureMessageBroker(final MessageBrokerRegistry cfg) {
         // messages to these prefixes go to the broker (pub/sub + p2p)
-        cfg.enableSimpleBroker(prefix) //
+        cfg.enableSimpleBroker(DeviceEvent.prefix) //
                 .setHeartbeatValue(new long[] { 10000, 10000 }) //
                 .setTaskScheduler(brokerScheduler());
         // Not needed as client doesn't send messages via WebSocket

@@ -1,7 +1,0 @@
-<configuration>
-    <logger name="org.slf4j" level="OFF"/>
-    <logger name="org.springframework" level="OFF"/>
-    <root level="ERROR">
-        <appender-ref ref="STDOUT"/>
-    </root>
-</configuration>

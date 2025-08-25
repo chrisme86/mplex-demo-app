@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import com.cmiethling.mplex.device.api.fluidics.ErrorEvent;
-import com.cmiethling.mplex.device.message.Subsystem;
+import com.cmiethling.mplex.device_events.api.Subsystem;
+import com.cmiethling.mplex.device_events.api.fluidics.ErrorEvent;
 
 import lombok.Getter;
 
@@ -32,7 +32,7 @@ public class FluidicsStatus {
     }
 
     public void setErrorsEvent(final ErrorEvent errorEvent) {
-        this.errorsEvent.setCurrentState(errorEvent.getErrorCode().toString());
+        this.errorsEvent.setCurrentState(errorEvent.getError().toString());
     }
 
     public void setGelPump(final boolean isOn) {

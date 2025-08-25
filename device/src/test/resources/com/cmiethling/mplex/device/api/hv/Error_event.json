@@ -1,8 +1,0 @@
-{
-  "type": "event",
-  "subsystem": "highvoltage",
-  "topic": "errors",
-  "data": {
-    "errorcode": 1
-  }
-}

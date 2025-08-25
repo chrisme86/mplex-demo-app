@@ -5,8 +5,7 @@ import org.springframework.lang.NonNull;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
-import com.cmiethling.mplex.device.api.DeviceEvent;
-import com.cmiethling.mplex.emulator.config.WebSocketServerConfig;
+import com.cmiethling.mplex.device_events.api.DeviceEvent;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -17,9 +16,7 @@ public class WebSocketService {
     private SimpMessagingTemplate messagingTemplate;
 
     public void sendEvent(@NonNull final DeviceEvent event) {
-        final var destination = "%s/%s.%s".formatted(WebSocketServerConfig.prefix,//
-                event.getSubsystem(), event.getTopic());
-        this.messagingTemplate.convertAndSend(destination, event);
-        log.info("sent event {} to {}", event, destination);
+        this.messagingTemplate.convertAndSend(event.getDestination(), event);
+        log.info("sent event {} to {}", event, event.getDestination());
     }
 }

@@ -23,7 +23,7 @@
         <!-- MPlex deps -->
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>device</artifactId>
+            <artifactId>device-events-api</artifactId>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>

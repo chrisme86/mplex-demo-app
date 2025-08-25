@@ -42,7 +42,7 @@
     <!-- All modules are build with this reactor. -->
     <modules>
         <module>rest-api</module>
-        <module>device</module>
+        <module>device-events-api</module>
         <module>emulator</module>
         <module>client</module>
     </modules>
@@ -56,7 +56,7 @@
             -->
             <dependency>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>device</artifactId>
+                <artifactId>device-events-api</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

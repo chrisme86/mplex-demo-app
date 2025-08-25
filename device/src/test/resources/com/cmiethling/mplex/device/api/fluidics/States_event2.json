@@ -1,9 +1,0 @@
-{
-  "type": "event",
-  "subsystem": "fluidics",
-  "topic": "states",
-  "data": {
-    "GelPumpOn": true,
-    "GelValveOpen": false
-  }
-}

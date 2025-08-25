@@ -2,7 +2,7 @@ package com.cmiethling.mplex.client.model;
 
 import org.springframework.stereotype.Component;
 
-import com.cmiethling.mplex.device.api.hv.HighVoltageError;
+import com.cmiethling.mplex.device_events.api.hv.HighVoltageError;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -61,17 +61,17 @@ Author URL: http://w3layouts.com
 
     <h4>Current States</h4>
     <div th:fragment="eventsTable">
-        <div>
+        <!-- <div>
             <span>Connection to device established: </span>
             <span th:if="${isConnected}">
-                <!-- green tick -->
+                &lt;!&ndash; green tick &ndash;&gt;
                 <i class="bi bi-check" style="color: green;"></i>
             </span>
             <span th:if="${!isConnected}">
-                <!-- red cross -->
+                &lt;!&ndash; red cross &ndash;&gt;
                 <i class="bi bi-x" style="color: red;"></i>
             </span>
-        </div>
+        </div> -->
         <table class="table">
             <thead>
             <tr>
@@ -90,7 +90,7 @@ Author URL: http://w3layouts.com
         </table>
     </div>
 </section>
-<section class="services-w3l-block py-5">
+<!-- <section class="services-w3l-block py-5">
     <div>
         <h2>WebSocket Test</h2>
         <form method="post" th:action="@{/service_client/test}">
@@ -100,7 +100,7 @@ Author URL: http://w3layouts.com
             <button id="postButton">Send Message</button>
         </form>
     </div>
-</section>
+</section> -->
 
 <!-- import necessary scripts for polling-->
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>

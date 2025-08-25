@@ -4,25 +4,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
-import com.cmiethling.mplex.device.api.SubsystemError;
-import com.cmiethling.mplex.device.api.fluidics.ErrorEvent;
-import com.cmiethling.mplex.device.api.fluidics.FluidicsError;
-import com.cmiethling.mplex.device.message.Subsystem;
+import com.cmiethling.mplex.device_events.api.fluidics.ErrorEvent;
+import com.cmiethling.mplex.device_events.api.fluidics.FluidicsError;
 import com.cmiethling.mplex.emulator.model.FluidicsStatus;
 
 @Service
-public class FluidicsService extends AbstractSubsystem {
+public class FluidicsService {
 
     @Autowired
     private WebSocketService webSocketService;
     @Autowired
     private FluidicsStatus fluidicsStatus;
 
-    protected FluidicsService() {
-        super(Subsystem.FLUIDICS);
-    }
-
-    public SubsystemError getFluidicsError() {
+    public FluidicsError getFluidicsError() {
         return this.fluidicsStatus.getFluidicsError();
     }
 
@@ -31,7 +25,7 @@ public class FluidicsService extends AbstractSubsystem {
         this.fluidicsStatus.setFluidicsError(error);
 
         final var event = new ErrorEvent();
-        event.setErrorCode(error);
+        event.setError(error);
         this.webSocketService.sendEvent(event);
     }
 }

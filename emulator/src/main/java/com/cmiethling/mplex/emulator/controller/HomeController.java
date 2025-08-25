@@ -11,13 +11,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.cmiethling.mplex.device.api.SubsystemError;
-import com.cmiethling.mplex.device.api.fluidics.FluidicsError;
-import com.cmiethling.mplex.device.api.hv.HighVoltageError;
-import com.cmiethling.mplex.device.message.Subsystem;
-import com.cmiethling.mplex.emulator.model.ErrorEvent;
+import com.cmiethling.mplex.device_events.api.DeviceEvent;
+import com.cmiethling.mplex.device_events.api.Subsystem;
+import com.cmiethling.mplex.device_events.api.SubsystemError;
+import com.cmiethling.mplex.device_events.api.fluidics.ErrorEvent;
+import com.cmiethling.mplex.device_events.api.fluidics.FluidicsError;
+import com.cmiethling.mplex.device_events.api.hv.HighVoltageError;
 import com.cmiethling.mplex.emulator.service.FluidicsService;
 import com.cmiethling.mplex.emulator.service.HighVoltageService;
+
+import lombok.val;
 
 @SuppressWarnings("SameReturnValue")
 @Controller
@@ -30,11 +33,11 @@ public class HomeController {
 
     @GetMapping({ "/home", "/" })
     public String getErrorEvents(final Model model) {
-        final List<ErrorEvent> errorEvents = Arrays.asList(
-                new ErrorEvent(Subsystem.FLUIDICS, this.fluidicsService.getFluidicsError()),
-                new ErrorEvent(Subsystem.HIGH_VOLTAGE, this.highVoltageService.getHighVoltageError()));
-        // System.out.println(errorEvents.get(0).getError().getClass());
-
+        val fluidicsError = new ErrorEvent();
+        fluidicsError.setError(this.fluidicsService.getFluidicsError());
+        val hvError = new com.cmiethling.mplex.device_events.api.hv.ErrorEvent();
+        hvError.setError(this.highVoltageService.getHighVoltageError());
+        final List<DeviceEvent> errorEvents = Arrays.asList(fluidicsError, hvError);
         model.addAttribute("errorEvents", errorEvents);
 
         // Mapping of Subsystem to its corresponding error types

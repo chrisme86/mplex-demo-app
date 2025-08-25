@@ -26,9 +26,14 @@ The project is organized into the following main components:
 **device (deprecated)**
 
 - This was a shared module that acted as interface between the client and the emulator.
-- It was initially designed to handle both synchronous commands and asynchronous events via one WebSocket connection.
+- It was initially designed to handle both **_synchronous commands and asynchronous events via one WebSocket_**
+  connection.
 - this was replaced by the `rest-api` and `websocket` modules which separate the two communation ways. They
   make use of a microservice approach and they use Spring Boot features like STOMP.
+- technologies:
+    - Jackson for JSON binding
+    - Spring Events for receiving events from the device
+    - org.springframework.web.socket for WebSocket server connection in the emulator
 
 **rest-api**
 

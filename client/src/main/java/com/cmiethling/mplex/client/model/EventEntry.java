@@ -3,7 +3,7 @@ package com.cmiethling.mplex.client.model;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 
-import com.cmiethling.mplex.device.message.Subsystem;
+import com.cmiethling.mplex.device_events.api.Subsystem;
 
 import lombok.Data;
 
