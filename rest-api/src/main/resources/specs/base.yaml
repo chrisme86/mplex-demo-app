@@ -42,7 +42,7 @@ components:
         error:
           type: string
           enum: [ noError, invalidSubsystem, invalidTopic, invalidParameters, error ]
-          example: noError
+          default: noError
         result:
           type: object
           example: { }

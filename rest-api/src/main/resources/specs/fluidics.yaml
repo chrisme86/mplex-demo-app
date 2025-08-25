@@ -1,3 +1,4 @@
+# TODO ev 3.1.x nutzen
 openapi: 3.0.1
 info:
   title: Fluidics Commands API
@@ -11,8 +12,7 @@ info:
 paths:
   /restapi/fluidics/SetGelPump:
     post:
-      tags:
-        - fluidics
+      tags: [ fluidics ]
       summary: Send SetGelPump request to the fluidics subsystem
       operationId: setGelPumpCommand
       requestBody:
@@ -22,6 +22,7 @@ paths:
             schema:
               $ref: '#/components/schemas/SetGelPumpRequest'
       responses:
+        #        TODO add 409 Conflict: pump can't turn on if valve is closed, 400 Bad Request (syntax)
         '200':
           description: Result of SetGelPump command
           content:
@@ -35,15 +36,17 @@ components:
       allOf:
         - $ref: 'base.yaml#/components/schemas/BaseRequest'
         - type: object
+          required: [ subsystem, topic, parameters ]
           properties:
             subsystem:
-              type: string
               enum: [ fluidics ]
+              default: fluidics
             topic:
-              type: string
               enum: [ SetGelPump ]
+              default: SetGelPump
             parameters:
               type: object
+              required: [ isOn ]
               properties:
                 isOn:
                   type: boolean
@@ -53,15 +56,19 @@ components:
       allOf:
         - $ref: 'base.yaml#/components/schemas/BaseResponse'
         - type: object
+          required: [ subsystem, topic, result ]
           properties:
             subsystem:
               type: string
               enum: [ fluidics ]
+              default: fluidics
             topic:
               type: string
               enum: [ SetGelPump ]
+              default: SetGelPump
             result:
               type: object
+              required: [ isOn ]
               properties:
                 isOn:
                   type: boolean

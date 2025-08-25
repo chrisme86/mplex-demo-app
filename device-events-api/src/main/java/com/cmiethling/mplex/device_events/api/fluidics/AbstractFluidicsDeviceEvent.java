@@ -6,6 +6,7 @@ import com.cmiethling.mplex.device_events.api.AbstractDeviceEvent;
 import com.cmiethling.mplex.device_events.api.Subsystem;
 
 abstract class AbstractFluidicsDeviceEvent extends AbstractDeviceEvent {
+    static final String destination = prefix + "/FLUIDICS.";
 
     /**
      * Creates a new event object.

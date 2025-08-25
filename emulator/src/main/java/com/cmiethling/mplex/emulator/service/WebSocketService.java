@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.cmiethling.mplex.device_events.api.DeviceEvent;
 
 import lombok.extern.slf4j.Slf4j;
+import lombok.val;
 
 @Slf4j
 @Service
@@ -15,8 +16,9 @@ public class WebSocketService {
     @Autowired
     private SimpMessagingTemplate messagingTemplate;
 
-    public void sendEvent(@NonNull final DeviceEvent event) {
-        this.messagingTemplate.convertAndSend(event.getDestination(), event);
-        log.info("sent event {} to {}", event, event.getDestination());
+    public <T extends DeviceEvent> void sendEvent(@NonNull final T event) {
+        val destination = DeviceEvent.getDestination(event.getClass());
+        this.messagingTemplate.convertAndSend(destination, event);
+        log.info("sent event {} to {}", event, destination);
     }
 }

@@ -13,6 +13,8 @@ import org.springframework.stereotype.Component;
 
 import com.cmiethling.mplex.device_events.api.DeviceEvent;
 
+import lombok.val;
+
 @Component
 public class SubscriptionRegistry {
     private final Map<String, StompSession.Subscription> subs = new ConcurrentHashMap<>();
@@ -22,8 +24,9 @@ public class SubscriptionRegistry {
         this.session = session;
     }
 
-    public <T extends DeviceEvent> void subscribe(final String destination, final Class<T> type,
+    public <T extends DeviceEvent> void subscribe(final Class<T> type,
             final Consumer<T> handler) {
+        val destination = DeviceEvent.getDestination(type);
         // idempotent: avoid duplicate subscriptions for same destination
         this.subs.computeIfAbsent(destination, d -> this.session.subscribe(d, new StompFrameHandler() {
             @Override

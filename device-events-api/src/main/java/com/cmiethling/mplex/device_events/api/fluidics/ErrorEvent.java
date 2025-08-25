@@ -1,5 +1,9 @@
 package com.cmiethling.mplex.device_events.api.fluidics;
 
+import static com.cmiethling.mplex.device_events.api.fluidics.ErrorEvent.TOPIC;
+
+import com.cmiethling.mplex.device_events.api.Destination;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -10,6 +14,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString(callSuper = true)
+@Destination(AbstractFluidicsDeviceEvent.destination + TOPIC)
 public final class ErrorEvent extends AbstractFluidicsDeviceEvent {
 
     public static final String TOPIC = "errors";

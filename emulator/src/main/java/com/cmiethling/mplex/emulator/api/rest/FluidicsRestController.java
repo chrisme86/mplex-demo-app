@@ -19,8 +19,8 @@ public class FluidicsRestController implements FluidicsApi {
         log.info("Received request: {}", req);
         // TODO handle request, eg with 25% error...
         final var response = new SetGelPumpResponse() //
-                .subsystem(SetGelPumpResponse.SubsystemEnum.FLUIDICS) //
-                .topic(SetGelPumpResponse.TopicEnum.SET_GEL_PUMP) //
+                // TODO: validate subsystem, topic, parameters... (req.getSubsystem().getValue().equals
+                //  (responseSubsystem)) >> false >> return 400 (BadRequest)
                 .error(SetGelPumpResponse.ErrorEnum.NO_ERROR) //
                 .result(new SetGelPumpResponseAllOfResult().isOn(req.getParameters().getIsOn()));
         log.info("Sending response: {}", response);

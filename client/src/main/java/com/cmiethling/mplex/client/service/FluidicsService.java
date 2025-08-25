@@ -27,14 +27,12 @@ public class FluidicsService {
     // ################# commands ##########################
     public void setGelPumpCommand(final boolean isOn) {
         final var request = new SetGelPumpRequest() //
-                .subsystem(SetGelPumpRequest.SubsystemEnum.FLUIDICS) //
-                .topic(SetGelPumpRequest.TopicEnum.SET_GEL_PUMP) //
                 .parameters(new SetGelPumpRequestAllOfParameters().isOn(isOn));
         log.info("Sending Request: {}", request);
         try {
             final var response = this.fluidicsApi.setGelPumpCommand(request);
             log.info("Received Response: {}", response);
-            this.fluidicsStatus.setGelPump(isOn);
+            this.fluidicsStatus.setGelPump(response.getResult().getIsOn());
         } catch (final RestClientException e) {
             log.error("error while receiving response: ", e);
         }

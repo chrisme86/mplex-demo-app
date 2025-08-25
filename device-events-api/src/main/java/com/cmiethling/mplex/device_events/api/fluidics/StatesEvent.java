@@ -1,6 +1,10 @@
 package com.cmiethling.mplex.device_events.api.fluidics;
 
+import static com.cmiethling.mplex.device_events.api.fluidics.StatesEvent.TOPIC;
+
 import java.util.Optional;
+
+import com.cmiethling.mplex.device_events.api.Destination;
 
 import lombok.Getter;
 
@@ -8,6 +12,7 @@ import lombok.Getter;
  * If a state change is detected, this event will be transferred.
  */
 @Getter
+@Destination(AbstractFluidicsDeviceEvent.destination + TOPIC)
 public final class StatesEvent extends AbstractFluidicsDeviceEvent {
 
     public static final String TOPIC = "states";
