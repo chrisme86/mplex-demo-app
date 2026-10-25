@@ -41,7 +41,7 @@ public class FluidicsStatus {
     }
 
     public void setGelValve(final boolean isOpen) {
-        this.gelPump.setCurrentState(isOpen ? "OPEN" : "CLOSED");
+        this.gelValve.setCurrentState(isOpen ? "OPEN" : "CLOSED");
         this.gelValveOpen = isOpen;
     }
 }

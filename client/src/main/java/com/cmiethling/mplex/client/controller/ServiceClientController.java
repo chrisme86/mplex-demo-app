@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.cmiethling.mplex.client.config.Utils;
 import com.cmiethling.mplex.client.service.FluidicsService;
+import com.cmiethling.mplex.client.service.HighVoltageService;
 
 @SuppressWarnings("SameReturnValue")
 @Controller
@@ -18,6 +19,8 @@ public class ServiceClientController {
 
     @Autowired
     private FluidicsService fluidicsService;
+    @Autowired
+    private HighVoltageService highVoltageService;
 
     @GetMapping(Utils.SERVICE_CLIENT)
     public String displayServiceClient(final Model model) {
@@ -33,6 +36,7 @@ public class ServiceClientController {
 
     private void addEvents(final Model model) {
         model.addAttribute("fluidicsStatus", this.fluidicsService.getFluidicsStatus());
+        model.addAttribute("highVoltageStatus", this.highVoltageService.getHighVoltageStatus());
     }
 
     @PostMapping(Utils.SERVICE_CLIENT + "/sendGelPumpModeCommand2")

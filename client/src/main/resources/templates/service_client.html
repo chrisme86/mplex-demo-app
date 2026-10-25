@@ -86,6 +86,11 @@ Author URL: http://w3layouts.com
                 <td th:text="${entry.topic}"></td>
                 <td th:text="${entry.currentState}"></td>
             </tr>
+            <tr th:each="entry : ${highVoltageStatus.entries}">
+                <td th:text="${entry.subsystem}"></td>
+                <td th:text="${entry.topic}"></td>
+                <td th:text="${entry.currentState}"></td>
+            </tr>
             </tbody>
         </table>
     </div>

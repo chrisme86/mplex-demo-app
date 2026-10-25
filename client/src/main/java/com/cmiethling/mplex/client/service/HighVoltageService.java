@@ -26,6 +26,10 @@ public class HighVoltageService {
         return this.highVoltageStatus.getHighVoltageError();
     }
 
+    public HighVoltageStatus getHighVoltageStatus() {
+        return this.highVoltageStatus;
+    }
+
     // ################# commands ##########################
     public void readCapillaryDataCommand(final int index) {
         final var request = new ReadCapillaryDataRequest() //
