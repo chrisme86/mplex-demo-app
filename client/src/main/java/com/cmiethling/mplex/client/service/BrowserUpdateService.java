@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import org.springframework.context.event.ContextClosedEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
@@ -31,6 +33,13 @@ public class BrowserUpdateService {
 
     public void notifyBrowsers() {
         this.emitters.forEach(this::sendUpdate);
+    }
+
+    // close open streams before the graceful shutdown, otherwise it waits for them until its timeout (30 s)
+    @EventListener(ContextClosedEvent.class)
+    public void closeAll() {
+        this.emitters.forEach(SseEmitter::complete);
+        this.emitters.clear();
     }
 
     private void sendUpdate(final SseEmitter emitter) {

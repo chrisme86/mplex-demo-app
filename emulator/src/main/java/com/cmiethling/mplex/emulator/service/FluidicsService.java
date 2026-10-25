@@ -16,6 +16,8 @@ public class FluidicsService {
     private WebSocketService webSocketService;
     @Autowired
     private FluidicsStatus fluidicsStatus;
+    @Autowired
+    private BrowserUpdateService browserUpdateService;
 
     public FluidicsError getFluidicsError() {
         return this.fluidicsStatus.getFluidicsError();
@@ -35,18 +37,24 @@ public class FluidicsService {
     }
 
     public void setGelPump(final boolean isOn) {
+        if (isOn && !this.fluidicsStatus.isGelValveOpen())
+            throw new DeviceStateConflictException("Gel valve is closed");
         this.fluidicsStatus.setGelPumpOn(isOn);
 
         final var event = new StatesEvent();
         event.setGelPumpOn(isOn);
         this.webSocketService.sendEvent(event);
+        this.browserUpdateService.notifyBrowsers();
     }
 
     public void setGelValve(final boolean isOpen) {
+        if (!isOpen && this.fluidicsStatus.isGelPumpOn())
+            throw new DeviceStateConflictException("Gel pump is running");
         this.fluidicsStatus.setGelValveOpen(isOpen);
 
         final var event = new StatesEvent();
         event.setGelValveOpen(isOpen);
         this.webSocketService.sendEvent(event);
+        this.browserUpdateService.notifyBrowsers();
     }
 }

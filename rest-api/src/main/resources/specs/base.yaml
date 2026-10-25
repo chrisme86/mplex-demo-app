@@ -10,6 +10,26 @@ info:
 
 components:
   schemas:
+    # error body as sent by Spring's ProblemDetail (RFC 9457, media type application/problem+json)
+    Problem:
+      type: object
+      properties:
+        type:
+          type: string
+          example: about:blank
+        title:
+          type: string
+          example: Conflict
+        status:
+          type: integer
+          example: 409
+        detail:
+          type: string
+          example: Gel valve is closed
+        instance:
+          type: string
+          example: /restapi/fluidics/SetGelPump
+
     BaseRequest:
       type: object
       properties:

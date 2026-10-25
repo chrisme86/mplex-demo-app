@@ -26,6 +26,7 @@ Author URL: http://w3layouts.com
 
 <section class="services-w3l-block py-5">
     <h1>Service Client</h1>
+    <div class="alert alert-warning" th:if="${!#strings.isEmpty(message)}" th:text="${message}"></div>
     <h4>Devices</h4>
     <table class="table">
         <thead>

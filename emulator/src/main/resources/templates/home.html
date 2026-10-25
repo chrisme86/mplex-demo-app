@@ -23,7 +23,7 @@ Author URL: http://w3layouts.com
 <section class="services-w3l-block py-5">
     <div class="container">
         <h1>Device States</h1>
-        <table class="table">
+        <table class="table" th:fragment="statesTable">
             <thead>
             <tr>
                 <th>Subsystem</th>
@@ -31,7 +31,7 @@ Author URL: http://w3layouts.com
                 <th>State</th>
             </tr>
             </thead>
-            <tbody>
+            <tbody id="states">
             <tr>
                 <td>FLUIDICS</td>
                 <td>Gel Pump</td>
@@ -86,6 +86,10 @@ Author URL: http://w3layouts.com
 <!-- import scripts.html-->
 <div th:replace="~{template :: footer_and_scripts}"></div>
 <!-- //import scripts.html-->
+
+<!-- live update of the states table via Server-Sent Events -->
+<!--suppress HtmlUnknownTarget -->
+<script src="/assets/js/stateStream.js"></script>
 
 </body>
 

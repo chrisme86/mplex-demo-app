@@ -1,7 +1,5 @@
 package com.cmiethling.mplex.client.controller;
 
-import java.util.concurrent.ExecutionException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,9 +8,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cmiethling.mplex.client.config.Utils;
 import com.cmiethling.mplex.client.service.BrowserUpdateService;
+import com.cmiethling.mplex.client.service.DeviceCommandException;
 import com.cmiethling.mplex.client.service.FluidicsService;
 import com.cmiethling.mplex.client.service.HighVoltageService;
 
@@ -52,15 +52,22 @@ public class ServiceClientController {
     }
 
     @PostMapping("/sendGelPumpModeCommand2")
-    public String sendGelPumpModeCommand(@RequestParam final boolean isOn)
-            throws ExecutionException, InterruptedException {
-        this.fluidicsService.setGelPumpCommand(isOn);
+    public String sendGelPumpModeCommand(@RequestParam final boolean isOn, final RedirectAttributes redirect) {
+        try {
+            this.fluidicsService.setGelPumpCommand(isOn);
+        } catch (final DeviceCommandException e) {
+            redirect.addFlashAttribute("message", e.getMessage()); // shown once after the redirect
+        }
         return "redirect:" + Utils.SERVICE_CLIENT;
     }
 
     @PostMapping("/sendGelValveCommand")
-    public String sendGelValveCommand(@RequestParam final boolean isOpen) {
-        this.fluidicsService.setGelValveCommand(isOpen);
+    public String sendGelValveCommand(@RequestParam final boolean isOpen, final RedirectAttributes redirect) {
+        try {
+            this.fluidicsService.setGelValveCommand(isOpen);
+        } catch (final DeviceCommandException e) {
+            redirect.addFlashAttribute("message", e.getMessage()); // shown once after the redirect
+        }
         return "redirect:" + Utils.SERVICE_CLIENT;
     }
 }

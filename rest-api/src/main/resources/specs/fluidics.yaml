@@ -22,13 +22,24 @@ paths:
             schema:
               $ref: '#/components/schemas/SetGelPumpRequest'
       responses:
-        #        TODO add 409 Conflict: pump can't turn on if valve is closed, 400 Bad Request (syntax)
         '200':
           description: Result of SetGelPump command
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/SetGelPumpResponse'
+        '400':
+          description: Malformed request
+          content:
+            application/problem+json:
+              schema:
+                $ref: 'base.yaml#/components/schemas/Problem'
+        '409':
+          description: Pump can't be turned on while the gel valve is closed
+          content:
+            application/problem+json:
+              schema:
+                $ref: 'base.yaml#/components/schemas/Problem'
 
   /restapi/fluidics/SetGelValve:
     post:
@@ -48,6 +59,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SetGelValveResponse'
+        '400':
+          description: Malformed request
+          content:
+            application/problem+json:
+              schema:
+                $ref: 'base.yaml#/components/schemas/Problem'
+        '409':
+          description: Valve can't be closed while the gel pump is running
+          content:
+            application/problem+json:
+              schema:
+                $ref: 'base.yaml#/components/schemas/Problem'
 
 components:
   schemas:
