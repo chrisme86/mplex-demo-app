@@ -3,6 +3,7 @@ package com.cmiethling.mplex.client.module;
 import org.springframework.stereotype.Service;
 
 import com.cmiethling.mplex.client.model.HighVoltageStatus;
+import com.cmiethling.mplex.client.service.BrowserUpdateService;
 import com.cmiethling.mplex.client.stomp.StompModule;
 import com.cmiethling.mplex.client.stomp.SubscriptionRegistry;
 import com.cmiethling.mplex.device_events.api.hv.ErrorEvent;
@@ -16,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class HighVoltageModule implements StompModule {
     private final HighVoltageStatus highVoltageStatus;
+    private final BrowserUpdateService browserUpdateService;
 
     @Override
     public void register(final SubscriptionRegistry registry) {
@@ -26,6 +28,7 @@ public class HighVoltageModule implements StompModule {
                 log.warn("High voltage error: {}", evt.getError());
 
             this.highVoltageStatus.setHighVoltageError(evt.getError());
+            this.browserUpdateService.notifyBrowsers();
         });
     }
 }
