@@ -8,6 +8,8 @@ import com.cmiethling.mplex.client.model.FluidicsStatus;
 import com.cmiethling.mplex.client_api.api.FluidicsApi;
 import com.cmiethling.mplex.client_api.model.SetGelPumpRequest;
 import com.cmiethling.mplex.client_api.model.SetGelPumpRequestAllOfParameters;
+import com.cmiethling.mplex.client_api.model.SetGelValveRequest;
+import com.cmiethling.mplex.client_api.model.SetGelValveRequestAllOfParameters;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -33,6 +35,19 @@ public class FluidicsService {
             final var response = this.fluidicsApi.setGelPumpCommand(request);
             log.info("Received Response: {}", response);
             this.fluidicsStatus.setGelPump(response.getResult().getIsOn());
+        } catch (final RestClientException e) {
+            log.error("error while receiving response: ", e);
+        }
+    }
+
+    public void setGelValveCommand(final boolean isOpen) {
+        final var request = new SetGelValveRequest() //
+                .parameters(new SetGelValveRequestAllOfParameters().isOpen(isOpen));
+        log.info("Sending Request: {}", request);
+        try {
+            final var response = this.fluidicsApi.setGelValveCommand(request);
+            log.info("Received Response: {}", response);
+            this.fluidicsStatus.setGelValve(response.getResult().getIsOpen());
         } catch (final RestClientException e) {
             log.error("error while receiving response: ", e);
         }

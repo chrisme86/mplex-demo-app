@@ -22,6 +22,29 @@ Author URL: http://w3layouts.com
 <!-- content -->
 <section class="services-w3l-block py-5">
     <div class="container">
+        <h1>Device States</h1>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Subsystem</th>
+                <th>Device</th>
+                <th>State</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>FLUIDICS</td>
+                <td>Gel Pump</td>
+                <td th:text="${fluidicsStatus.gelPumpOn ? 'ON' : 'OFF'}"></td>
+            </tr>
+            <tr>
+                <td>FLUIDICS</td>
+                <td>Gel Valve</td>
+                <td th:text="${fluidicsStatus.gelValveOpen ? 'OPEN' : 'CLOSED'}"></td>
+            </tr>
+            </tbody>
+        </table>
+
         <h1>Error Events</h1>
         <table class="table">
             <thead>

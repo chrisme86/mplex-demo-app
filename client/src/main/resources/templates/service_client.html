@@ -56,6 +56,25 @@ Author URL: http://w3layouts.com
                 </td>
             </form>
         </tr>
+        <tr>
+            <td>FLUIDICS</td>
+            <td>Gel Valve</td>
+            <form method="post" th:action="@{/service_client/sendGelValveCommand}">
+                <td>
+                    <label>
+                        <input name="isOpen" th:checked="${fluidicsStatus.gelValveOpen ? 'checked' : null}"
+                               type="radio" value="true"> Open
+                    </label>
+                    <label>
+                        <input name="isOpen" th:checked="${!fluidicsStatus.gelValveOpen ? 'checked' : null}"
+                               type="radio" value="false"> Closed
+                    </label>
+                </td>
+                <td>
+                    <button class="btn btn-primary" type="submit">Send</button>
+                </td>
+            </form>
+        </tr>
         </tbody>
     </table>
 

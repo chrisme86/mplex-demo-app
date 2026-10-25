@@ -57,4 +57,10 @@ public class ServiceClientController {
         this.fluidicsService.setGelPumpCommand(isOn);
         return "redirect:" + Utils.SERVICE_CLIENT;
     }
+
+    @PostMapping("/sendGelValveCommand")
+    public String sendGelValveCommand(@RequestParam final boolean isOpen) {
+        this.fluidicsService.setGelValveCommand(isOpen);
+        return "redirect:" + Utils.SERVICE_CLIENT;
+    }
 }

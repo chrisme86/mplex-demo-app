@@ -47,6 +47,9 @@ public class HomeController {
         // for dropdown menus
         model.addAttribute("errorTypesMap", errorTypesMap);
 
+        // current device states, set by commands from the client
+        model.addAttribute("fluidicsStatus", this.fluidicsService.getFluidicsStatus());
+
         return "home";
     }
 

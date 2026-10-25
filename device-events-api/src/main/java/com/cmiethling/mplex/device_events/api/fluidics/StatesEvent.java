@@ -7,11 +7,15 @@ import java.util.Optional;
 import com.cmiethling.mplex.device_events.api.Destination;
 
 import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 /**
  * If a state change is detected, this event will be transferred.
  */
 @Getter
+@Setter
+@ToString(callSuper = true)
 @Destination(AbstractFluidicsDeviceEvent.destination + TOPIC)
 public final class StatesEvent extends AbstractFluidicsDeviceEvent {
 

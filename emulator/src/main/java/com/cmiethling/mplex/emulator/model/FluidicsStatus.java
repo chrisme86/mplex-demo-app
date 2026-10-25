@@ -12,4 +12,6 @@ import lombok.Setter;
 @Component
 public class FluidicsStatus {
     private FluidicsError fluidicsError;
+    private boolean gelPumpOn;
+    private boolean gelValveOpen;
 }
