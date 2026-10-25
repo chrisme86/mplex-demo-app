@@ -24,17 +24,21 @@ public class BrowserUpdateService {
         emitter.onTimeout(() -> this.emitters.remove(emitter));
         emitter.onError(ex -> this.emitters.remove(emitter));
         log.debug("Browser registered for updates, {} open", this.emitters.size());
+        // first event opens the stream and lets the browser load the current state (eg after a reconnect)
+        sendUpdate(emitter);
         return emitter;
     }
 
     public void notifyBrowsers() {
-        for (final var emitter : this.emitters) {
-            try {
-                emitter.send(SseEmitter.event().name("update").data("update"));
-            } catch (final IOException | IllegalStateException e) {
-                // browser page was closed
-                this.emitters.remove(emitter);
-            }
+        this.emitters.forEach(this::sendUpdate);
+    }
+
+    private void sendUpdate(final SseEmitter emitter) {
+        try {
+            emitter.send(SseEmitter.event().name("update").data("update"));
+        } catch (final IOException | IllegalStateException e) {
+            // browser page was closed
+            this.emitters.remove(emitter);
         }
     }
 }
