@@ -13,6 +13,7 @@ Author URL: http://w3layouts.com
     <title>Client</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 </head>
 
 <body>
@@ -23,20 +24,14 @@ Author URL: http://w3layouts.com
 <section class="services-w3l-block py-5">
     <div class="container">
         <div class="alert alert-warning" th:if="${!#strings.isEmpty(message)}" th:text="${message}"></div>
-        <h2>Gel Pump</h2>
-        <form method="post" th:action="@{/public/sendGelPumpModeCommand}">
-            <!-- Radio-Buttons-->
-            <label>
-                <input name="isOn" th:checked="${fluidicsStatus.gelPumpOn ? 'checked' : null}"
-                       type="radio" value="true"> On
-            </label>
-            <label>
-                <input name="isOn" th:checked="${!fluidicsStatus.gelPumpOn ? 'checked' : null}"
-                       type="radio" value="false"> Off
-            </label>
-            <button>Send</button>
-        </form>
+        <h2>Device Status</h2>
+        <p>Read only. Log in to the Service Client to send commands.</p>
+        <div th:replace="~{status :: statusTable}"></div>
     </div>
 </section>
+
+<!-- live update of the device status via Server-Sent Events -->
+<!--suppress HtmlUnknownTarget -->
+<script data-status-url="/public/status" src="/assets/js/eventStream.js"></script>
 </body>
 </html>

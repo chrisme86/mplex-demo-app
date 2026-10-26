@@ -80,45 +80,7 @@ Author URL: http://w3layouts.com
     </table>
 
     <h4>Current States</h4>
-    <div th:fragment="eventsTable">
-        <div class="mb-3" id="connection">
-            <span>Connection to device: </span>
-            <span th:if="${connectionState.name() == 'CONNECTED'}">
-                <i class="bi bi-check-circle-fill" style="color: green;"></i> connected
-            </span>
-            <span th:if="${connectionState.name() == 'CONNECTING'}">
-                <i class="bi bi-hourglass-split" style="color: orange;"></i> connecting
-                <span th:if="${connectionRetry > 0}" th:text="|(retry ${connectionRetry}/${connectionMaxRetries})|"></span>
-            </span>
-            <span th:if="${connectionState.name() == 'DISCONNECTED'}">
-                <i class="bi bi-x-circle-fill" style="color: red;"></i> disconnected
-                <form class="d-inline ms-2" method="post" th:action="@{/service_client/reconnect}">
-                    <button class="btn btn-sm btn-outline-primary" type="submit">Reconnect</button>
-                </form>
-            </span>
-        </div>
-        <table class="table">
-            <thead>
-            <tr>
-                <th>Subsystem</th>
-                <th>Topic</th>
-                <th>Current State</th>
-            </tr>
-            </thead>
-            <tbody id="events">
-            <tr th:each="entry : ${fluidicsStatus.entries}">
-                <td th:text="${entry.subsystem}"></td>
-                <td th:text="${entry.topic}"></td>
-                <td th:text="${entry.currentState}"></td>
-            </tr>
-            <tr th:each="entry : ${highVoltageStatus.entries}">
-                <td th:text="${entry.subsystem}"></td>
-                <td th:text="${entry.topic}"></td>
-                <td th:text="${entry.currentState}"></td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
+    <div th:replace="~{status :: statusTable}"></div>
 </section>
 <!-- <section class="services-w3l-block py-5">
     <div>
@@ -132,8 +94,8 @@ Author URL: http://w3layouts.com
     </div>
 </section> -->
 
-<!-- live update of the events table via Server-Sent Events -->
+<!-- live update of the device status via Server-Sent Events -->
 <!--suppress HtmlUnknownTarget -->
-<script src="/assets/js/eventStream.js"></script>
+<script data-status-url="/service_client/status" src="/assets/js/eventStream.js"></script>
 </body>
 </html>

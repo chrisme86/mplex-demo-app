@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Configuration;
 public class Utils {
 
     public static final String PUBLIC = "/public";
-    public static final String SEND_GEL_PUMP_MODE_COMMAND = "/sendGelPumpModeCommand";
 
     // web pages
     public static final String LOGIN = "/login";

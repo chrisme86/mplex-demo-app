@@ -35,11 +35,7 @@ public class ProjectSecurityConfig {
         http.formLogin(loginConfigure -> loginConfigure.loginPage(Utils.LOGIN).defaultSuccessUrl(Utils.SERVICE_CLIENT)
                 .failureUrl(Utils.LOGIN + "?error=true").permitAll());
 
-        // all POSTS in home controller are allowed
-        http.csrf(csrfConfigurer -> {
-            csrfConfigurer.ignoringRequestMatchers(Utils.PUBLIC + "/**");
-            csrfConfigurer.ignoringRequestMatchers("/api/**");
-        });
+        http.csrf(csrfConfigurer -> csrfConfigurer.ignoringRequestMatchers("/api/**"));
         return http.build();
     }
 

@@ -7,14 +7,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cmiethling.mplex.client.config.Utils;
-import com.cmiethling.mplex.client.service.BrowserUpdateService;
 import com.cmiethling.mplex.client.service.DeviceCommandException;
 import com.cmiethling.mplex.client.service.FluidicsService;
-import com.cmiethling.mplex.client.service.HighVoltageService;
 import com.cmiethling.mplex.client.stomp.StompConnection;
 
 @SuppressWarnings("SameReturnValue")
@@ -25,36 +22,20 @@ public class ServiceClientController {
     @Autowired
     private FluidicsService fluidicsService;
     @Autowired
-    private HighVoltageService highVoltageService;
-    @Autowired
-    private BrowserUpdateService browserUpdateService;
+    private DeviceStatusModel deviceStatusModel;
     @Autowired
     private StompConnection stompConnection;
 
     @GetMapping
     public String displayServiceClient(final Model model) {
-        addEvents(model);
+        this.deviceStatusModel.addTo(model, true);
         return Utils.SERVICE_CLIENT_HTML;
     }
 
-    @GetMapping("/events")
-    public String getEvents(final Model model) {
-        addEvents(model);
-        return "%s :: eventsTable".formatted(Utils.SERVICE_CLIENT); // only return th:fragment="eventsTable"
-    }
-
-    // browser listens here and reloads the events table on each "update" event
-    @GetMapping("/stream")
-    public SseEmitter stream() {
-        return this.browserUpdateService.register();
-    }
-
-    private void addEvents(final Model model) {
-        model.addAttribute("fluidicsStatus", this.fluidicsService.getFluidicsStatus());
-        model.addAttribute("highVoltageStatus", this.highVoltageService.getHighVoltageStatus());
-        model.addAttribute("connectionState", this.stompConnection.getState());
-        model.addAttribute("connectionRetry", this.stompConnection.getRetry());
-        model.addAttribute("connectionMaxRetries", StompConnection.MAX_RETRIES);
+    @GetMapping("/status")
+    public String getStatus(final Model model) {
+        this.deviceStatusModel.addTo(model, true);
+        return "status :: statusTable"; // only the fragment, with Reconnect button
     }
 
     @PostMapping("/reconnect")
