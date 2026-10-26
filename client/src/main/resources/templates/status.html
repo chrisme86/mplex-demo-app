@@ -41,7 +41,7 @@
                     <button class="btn btn-outline-primary btn-sm" name="isOn" type="submit" value="false">Off</button>
                 </form>
             </td>
-            <td th:replace="~{status :: stateCell(${entry.currentState})}"></td>
+            <td th:replace="~{status :: stateCell(${entry})}"></td>
         </tr>
         <tr th:with="entry=${fluidicsStatus.gelValve}">
             <td th:text="${entry.subsystem}"></td>
@@ -52,33 +52,40 @@
                     <button class="btn btn-outline-primary btn-sm" name="isOpen" type="submit" value="false">Close</button>
                 </form>
             </td>
-            <td th:replace="~{status :: stateCell(${entry.currentState})}"></td>
+            <td th:replace="~{status :: stateCell(${entry})}"></td>
         </tr>
         <tr th:with="entry=${fluidicsStatus.errorsEvent}">
             <td th:text="${entry.subsystem}"></td>
             <td th:text="${entry.topic}"></td>
             <td th:if="${serviceMode}"></td>
-            <td th:replace="~{status :: stateCell(${entry.currentState})}"></td>
+            <td th:replace="~{status :: stateCell(${entry})}"></td>
         </tr>
         <tr th:with="entry=${highVoltageStatus.errorsEvent}">
             <td th:text="${entry.subsystem}"></td>
             <td th:text="${entry.topic}"></td>
             <td th:if="${serviceMode}"></td>
-            <td th:replace="~{status :: stateCell(${entry.currentState})}"></td>
+            <td th:replace="~{status :: stateCell(${entry})}"></td>
         </tr>
         </tbody>
     </table>
 </div>
 
-<!-- state as badge, same colors as the command buttons: filled = on/open, outlined = off/closed -->
-<td th:fragment="stateCell(state)" th:switch="${state}">
-    <span class="text-secondary" th:case="${null}">unknown</span>
-    <span class="badge text-bg-primary" th:case="'ON'" th:text="${state}"></span>
-    <span class="badge text-bg-primary" th:case="'OPEN'" th:text="${state}"></span>
-    <span class="badge border border-primary text-primary" th:case="'OFF'" th:text="${state}"></span>
-    <span class="badge border border-primary text-primary" th:case="'CLOSED'" th:text="${state}"></span>
-    <span class="badge text-bg-secondary" th:case="'NONE'" th:text="${state}"></span>
-    <span class="badge text-bg-danger" th:case="*" th:text="${state}"></span>
+<!-- state as badge, same colors as the command buttons: filled = on/open, outlined = off/closed;
+     plus "pending" while a command waits for its result event -->
+<td th:fragment="stateCell(entry)">
+    <th:block th:switch="${entry.currentState}">
+        <span class="text-secondary" th:case="${null}">unknown</span>
+        <span class="badge text-bg-primary" th:case="'ON'" th:text="${entry.currentState}"></span>
+        <span class="badge text-bg-primary" th:case="'OPEN'" th:text="${entry.currentState}"></span>
+        <span class="badge border border-primary text-primary" th:case="'OFF'" th:text="${entry.currentState}"></span>
+        <span class="badge border border-primary text-primary" th:case="'CLOSED'" th:text="${entry.currentState}"></span>
+        <span class="badge text-bg-secondary" th:case="'NONE'" th:text="${entry.currentState}"></span>
+        <span class="badge text-bg-danger" th:case="*" th:text="${entry.currentState}"></span>
+    </th:block>
+    <span class="ms-2 text-secondary" th:if="${entry.pendingCommandId != null}">
+        <i class="bi bi-hourglass-split"></i> pending
+    </span>
+    <span class="ms-2 small text-danger" th:if="${entry.commandError != null}" th:text="${entry.commandError}"></span>
 </td>
 </body>
 </html>

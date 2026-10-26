@@ -30,6 +30,16 @@ components:
           type: string
           example: /restapi/fluidics/SetGelPump
 
+    # answer to a command: only the confirmation, the result comes asynchronously as event with this commandId
+    CommandAccepted:
+      type: object
+      required: [ commandId ]
+      properties:
+        commandId:
+          type: string
+          format: uuid
+          description: ID of the command, the result event carries the same ID
+
     BaseRequest:
       type: object
       properties:

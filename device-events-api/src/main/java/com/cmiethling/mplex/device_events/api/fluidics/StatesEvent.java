@@ -3,6 +3,7 @@ package com.cmiethling.mplex.device_events.api.fluidics;
 import static com.cmiethling.mplex.device_events.api.fluidics.StatesEvent.TOPIC;
 
 import java.util.Optional;
+import java.util.UUID;
 
 import com.cmiethling.mplex.device_events.api.Destination;
 
@@ -25,6 +26,8 @@ public final class StatesEvent extends AbstractFluidicsDeviceEvent {
 
     private Boolean gelPumpOn;
     private Boolean gelValveOpen;
+    // ID of the command that caused this change, null for spontaneous changes of the device
+    private UUID commandId;
 
     /**
      * Creates a new event object.

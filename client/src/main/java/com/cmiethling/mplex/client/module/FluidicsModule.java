@@ -35,6 +35,9 @@ public class FluidicsModule implements StompModule {
             // a StatesEvent may contain only one of the states
             evt.isGelPumpOn().ifPresent(this.fluidicsStatus::setGelPump);
             evt.isGelValveOpen().ifPresent(this.fluidicsStatus::setGelValve);
+            // result of a command: correlates with the commandId from the 202 confirmation
+            if (evt.getCommandId() != null)
+                this.fluidicsStatus.completeCommand(evt.getCommandId());
             this.browserUpdateService.notifyBrowsers();
         });
     }

@@ -1,5 +1,8 @@
 package com.cmiethling.mplex.client.model;
 
+import java.util.List;
+import java.util.UUID;
+
 import org.springframework.stereotype.Component;
 
 import com.cmiethling.mplex.device_events.api.Subsystem;
@@ -16,10 +19,6 @@ public class FluidicsStatus {
     private final EventEntry gelPump;
     @Getter
     private final EventEntry gelValve;
-    @Getter
-    private boolean gelPumpOn;
-    @Getter
-    private boolean gelValveOpen;
 
     // initialize so that subsystem and topic are not null
     public FluidicsStatus() {
@@ -36,11 +35,18 @@ public class FluidicsStatus {
 
     public void setGelPump(final boolean isOn) {
         this.gelPump.setCurrentState(isOn ? "ON" : "OFF");
-        this.gelPumpOn = isOn;
     }
 
     public void setGelValve(final boolean isOpen) {
         this.gelValve.setCurrentState(isOpen ? "OPEN" : "CLOSED");
-        this.gelValveOpen = isOpen;
+    }
+
+    /**
+     * The result event of a command arrived, so its row is no longer pending.
+     */
+    public void completeCommand(final UUID commandId) {
+        for (final var entry : List.of(this.gelPump, this.gelValve))
+            if (commandId.equals(entry.getPendingCommandId()))
+                entry.setPendingCommandId(null);
     }
 }
