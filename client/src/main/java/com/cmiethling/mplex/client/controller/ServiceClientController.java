@@ -15,6 +15,7 @@ import com.cmiethling.mplex.client.service.BrowserUpdateService;
 import com.cmiethling.mplex.client.service.DeviceCommandException;
 import com.cmiethling.mplex.client.service.FluidicsService;
 import com.cmiethling.mplex.client.service.HighVoltageService;
+import com.cmiethling.mplex.client.stomp.StompConnection;
 
 @SuppressWarnings("SameReturnValue")
 @Controller
@@ -27,6 +28,8 @@ public class ServiceClientController {
     private HighVoltageService highVoltageService;
     @Autowired
     private BrowserUpdateService browserUpdateService;
+    @Autowired
+    private StompConnection stompConnection;
 
     @GetMapping
     public String displayServiceClient(final Model model) {
@@ -49,6 +52,15 @@ public class ServiceClientController {
     private void addEvents(final Model model) {
         model.addAttribute("fluidicsStatus", this.fluidicsService.getFluidicsStatus());
         model.addAttribute("highVoltageStatus", this.highVoltageService.getHighVoltageStatus());
+        model.addAttribute("connectionState", this.stompConnection.getState());
+        model.addAttribute("connectionRetry", this.stompConnection.getRetry());
+        model.addAttribute("connectionMaxRetries", StompConnection.MAX_RETRIES);
+    }
+
+    @PostMapping("/reconnect")
+    public String reconnect() {
+        this.stompConnection.reconnect();
+        return "redirect:" + Utils.SERVICE_CLIENT;
     }
 
     @PostMapping("/sendGelPumpModeCommand2")

@@ -22,6 +22,7 @@ public class SubscriptionRegistry {
 
     public void bindSession(final StompSession session) {
         this.session = session;
+        this.subs.clear(); // subscriptions belonged to the old session, eg after a reconnect
     }
 
     public <T extends DeviceEvent> void subscribe(final Class<T> type,

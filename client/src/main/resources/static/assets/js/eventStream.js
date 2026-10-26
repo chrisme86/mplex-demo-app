@@ -8,7 +8,9 @@ async function updateEventsTable() {
         const response = await fetch('/service_client/events');
         const html = await response.text();
         const fragment = new DOMParser().parseFromString(html, 'text/html');
-        document.getElementById('events').innerHTML = fragment.getElementById('events').innerHTML;
+        for (const id of ['connection', 'events']) {
+            document.getElementById(id).innerHTML = fragment.getElementById(id).innerHTML;
+        }
     } catch (err) {
         console.error('Error while updating the events table: ', err);
     }

@@ -81,17 +81,22 @@ Author URL: http://w3layouts.com
 
     <h4>Current States</h4>
     <div th:fragment="eventsTable">
-        <!-- <div>
-            <span>Connection to device established: </span>
-            <span th:if="${isConnected}">
-                &lt;!&ndash; green tick &ndash;&gt;
-                <i class="bi bi-check" style="color: green;"></i>
+        <div class="mb-3" id="connection">
+            <span>Connection to device: </span>
+            <span th:if="${connectionState.name() == 'CONNECTED'}">
+                <i class="bi bi-check-circle-fill" style="color: green;"></i> connected
             </span>
-            <span th:if="${!isConnected}">
-                &lt;!&ndash; red cross &ndash;&gt;
-                <i class="bi bi-x" style="color: red;"></i>
+            <span th:if="${connectionState.name() == 'CONNECTING'}">
+                <i class="bi bi-hourglass-split" style="color: orange;"></i> connecting
+                <span th:if="${connectionRetry > 0}" th:text="|(retry ${connectionRetry}/${connectionMaxRetries})|"></span>
             </span>
-        </div> -->
+            <span th:if="${connectionState.name() == 'DISCONNECTED'}">
+                <i class="bi bi-x-circle-fill" style="color: red;"></i> disconnected
+                <form class="d-inline ms-2" method="post" th:action="@{/service_client/reconnect}">
+                    <button class="btn btn-sm btn-outline-primary" type="submit">Reconnect</button>
+                </form>
+            </span>
+        </div>
         <table class="table">
             <thead>
             <tr>
