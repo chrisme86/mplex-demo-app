@@ -1,7 +1,5 @@
 package com.cmiethling.mplex.client.model;
 
-import java.util.List;
-
 import org.springframework.stereotype.Component;
 
 import com.cmiethling.mplex.device_events.api.Subsystem;
@@ -11,11 +9,13 @@ import lombok.Getter;
 
 @Component
 public class FluidicsStatus {
-    private final EventEntry errorsEvent;
-    private final EventEntry gelPump;
-    private final EventEntry gelValve;
+    // one row each in the status table
     @Getter
-    private final List<EventEntry> entries;
+    private final EventEntry errorsEvent;
+    @Getter
+    private final EventEntry gelPump;
+    @Getter
+    private final EventEntry gelValve;
     @Getter
     private boolean gelPumpOn;
     @Getter
@@ -28,7 +28,6 @@ public class FluidicsStatus {
         // the states from StatesEvent separately, as it is possible to receive only 1 state with 1 StatesEvent
         this.gelPump = new EventEntry(Subsystem.FLUIDICS, "Gel Pump");
         this.gelValve = new EventEntry(Subsystem.FLUIDICS, "Gel Valve");
-        this.entries = List.of(this.gelPump, this.gelValve, this.errorsEvent);
     }
 
     public void setErrorsEvent(final ErrorEvent errorEvent) {

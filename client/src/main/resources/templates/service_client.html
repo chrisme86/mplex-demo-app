@@ -28,58 +28,6 @@ Author URL: http://w3layouts.com
     <h1>Service Client</h1>
     <div class="alert alert-warning" th:if="${!#strings.isEmpty(message)}" th:text="${message}"></div>
     <h4>Devices</h4>
-    <table class="table">
-        <thead>
-        <tr>
-            <th>Subsystem</th>
-            <th>Device</th>
-            <th>New</th>
-            <th></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td>FLUIDICS</td>
-            <td>Gel Pump</td>
-            <form method="post" th:action="@{/service_client/sendGelPumpModeCommand2}">
-                <td>
-                    <label>
-                        <input name="isOn" th:checked="${fluidicsStatus.gelPumpOn ? 'checked' : null}"
-                               type="radio" value="true"> On
-                    </label>
-                    <label>
-                        <input name="isOn" th:checked="${!fluidicsStatus.gelPumpOn ? 'checked' : null}"
-                               type="radio" value="false"> Off
-                    </label>
-                </td>
-                <td>
-                    <button class="btn btn-primary" type="submit">Send</button>
-                </td>
-            </form>
-        </tr>
-        <tr>
-            <td>FLUIDICS</td>
-            <td>Gel Valve</td>
-            <form method="post" th:action="@{/service_client/sendGelValveCommand}">
-                <td>
-                    <label>
-                        <input name="isOpen" th:checked="${fluidicsStatus.gelValveOpen ? 'checked' : null}"
-                               type="radio" value="true"> Open
-                    </label>
-                    <label>
-                        <input name="isOpen" th:checked="${!fluidicsStatus.gelValveOpen ? 'checked' : null}"
-                               type="radio" value="false"> Closed
-                    </label>
-                </td>
-                <td>
-                    <button class="btn btn-primary" type="submit">Send</button>
-                </td>
-            </form>
-        </tr>
-        </tbody>
-    </table>
-
-    <h4>Current States</h4>
     <div th:replace="~{status :: statusTable}"></div>
 </section>
 <!-- <section class="services-w3l-block py-5">

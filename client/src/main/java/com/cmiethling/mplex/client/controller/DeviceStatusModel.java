@@ -19,12 +19,15 @@ public class DeviceStatusModel {
     private final HighVoltageService highVoltageService;
     private final StompConnection stompConnection;
 
-    public void addTo(final Model model, final boolean showReconnect) {
+    /**
+     * @param serviceMode true in the service client (login): shows commands and the Reconnect button
+     */
+    public void addTo(final Model model, final boolean serviceMode) {
         model.addAttribute("fluidicsStatus", this.fluidicsService.getFluidicsStatus());
         model.addAttribute("highVoltageStatus", this.highVoltageService.getHighVoltageStatus());
         model.addAttribute("connectionState", this.stompConnection.getState());
         model.addAttribute("connectionRetry", this.stompConnection.getRetry());
         model.addAttribute("connectionMaxRetries", StompConnection.MAX_RETRIES);
-        model.addAttribute("showReconnect", showReconnect);
+        model.addAttribute("serviceMode", serviceMode);
     }
 }

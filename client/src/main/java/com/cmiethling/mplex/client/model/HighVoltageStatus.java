@@ -1,7 +1,5 @@
 package com.cmiethling.mplex.client.model;
 
-import java.util.List;
-
 import org.springframework.stereotype.Component;
 
 import com.cmiethling.mplex.device_events.api.hv.ErrorEvent;
@@ -11,9 +9,9 @@ import lombok.Getter;
 
 @Component
 public class HighVoltageStatus {
-    private final EventEntry errorsEvent;
+    // row in the status table
     @Getter
-    private final List<EventEntry> entries;
+    private final EventEntry errorsEvent;
     @Getter
     private HighVoltageError highVoltageError;
 
@@ -21,7 +19,6 @@ public class HighVoltageStatus {
     public HighVoltageStatus() {
         final var error = new ErrorEvent();
         this.errorsEvent = new EventEntry(error.getSubsystem(), error.getTopic());
-        this.entries = List.of(this.errorsEvent);
     }
 
     public void setHighVoltageError(final HighVoltageError error) {

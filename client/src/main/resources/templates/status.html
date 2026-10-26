@@ -2,7 +2,8 @@
 <!--suppress HtmlUnknownTag -->
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <body>
-<!-- device status (connection + current states), used by home and service client, reloaded via SSE -->
+<!-- device status (connection + current states), used by home and service client, reloaded via SSE.
+     serviceMode (service client, login): shows the commands and the Reconnect button -->
 <div id="status" th:fragment="statusTable">
     <div class="mb-3" id="connection">
         <span>Connection to device: </span>
@@ -15,33 +16,69 @@
         </span>
         <span th:if="${connectionState.name() == 'DISCONNECTED'}">
             <i class="bi bi-x-circle-fill" style="color: red;"></i> disconnected
-            <!-- only for logged in users (service client) -->
-            <form class="d-inline ms-2" method="post" th:action="@{/service_client/reconnect}" th:if="${showReconnect}">
+            <form class="d-inline ms-2" method="post" th:action="@{/service_client/reconnect}" th:if="${serviceMode}">
                 <button class="btn btn-sm btn-outline-primary" type="submit">Reconnect</button>
             </form>
         </span>
     </div>
-    <table class="table">
+    <table class="table align-middle">
         <thead>
         <tr>
             <th>Subsystem</th>
             <th>Topic</th>
+            <th th:if="${serviceMode}">Command</th>
             <th>Current State</th>
         </tr>
         </thead>
         <tbody id="events">
-        <tr th:each="entry : ${fluidicsStatus.entries}">
+        <tr th:with="entry=${fluidicsStatus.gelPump}">
             <td th:text="${entry.subsystem}"></td>
             <td th:text="${entry.topic}"></td>
-            <td th:text="${entry.currentState}"></td>
+            <td th:if="${serviceMode}">
+                <!-- the clicked button sends its value -->
+                <form method="post" th:action="@{/service_client/sendGelPumpModeCommand2}">
+                    <button class="btn btn-primary btn-sm" name="isOn" type="submit" value="true">On</button>
+                    <button class="btn btn-outline-primary btn-sm" name="isOn" type="submit" value="false">Off</button>
+                </form>
+            </td>
+            <td th:replace="~{status :: stateCell(${entry.currentState})}"></td>
         </tr>
-        <tr th:each="entry : ${highVoltageStatus.entries}">
+        <tr th:with="entry=${fluidicsStatus.gelValve}">
             <td th:text="${entry.subsystem}"></td>
             <td th:text="${entry.topic}"></td>
-            <td th:text="${entry.currentState}"></td>
+            <td th:if="${serviceMode}">
+                <form method="post" th:action="@{/service_client/sendGelValveCommand}">
+                    <button class="btn btn-primary btn-sm" name="isOpen" type="submit" value="true">Open</button>
+                    <button class="btn btn-outline-primary btn-sm" name="isOpen" type="submit" value="false">Close</button>
+                </form>
+            </td>
+            <td th:replace="~{status :: stateCell(${entry.currentState})}"></td>
+        </tr>
+        <tr th:with="entry=${fluidicsStatus.errorsEvent}">
+            <td th:text="${entry.subsystem}"></td>
+            <td th:text="${entry.topic}"></td>
+            <td th:if="${serviceMode}"></td>
+            <td th:replace="~{status :: stateCell(${entry.currentState})}"></td>
+        </tr>
+        <tr th:with="entry=${highVoltageStatus.errorsEvent}">
+            <td th:text="${entry.subsystem}"></td>
+            <td th:text="${entry.topic}"></td>
+            <td th:if="${serviceMode}"></td>
+            <td th:replace="~{status :: stateCell(${entry.currentState})}"></td>
         </tr>
         </tbody>
     </table>
 </div>
+
+<!-- state as badge, same colors as the command buttons: filled = on/open, outlined = off/closed -->
+<td th:fragment="stateCell(state)" th:switch="${state}">
+    <span class="text-secondary" th:case="${null}">unknown</span>
+    <span class="badge text-bg-primary" th:case="'ON'" th:text="${state}"></span>
+    <span class="badge text-bg-primary" th:case="'OPEN'" th:text="${state}"></span>
+    <span class="badge border border-primary text-primary" th:case="'OFF'" th:text="${state}"></span>
+    <span class="badge border border-primary text-primary" th:case="'CLOSED'" th:text="${state}"></span>
+    <span class="badge text-bg-secondary" th:case="'NONE'" th:text="${state}"></span>
+    <span class="badge text-bg-danger" th:case="*" th:text="${state}"></span>
+</td>
 </body>
 </html>
