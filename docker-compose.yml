@@ -1,0 +1,20 @@
+services:
+  emulator:
+    build:
+      context: .
+      target: emulator
+    ports:
+      - "8091:8091"
+
+  client:
+    build:
+      context: .
+      target: client
+    ports:
+      - "8090:8090"
+    environment:
+      # inside the Docker network the emulator is reachable by its service name
+      RESTAPIURL: http://emulator:8091
+      STOMP_URL: ws://emulator:8091/stomp
+    depends_on:
+      - emulator

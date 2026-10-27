@@ -122,11 +122,6 @@
     <build>
         <pluginManagement>
             <plugins>
-                <plugin>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-maven-plugin</artifactId>
-                </plugin>
-
                 <!-- OpenAPI Generator -->
                 <plugin>
                     <groupId>org.openapitools</groupId>

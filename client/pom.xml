@@ -53,4 +53,14 @@
         </dependency>
     </dependencies>
 
+    <build>
+        <plugins>
+            <!-- executable jar with all dependencies (java -jar, Docker) -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
 </project>

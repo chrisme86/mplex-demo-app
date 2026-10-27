@@ -52,17 +52,23 @@ If no result event arrives within 5 s, the client shows "no result from device".
 ## Technologies
 
 Java 21, Spring Boot 3.5 (Web MVC, WebSocket/STOMP, Security, Thymeleaf), OpenAPI Generator, springdoc (Swagger UI),
-Lombok, Bootstrap 5, Maven.
+Lombok, Bootstrap 5, Maven, Docker Compose.
 
 ## Getting started
 
-Requirements: JDK 21.
+Requirements: JDK 21 (or Docker, see below).
 
 ```bash
 git clone https://github.com/chrisme86/mplex-demo-app.git
 cd mplex-demo-app
 mvn clean install
 ./start-all.sh        # stop with Ctrl + C
+```
+
+Or with Docker (no local JDK or Maven needed):
+
+```bash
+docker compose up --build
 ```
 
 | URL                                   | What                                                      |

@@ -1,0 +1,5 @@
+**/target
+.git
+.idea
+**/*.iml
+rest-api/src/main/resources/specs/merged_spec.yaml
