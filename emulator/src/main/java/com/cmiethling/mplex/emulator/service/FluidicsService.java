@@ -42,20 +42,37 @@ public class FluidicsService {
         final var event = new ErrorEvent();
         event.setError(error);
         this.webSocketService.sendEvent(event);
+
+        // a broken pump switches itself off
+        if (error == FluidicsError.GEL_PUMP_ERROR && this.fluidicsStatus.isGelPumpOn()) {
+            this.fluidicsStatus.setGelPumpOn(false);
+            final var statesEvent = new StatesEvent();
+            statesEvent.setGelPumpOn(false);
+            sendStatesEvent(statesEvent);
+        }
+    }
+
+    // pump can't be switched on again until the error is cleared
+    private boolean isGelPumpBlocked() {
+        return this.fluidicsStatus.getFluidicsError() == FluidicsError.GEL_PUMP_ERROR;
     }
 
     /**
      * Checks the command and returns its ID at once, the result follows as StatesEvent with this ID.
      */
     public UUID setGelPump(final boolean isOn) {
+        if (isOn && isGelPumpBlocked())
+            throw new DeviceStateConflictException("Gel pump error");
         if (isOn && !this.fluidicsStatus.isGelValveOpen())
             throw new DeviceStateConflictException("Gel valve is closed");
 
         final var commandId = UUID.randomUUID();
         this.device.execute(() -> {
-            this.fluidicsStatus.setGelPumpOn(isOn);
+            // the error may have occurred while the command was executed: the result is the real state
+            final var on = isOn && !isGelPumpBlocked();
+            this.fluidicsStatus.setGelPumpOn(on);
             final var event = new StatesEvent();
-            event.setGelPumpOn(isOn);
+            event.setGelPumpOn(on);
             event.setCommandId(commandId);
             sendStatesEvent(event);
         });
