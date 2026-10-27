@@ -9,7 +9,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
 
 import com.cmiethling.mplex.client_api.api.FluidicsApi;
-import com.cmiethling.mplex.client_api.api.HvApi;
 import com.cmiethling.mplex.client_api.invoker.ApiClient;
 
 import lombok.val;
@@ -34,10 +33,5 @@ public class RestApiClientConfig {
     @Bean
     public FluidicsApi fluidicsApi(final ApiClient apiClient) {
         return new FluidicsApi(apiClient);
-    }
-
-    @Bean
-    public HvApi hvApi(final ApiClient apiClient) {
-        return new HvApi(apiClient);
     }
 }

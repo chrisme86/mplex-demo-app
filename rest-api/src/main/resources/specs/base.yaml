@@ -59,26 +59,3 @@ components:
         # id:
         #   type: string
         #   format: uuid
-
-    BaseResponse:
-      type: object
-      properties:
-        subsystem:
-          type: string
-          enum: [ fluidics, hv ]
-        topic:
-          type: string
-          example: ""
-        error:
-          type: string
-          enum: [ noError, invalidSubsystem, invalidTopic, invalidParameters, error ]
-          default: noError
-        result:
-          type: object
-          example: { }
-        # type:
-        #   type: string
-        #   enum: [ result ]
-        # id:
-        #   type: string
-        #   format: uuid
