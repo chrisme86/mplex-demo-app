@@ -11,5 +11,5 @@ import lombok.Setter;
 @Getter
 @Component
 public class HighVoltageStatus {
-    private HighVoltageError highVoltageError;
+    private HighVoltageError highVoltageError = HighVoltageError.NONE; // no error at start, so the current state can be sent
 }

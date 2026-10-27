@@ -11,7 +11,7 @@ import lombok.Setter;
 @Getter
 @Component
 public class FluidicsStatus {
-    private FluidicsError fluidicsError;
+    private FluidicsError fluidicsError = FluidicsError.NONE; // no error at start, so the current state can be sent
     private boolean gelPumpOn;
     private boolean gelValveOpen;
 }
