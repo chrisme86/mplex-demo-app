@@ -31,36 +31,36 @@
         </tr>
         </thead>
         <tbody id="events">
-        <tr th:with="entry=${fluidicsStatus.gelPump}">
+        <tr th:with="entry=${brewerStatus.waterPump}">
             <td th:text="${entry.subsystem}"></td>
             <td th:text="${entry.topic}"></td>
             <td th:if="${serviceMode}">
                 <!-- the clicked button sends its value -->
-                <form method="post" th:action="@{/service_client/sendGelPumpCommand}">
+                <form method="post" th:action="@{/service_client/sendWaterPumpCommand}">
                     <button class="btn btn-primary btn-sm" name="isOn" type="submit" value="true">On</button>
                     <button class="btn btn-outline-primary btn-sm" name="isOn" type="submit" value="false">Off</button>
                 </form>
             </td>
             <td th:replace="~{status :: stateCell(${entry})}"></td>
         </tr>
-        <tr th:with="entry=${fluidicsStatus.gelValve}">
+        <tr th:with="entry=${brewerStatus.brewValve}">
             <td th:text="${entry.subsystem}"></td>
             <td th:text="${entry.topic}"></td>
             <td th:if="${serviceMode}">
-                <form method="post" th:action="@{/service_client/sendGelValveCommand}">
+                <form method="post" th:action="@{/service_client/sendBrewValveCommand}">
                     <button class="btn btn-primary btn-sm" name="isOpen" type="submit" value="true">Open</button>
                     <button class="btn btn-outline-primary btn-sm" name="isOpen" type="submit" value="false">Close</button>
                 </form>
             </td>
             <td th:replace="~{status :: stateCell(${entry})}"></td>
         </tr>
-        <tr th:with="entry=${fluidicsStatus.errorsEvent}">
+        <tr th:with="entry=${brewerStatus.errorsEvent}">
             <td th:text="${entry.subsystem}"></td>
             <td th:text="${entry.topic}"></td>
             <td th:if="${serviceMode}"></td>
             <td th:replace="~{status :: stateCell(${entry})}"></td>
         </tr>
-        <tr th:with="entry=${highVoltageStatus.errorsEvent}">
+        <tr th:with="entry=${heaterStatus.errorsEvent}">
             <td th:text="${entry.subsystem}"></td>
             <td th:text="${entry.topic}"></td>
             <td th:if="${serviceMode}"></td>

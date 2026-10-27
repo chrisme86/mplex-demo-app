@@ -5,7 +5,7 @@ package com.cmiethling.mplex.device_events.api;
  */
 public enum Subsystem {
 
-    HIGH_VOLTAGE,
-    FLUIDICS
+    HEATER,
+    BREWER
 }
 

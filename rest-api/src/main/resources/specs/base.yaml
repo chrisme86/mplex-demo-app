@@ -25,10 +25,10 @@ components:
           example: 409
         detail:
           type: string
-          example: Gel valve is closed
+          example: Brew valve is closed
         instance:
           type: string
-          example: /restapi/fluidics/SetGelPump
+          example: /restapi/brewer/SetWaterPump
 
     # answer to a command: only the confirmation, the result comes asynchronously as event with this commandId
     CommandAccepted:
@@ -45,7 +45,7 @@ components:
       properties:
         subsystem:
           type: string
-          enum: [ fluidics, hv ]
+          enum: [ brewer, heater ]
         topic:
           type: string
           example: ""

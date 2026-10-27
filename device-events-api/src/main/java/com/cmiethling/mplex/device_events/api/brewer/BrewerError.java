@@ -1,4 +1,4 @@
-package com.cmiethling.mplex.device_events.api.fluidics;
+package com.cmiethling.mplex.device_events.api.brewer;
 
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -6,12 +6,12 @@ import java.util.stream.Stream;
 import com.cmiethling.mplex.device_events.api.SubsystemError;
 
 /**
- * Each method referring to the fluidics interface provides a return value describing generic success or failure of the
+ * Each method referring to the brewer interface provides a return value describing generic success or failure of the
  * command call.
  */
-public enum FluidicsError implements SubsystemError {
+public enum BrewerError implements SubsystemError {
 
-    NONE, GEL_PUMP_ERROR, GEL_PUMP_PRESSURE_TOO_HIGH;
+    NONE, PUMP_JAMMED;
 
     /**
      * Returns the enum value associated with the specified code.
@@ -20,8 +20,8 @@ public enum FluidicsError implements SubsystemError {
      *
      * @return an optional enum value
      */
-    public static Optional<FluidicsError> ofCode(final int code) {
-        return Stream.of(FluidicsError.values()) //
+    public static Optional<BrewerError> ofCode(final int code) {
+        return Stream.of(BrewerError.values()) //
                 .filter(value -> value.code() == code) //
                 .findFirst();
     }

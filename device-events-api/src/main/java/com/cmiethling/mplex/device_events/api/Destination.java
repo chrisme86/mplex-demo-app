@@ -10,6 +10,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 @Documented
 public @interface Destination {
-    /** Full STOMP destination, e.g. "/topic/FLUIDICS.errors" */
+    /** Full STOMP destination, e.g. "/topic/BREWER.errors" */
     String value();
 }

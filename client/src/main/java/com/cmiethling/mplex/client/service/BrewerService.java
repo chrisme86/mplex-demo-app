@@ -12,14 +12,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestClientResponseException;
 
+import com.cmiethling.mplex.client.model.BrewerStatus;
 import com.cmiethling.mplex.client.model.EventEntry;
-import com.cmiethling.mplex.client.model.FluidicsStatus;
-import com.cmiethling.mplex.client_api.api.FluidicsApi;
+import com.cmiethling.mplex.client_api.api.BrewerApi;
 import com.cmiethling.mplex.client_api.model.CommandAccepted;
-import com.cmiethling.mplex.client_api.model.SetGelPumpRequest;
-import com.cmiethling.mplex.client_api.model.SetGelPumpRequestAllOfParameters;
-import com.cmiethling.mplex.client_api.model.SetGelValveRequest;
-import com.cmiethling.mplex.client_api.model.SetGelValveRequestAllOfParameters;
+import com.cmiethling.mplex.client_api.model.SetBrewValveRequest;
+import com.cmiethling.mplex.client_api.model.SetBrewValveRequestAllOfParameters;
+import com.cmiethling.mplex.client_api.model.SetWaterPumpRequest;
+import com.cmiethling.mplex.client_api.model.SetWaterPumpRequestAllOfParameters;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -27,12 +27,12 @@ import lombok.extern.slf4j.Slf4j;
 @Getter
 @Slf4j
 @Service
-public class FluidicsService {
+public class BrewerService {
     // max. time between the confirmation of a command and its result event
     private static final Duration RESULT_TIMEOUT = Duration.ofSeconds(5);
 
     @Autowired
-    private FluidicsApi fluidicsApi;
+    private BrewerApi brewerApi;
     @Autowired
     private BrowserUpdateService browserUpdateService;
     @Autowired
@@ -40,22 +40,23 @@ public class FluidicsService {
 
     // ################# current states ##########################
     @Autowired
-    private FluidicsStatus fluidicsStatus;
+    private BrewerStatus brewerStatus;
 
     // ################# commands ##########################
-    public void setGelPumpCommand(final boolean isOn) {
-        final var request = new SetGelPumpRequest() //
-                .parameters(new SetGelPumpRequestAllOfParameters().isOn(isOn));
+    public void setWaterPumpCommand(final boolean isOn) {
+        final var request = new SetWaterPumpRequest() //
+                .parameters(new SetWaterPumpRequestAllOfParameters().isOn(isOn));
         log.info("Sending Request: {}", request);
-        sendCommand("SetGelPump", this.fluidicsStatus.getGelPump(), () -> this.fluidicsApi.setGelPumpCommand(request));
+        sendCommand("SetWaterPump", this.brewerStatus.getWaterPump(),
+                () -> this.brewerApi.setWaterPumpCommand(request));
     }
 
-    public void setGelValveCommand(final boolean isOpen) {
-        final var request = new SetGelValveRequest() //
-                .parameters(new SetGelValveRequestAllOfParameters().isOpen(isOpen));
+    public void setBrewValveCommand(final boolean isOpen) {
+        final var request = new SetBrewValveRequest() //
+                .parameters(new SetBrewValveRequestAllOfParameters().isOpen(isOpen));
         log.info("Sending Request: {}", request);
-        sendCommand("SetGelValve", this.fluidicsStatus.getGelValve(),
-                () -> this.fluidicsApi.setGelValveCommand(request));
+        sendCommand("SetBrewValve", this.brewerStatus.getBrewValve(),
+                () -> this.brewerApi.setBrewValveCommand(request));
     }
 
     // the device only confirms the command (202), the row stays pending until the StatesEvent with this commandId

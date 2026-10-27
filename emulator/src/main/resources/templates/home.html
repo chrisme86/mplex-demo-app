@@ -33,14 +33,14 @@ Author URL: http://w3layouts.com
             </thead>
             <tbody id="states">
             <tr>
-                <td>FLUIDICS</td>
-                <td>Gel Pump</td>
-                <td th:text="${fluidicsStatus.gelPumpOn ? 'ON' : 'OFF'}"></td>
+                <td>BREWER</td>
+                <td>Water Pump</td>
+                <td th:text="${brewerStatus.waterPumpOn ? 'ON' : 'OFF'}"></td>
             </tr>
             <tr>
-                <td>FLUIDICS</td>
-                <td>Gel Valve</td>
-                <td th:text="${fluidicsStatus.gelValveOpen ? 'OPEN' : 'CLOSED'}"></td>
+                <td>BREWER</td>
+                <td>Brew Valve</td>
+                <td th:text="${brewerStatus.brewValveOpen ? 'OPEN' : 'CLOSED'}"></td>
             </tr>
             </tbody>
         </table>

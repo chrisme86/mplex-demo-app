@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
 
-import com.cmiethling.mplex.client_api.api.FluidicsApi;
+import com.cmiethling.mplex.client_api.api.BrewerApi;
 import com.cmiethling.mplex.client_api.invoker.ApiClient;
 
 import lombok.val;
@@ -31,7 +31,7 @@ public class RestApiClientConfig {
     }
 
     @Bean
-    public FluidicsApi fluidicsApi(final ApiClient apiClient) {
-        return new FluidicsApi(apiClient);
+    public BrewerApi brewerApi(final ApiClient apiClient) {
+        return new BrewerApi(apiClient);
     }
 }

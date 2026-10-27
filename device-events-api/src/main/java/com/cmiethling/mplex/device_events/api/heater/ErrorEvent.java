@@ -1,6 +1,6 @@
-package com.cmiethling.mplex.device_events.api.hv;
+package com.cmiethling.mplex.device_events.api.heater;
 
-import static com.cmiethling.mplex.device_events.api.hv.ErrorEvent.TOPIC;
+import static com.cmiethling.mplex.device_events.api.heater.ErrorEvent.TOPIC;
 
 import com.cmiethling.mplex.device_events.api.AbstractDeviceEvent;
 import com.cmiethling.mplex.device_events.api.Destination;
@@ -17,19 +17,19 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString(callSuper = true)
-@Destination(DeviceEvent.prefix + "/HIGH_VOLTAGE." + TOPIC)
+@Destination(DeviceEvent.prefix + "/HEATER." + TOPIC)
 public final class ErrorEvent extends AbstractDeviceEvent {
 
     public static final String TOPIC = "errors";
     public static final String ERRORCODE = "errorcode";
 
-    private HighVoltageError error;
+    private HeaterError error;
 
     /**
      * Creates a new event object.
      */
     public ErrorEvent() {
-        super(Subsystem.HIGH_VOLTAGE, TOPIC);
+        super(Subsystem.HEATER, TOPIC);
     }
 }
 

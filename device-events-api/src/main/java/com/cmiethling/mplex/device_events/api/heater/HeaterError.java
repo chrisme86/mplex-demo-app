@@ -1,4 +1,4 @@
-package com.cmiethling.mplex.device_events.api.hv;
+package com.cmiethling.mplex.device_events.api.heater;
 
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -6,12 +6,12 @@ import java.util.stream.Stream;
 import com.cmiethling.mplex.device_events.api.SubsystemError;
 
 /**
- * Each method referring to the fluidics interface provides a return value describing generic success or failure of the
+ * Each method referring to the brewer interface provides a return value describing generic success or failure of the
  * command call.
  */
-public enum HighVoltageError implements SubsystemError {
+public enum HeaterError implements SubsystemError {
 
-    NONE, CAPILLARY_ERROR;
+    NONE, TOO_COLD;
 
     /**
      * Returns the enum value associated with the specified code.
@@ -20,8 +20,8 @@ public enum HighVoltageError implements SubsystemError {
      *
      * @return an optional enum value
      */
-    public static Optional<HighVoltageError> ofCode(final int code) {
-        return Stream.of(HighVoltageError.values()) //
+    public static Optional<HeaterError> ofCode(final int code) {
+        return Stream.of(HeaterError.values()) //
                 .filter(value -> value.code() == code) //
                 .findFirst();
     }

@@ -1,6 +1,6 @@
-package com.cmiethling.mplex.device_events.api.fluidics;
+package com.cmiethling.mplex.device_events.api.brewer;
 
-import static com.cmiethling.mplex.device_events.api.fluidics.ErrorEvent.TOPIC;
+import static com.cmiethling.mplex.device_events.api.brewer.ErrorEvent.TOPIC;
 
 import com.cmiethling.mplex.device_events.api.Destination;
 
@@ -14,13 +14,13 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString(callSuper = true)
-@Destination(AbstractFluidicsDeviceEvent.destination + TOPIC)
-public final class ErrorEvent extends AbstractFluidicsDeviceEvent {
+@Destination(AbstractBrewerDeviceEvent.destination + TOPIC)
+public final class ErrorEvent extends AbstractBrewerDeviceEvent {
 
     public static final String TOPIC = "errors";
     public static final String ERRORCODE = "errorcode";
 
-    private FluidicsError error;
+    private BrewerError error;
 
     /**
      * Creates a new event object.

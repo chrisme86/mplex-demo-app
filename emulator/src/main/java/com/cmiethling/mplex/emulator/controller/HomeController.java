@@ -17,12 +17,12 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import com.cmiethling.mplex.device_events.api.DeviceEvent;
 import com.cmiethling.mplex.device_events.api.Subsystem;
 import com.cmiethling.mplex.device_events.api.SubsystemError;
-import com.cmiethling.mplex.device_events.api.fluidics.ErrorEvent;
-import com.cmiethling.mplex.device_events.api.fluidics.FluidicsError;
-import com.cmiethling.mplex.device_events.api.hv.HighVoltageError;
+import com.cmiethling.mplex.device_events.api.brewer.BrewerError;
+import com.cmiethling.mplex.device_events.api.brewer.ErrorEvent;
+import com.cmiethling.mplex.device_events.api.heater.HeaterError;
+import com.cmiethling.mplex.emulator.service.BrewerService;
 import com.cmiethling.mplex.emulator.service.BrowserUpdateService;
-import com.cmiethling.mplex.emulator.service.FluidicsService;
-import com.cmiethling.mplex.emulator.service.HighVoltageService;
+import com.cmiethling.mplex.emulator.service.HeaterService;
 
 import lombok.val;
 
@@ -31,37 +31,37 @@ import lombok.val;
 public class HomeController {
 
     @Autowired
-    private FluidicsService fluidicsService;
+    private BrewerService brewerService;
     @Autowired
-    private HighVoltageService highVoltageService;
+    private HeaterService heaterService;
     @Autowired
     private BrowserUpdateService browserUpdateService;
 
     @GetMapping({ "/home", "/" })
     public String getErrorEvents(final Model model) {
-        val fluidicsError = new ErrorEvent();
-        fluidicsError.setError(this.fluidicsService.getFluidicsError());
-        val hvError = new com.cmiethling.mplex.device_events.api.hv.ErrorEvent();
-        hvError.setError(this.highVoltageService.getHighVoltageError());
-        final List<DeviceEvent> errorEvents = Arrays.asList(fluidicsError, hvError);
+        val brewerError = new ErrorEvent();
+        brewerError.setError(this.brewerService.getBrewerError());
+        val heaterError = new com.cmiethling.mplex.device_events.api.heater.ErrorEvent();
+        heaterError.setError(this.heaterService.getHeaterError());
+        final List<DeviceEvent> errorEvents = Arrays.asList(brewerError, heaterError);
         model.addAttribute("errorEvents", errorEvents);
 
         // Mapping of Subsystem to its corresponding error types
-        final Map<Subsystem, SubsystemError[]> errorTypesMap = Map.of(Subsystem.FLUIDICS, FluidicsError.values(),
-                Subsystem.HIGH_VOLTAGE, HighVoltageError.values());
+        final Map<Subsystem, SubsystemError[]> errorTypesMap = Map.of(Subsystem.BREWER, BrewerError.values(),
+                Subsystem.HEATER, HeaterError.values());
 
         // for dropdown menus
         model.addAttribute("errorTypesMap", errorTypesMap);
 
         // current device states, set by commands from the client
-        model.addAttribute("fluidicsStatus", this.fluidicsService.getFluidicsStatus());
+        model.addAttribute("brewerStatus", this.brewerService.getBrewerStatus());
 
         return "home";
     }
 
     @GetMapping("/states")
     public String getStates(final Model model) {
-        model.addAttribute("fluidicsStatus", this.fluidicsService.getFluidicsStatus());
+        model.addAttribute("brewerStatus", this.brewerService.getBrewerStatus());
         return "home :: statesTable"; // only return th:fragment="statesTable"
     }
 
@@ -75,8 +75,8 @@ public class HomeController {
     public String sendEvent(@RequestParam final Subsystem subsystem, @RequestParam final String newValue) {
         try {
             switch (subsystem) {
-            case FLUIDICS -> this.fluidicsService.processError(newValue);
-            case HIGH_VOLTAGE -> this.highVoltageService.processError(newValue);
+            case BREWER -> this.brewerService.processError(newValue);
+            case HEATER -> this.heaterService.processError(newValue);
             default -> throw new IllegalArgumentException("invalid subsystem: " + subsystem);
             }
         } catch (final IllegalArgumentException e) { // eg unknown error name

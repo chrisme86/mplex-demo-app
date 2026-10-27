@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cmiethling.mplex.client.config.Utils;
+import com.cmiethling.mplex.client.service.BrewerService;
 import com.cmiethling.mplex.client.service.DeviceCommandException;
-import com.cmiethling.mplex.client.service.FluidicsService;
 import com.cmiethling.mplex.client.stomp.StompConnection;
 
 @SuppressWarnings("SameReturnValue")
@@ -20,7 +20,7 @@ import com.cmiethling.mplex.client.stomp.StompConnection;
 public class ServiceClientController {
 
     @Autowired
-    private FluidicsService fluidicsService;
+    private BrewerService brewerService;
     @Autowired
     private DeviceStatusModel deviceStatusModel;
     @Autowired
@@ -44,20 +44,20 @@ public class ServiceClientController {
         return "redirect:" + Utils.SERVICE_CLIENT;
     }
 
-    @PostMapping("/sendGelPumpCommand")
-    public String sendGelPumpCommand(@RequestParam final boolean isOn, final RedirectAttributes redirect) {
+    @PostMapping("/sendWaterPumpCommand")
+    public String sendWaterPumpCommand(@RequestParam final boolean isOn, final RedirectAttributes redirect) {
         try {
-            this.fluidicsService.setGelPumpCommand(isOn);
+            this.brewerService.setWaterPumpCommand(isOn);
         } catch (final DeviceCommandException e) {
             redirect.addFlashAttribute("message", e.getMessage()); // shown once after the redirect
         }
         return "redirect:" + Utils.SERVICE_CLIENT;
     }
 
-    @PostMapping("/sendGelValveCommand")
-    public String sendGelValveCommand(@RequestParam final boolean isOpen, final RedirectAttributes redirect) {
+    @PostMapping("/sendBrewValveCommand")
+    public String sendBrewValveCommand(@RequestParam final boolean isOpen, final RedirectAttributes redirect) {
         try {
-            this.fluidicsService.setGelValveCommand(isOpen);
+            this.brewerService.setBrewValveCommand(isOpen);
         } catch (final DeviceCommandException e) {
             redirect.addFlashAttribute("message", e.getMessage()); // shown once after the redirect
         }

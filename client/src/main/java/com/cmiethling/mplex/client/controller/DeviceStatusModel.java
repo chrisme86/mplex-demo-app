@@ -3,8 +3,8 @@ package com.cmiethling.mplex.client.controller;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 
-import com.cmiethling.mplex.client.service.FluidicsService;
-import com.cmiethling.mplex.client.service.HighVoltageService;
+import com.cmiethling.mplex.client.service.BrewerService;
+import com.cmiethling.mplex.client.service.HeaterService;
 import com.cmiethling.mplex.client.stomp.StompConnection;
 
 import lombok.RequiredArgsConstructor;
@@ -15,16 +15,16 @@ import lombok.RequiredArgsConstructor;
 @Component
 @RequiredArgsConstructor
 public class DeviceStatusModel {
-    private final FluidicsService fluidicsService;
-    private final HighVoltageService highVoltageService;
+    private final BrewerService brewerService;
+    private final HeaterService heaterService;
     private final StompConnection stompConnection;
 
     /**
      * @param serviceMode true in the service client (login): shows commands and the Reconnect button
      */
     public void addTo(final Model model, final boolean serviceMode) {
-        model.addAttribute("fluidicsStatus", this.fluidicsService.getFluidicsStatus());
-        model.addAttribute("highVoltageStatus", this.highVoltageService.getHighVoltageStatus());
+        model.addAttribute("brewerStatus", this.brewerService.getBrewerStatus());
+        model.addAttribute("heaterStatus", this.heaterService.getHeaterStatus());
         model.addAttribute("connectionState", this.stompConnection.getState());
         model.addAttribute("connectionRetry", this.stompConnection.getRetry());
         model.addAttribute("connectionMaxRetries", StompConnection.MAX_RETRIES);
