@@ -13,5 +13,4 @@ import lombok.Setter;
 public class BrewerStatus {
     private BrewerError brewerError = BrewerError.NONE; // no error at start, so the current state can be sent
     private boolean waterPumpOn;
-    private boolean brewValveOpen;
 }

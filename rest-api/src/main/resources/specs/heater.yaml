@@ -1,0 +1,63 @@
+openapi: 3.0.1
+info:
+  title: Heater Commands API
+  description: API to interact with the heater subsystem commands
+  version: 1.0.0
+
+# merged spec always generates 'servers: - url: "http://localhost:8080"' anyways...
+#servers:
+#  - url: http://localhost:8091
+
+paths:
+  /restapi/heater/SetWaterHeater:
+    post:
+      tags: [ heater ]
+      summary: Send SetWaterHeater request to the heater subsystem
+      operationId: setWaterHeaterCommand
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetWaterHeaterRequest'
+      responses:
+        '202':
+          description: Command accepted, the result follows as StatesEvent with the same commandId
+          content:
+            application/json:
+              schema:
+                $ref: 'base.yaml#/components/schemas/CommandAccepted'
+        '400':
+          description: Malformed request
+          content:
+            application/problem+json:
+              schema:
+                $ref: 'base.yaml#/components/schemas/Problem'
+        '409':
+          description: Heater can't be turned off while the water pump is running, or on while it is overheated
+          content:
+            application/problem+json:
+              schema:
+                $ref: 'base.yaml#/components/schemas/Problem'
+
+components:
+  schemas:
+    SetWaterHeaterRequest:
+      allOf:
+        - $ref: 'base.yaml#/components/schemas/BaseRequest'
+        - type: object
+          required: [ subsystem, topic, parameters ]
+          properties:
+            subsystem:
+              enum: [ heater ]
+              default: heater
+            topic:
+              enum: [ SetWaterHeater ]
+              default: SetWaterHeater
+            parameters:
+              type: object
+              required: [ isOn ]
+              properties:
+                isOn:
+                  type: boolean
+                  description: Indicates whether the water heater should be turned on

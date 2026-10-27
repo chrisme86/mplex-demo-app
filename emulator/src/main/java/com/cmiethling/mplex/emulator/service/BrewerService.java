@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import com.cmiethling.mplex.device_events.api.brewer.BrewerError;
 import com.cmiethling.mplex.device_events.api.brewer.ErrorEvent;
 import com.cmiethling.mplex.device_events.api.brewer.StatesEvent;
-import com.cmiethling.mplex.device_events.api.heater.HeaterError;
 import com.cmiethling.mplex.emulator.model.BrewerStatus;
 import com.cmiethling.mplex.emulator.model.HeaterStatus;
 
@@ -51,7 +50,7 @@ public class BrewerService {
     }
 
     /**
-     * The pump switches itself off on a blocking error, also of the heater (no cold coffee). Sent as StatesEvent
+     * The pump switches itself off when it is jammed or the water heater went off (no cold coffee). Sent as StatesEvent
      * without commandId, as no command caused it.
      */
     public void switchOffWaterPumpIfBlocked() {
@@ -63,12 +62,12 @@ public class BrewerService {
         sendStatesEvent(event);
     }
 
-    // pump can't be switched on again until the error is cleared
+    // pump can't be switched on while one of these is true
     private Optional<String> waterPumpBlockedReason() {
         if (this.brewerStatus.getBrewerError() == BrewerError.PUMP_JAMMED)
             return Optional.of("Water pump is jammed");
-        if (this.heaterStatus.getHeaterError() == HeaterError.TOO_COLD)
-            return Optional.of("Water is too cold");
+        if (!this.heaterStatus.isWaterHeaterOn())
+            return Optional.of("Water heater is off");
         return Optional.empty();
     }
 
@@ -80,34 +79,14 @@ public class BrewerService {
             waterPumpBlockedReason().ifPresent(reason -> {
                 throw new DeviceStateConflictException(reason);
             });
-        if (isOn && !this.brewerStatus.isBrewValveOpen())
-            throw new DeviceStateConflictException("Brew valve is closed");
 
         final var commandId = UUID.randomUUID();
         this.device.execute(() -> {
-            // the error may have occurred while the command was executed: the result is the real state
+            // the state may have changed while the command was executed: the result is the real state
             final var on = isOn && waterPumpBlockedReason().isEmpty();
             this.brewerStatus.setWaterPumpOn(on);
             final var event = new StatesEvent();
             event.setWaterPumpOn(on);
-            event.setCommandId(commandId);
-            sendStatesEvent(event);
-        });
-        return commandId;
-    }
-
-    /**
-     * Checks the command and returns its ID at once, the result follows as StatesEvent with this ID.
-     */
-    public UUID setBrewValve(final boolean isOpen) {
-        if (!isOpen && this.brewerStatus.isWaterPumpOn())
-            throw new DeviceStateConflictException("Water pump is running");
-
-        final var commandId = UUID.randomUUID();
-        this.device.execute(() -> {
-            this.brewerStatus.setBrewValveOpen(isOpen);
-            final var event = new StatesEvent();
-            event.setBrewValveOpen(isOpen);
             event.setCommandId(commandId);
             sendStatesEvent(event);
         });

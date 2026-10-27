@@ -1,28 +1,42 @@
 package com.cmiethling.mplex.client.model;
 
+import java.util.UUID;
+
 import org.springframework.stereotype.Component;
 
+import com.cmiethling.mplex.device_events.api.Subsystem;
 import com.cmiethling.mplex.device_events.api.heater.ErrorEvent;
-import com.cmiethling.mplex.device_events.api.heater.HeaterError;
 
 import lombok.Getter;
 
 @Component
 public class HeaterStatus {
-    // row in the status table
+    // one row each in the status table
     @Getter
     private final EventEntry errorsEvent;
     @Getter
-    private HeaterError heaterError;
+    private final EventEntry waterHeater;
 
     // initialize so that subsystem and topic are not null
     public HeaterStatus() {
         final var error = new ErrorEvent();
         this.errorsEvent = new EventEntry(error.getSubsystem(), error.getTopic());
+        this.waterHeater = new EventEntry(Subsystem.HEATER, "Water Heater");
     }
 
-    public void setHeaterError(final HeaterError error) {
-        this.errorsEvent.setCurrentState(error.toString());
-        this.heaterError = error;
+    public void setErrorsEvent(final ErrorEvent errorEvent) {
+        this.errorsEvent.setCurrentState(errorEvent.getError().toString());
+    }
+
+    public void setWaterHeater(final boolean isOn) {
+        this.waterHeater.setCurrentState(isOn ? "ON" : "OFF");
+    }
+
+    /**
+     * The result event of a command arrived, so its row is no longer pending.
+     */
+    public void completeCommand(final UUID commandId) {
+        if (commandId.equals(this.waterHeater.getPendingCommandId()))
+            this.waterHeater.setPendingCommandId(null);
     }
 }

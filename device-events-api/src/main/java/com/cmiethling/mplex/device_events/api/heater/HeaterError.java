@@ -6,12 +6,12 @@ import java.util.stream.Stream;
 import com.cmiethling.mplex.device_events.api.SubsystemError;
 
 /**
- * Each method referring to the brewer interface provides a return value describing generic success or failure of the
+ * Each method referring to the heater interface provides a return value describing generic success or failure of the
  * command call.
  */
 public enum HeaterError implements SubsystemError {
 
-    NONE, TOO_COLD;
+    NONE, OVERHEATED;
 
     /**
      * Returns the enum value associated with the specified code.

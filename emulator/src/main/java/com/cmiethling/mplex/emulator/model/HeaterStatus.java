@@ -12,4 +12,5 @@ import lombok.Setter;
 @Component
 public class HeaterStatus {
     private HeaterError heaterError = HeaterError.NONE; // no error at start, so the current state can be sent
+    private boolean waterHeaterOn;
 }

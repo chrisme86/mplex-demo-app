@@ -25,7 +25,7 @@ components:
           example: 409
         detail:
           type: string
-          example: Brew valve is closed
+          example: Water heater is off
         instance:
           type: string
           example: /restapi/brewer/SetWaterPump

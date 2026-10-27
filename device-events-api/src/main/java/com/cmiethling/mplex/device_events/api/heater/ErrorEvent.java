@@ -2,10 +2,7 @@ package com.cmiethling.mplex.device_events.api.heater;
 
 import static com.cmiethling.mplex.device_events.api.heater.ErrorEvent.TOPIC;
 
-import com.cmiethling.mplex.device_events.api.AbstractDeviceEvent;
 import com.cmiethling.mplex.device_events.api.Destination;
-import com.cmiethling.mplex.device_events.api.DeviceEvent;
-import com.cmiethling.mplex.device_events.api.Subsystem;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -17,8 +14,8 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString(callSuper = true)
-@Destination(DeviceEvent.prefix + "/HEATER." + TOPIC)
-public final class ErrorEvent extends AbstractDeviceEvent {
+@Destination(AbstractHeaterDeviceEvent.destination + TOPIC)
+public final class ErrorEvent extends AbstractHeaterDeviceEvent {
 
     public static final String TOPIC = "errors";
     public static final String ERRORCODE = "errorcode";
@@ -29,7 +26,6 @@ public final class ErrorEvent extends AbstractDeviceEvent {
      * Creates a new event object.
      */
     public ErrorEvent() {
-        super(Subsystem.HEATER, TOPIC);
+        super(TOPIC);
     }
 }
-

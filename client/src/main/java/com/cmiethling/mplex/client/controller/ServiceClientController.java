@@ -12,6 +12,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.cmiethling.mplex.client.config.Utils;
 import com.cmiethling.mplex.client.service.BrewerService;
 import com.cmiethling.mplex.client.service.DeviceCommandException;
+import com.cmiethling.mplex.client.service.HeaterService;
 import com.cmiethling.mplex.client.stomp.StompConnection;
 
 @SuppressWarnings("SameReturnValue")
@@ -21,6 +22,8 @@ public class ServiceClientController {
 
     @Autowired
     private BrewerService brewerService;
+    @Autowired
+    private HeaterService heaterService;
     @Autowired
     private DeviceStatusModel deviceStatusModel;
     @Autowired
@@ -54,10 +57,10 @@ public class ServiceClientController {
         return "redirect:" + Utils.SERVICE_CLIENT;
     }
 
-    @PostMapping("/sendBrewValveCommand")
-    public String sendBrewValveCommand(@RequestParam final boolean isOpen, final RedirectAttributes redirect) {
+    @PostMapping("/sendWaterHeaterCommand")
+    public String sendWaterHeaterCommand(@RequestParam final boolean isOn, final RedirectAttributes redirect) {
         try {
-            this.brewerService.setBrewValveCommand(isOpen);
+            this.heaterService.setWaterHeaterCommand(isOn);
         } catch (final DeviceCommandException e) {
             redirect.addFlashAttribute("message", e.getMessage()); // shown once after the redirect
         }

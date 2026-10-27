@@ -25,13 +25,17 @@ public class CurrentStatePublisher {
 
     public void publish(final String destination) {
         if (destination.equals(DeviceEvent.getDestination(StatesEvent.class))) {
-            final var event = new StatesEvent(); // all states, no commandId
+            final var event = new StatesEvent(); // no commandId
             event.setWaterPumpOn(this.brewerStatus.isWaterPumpOn());
-            event.setBrewValveOpen(this.brewerStatus.isBrewValveOpen());
             this.webSocketService.sendEvent(event);
         } else if (destination.equals(DeviceEvent.getDestination(ErrorEvent.class))) {
             final var event = new ErrorEvent();
             event.setError(this.brewerStatus.getBrewerError());
+            this.webSocketService.sendEvent(event);
+        } else if (destination.equals(
+                DeviceEvent.getDestination(com.cmiethling.mplex.device_events.api.heater.StatesEvent.class))) {
+            final var event = new com.cmiethling.mplex.device_events.api.heater.StatesEvent();
+            event.setWaterHeaterOn(this.heaterStatus.isWaterHeaterOn());
             this.webSocketService.sendEvent(event);
         } else if (destination.equals(
                 DeviceEvent.getDestination(com.cmiethling.mplex.device_events.api.heater.ErrorEvent.class))) {

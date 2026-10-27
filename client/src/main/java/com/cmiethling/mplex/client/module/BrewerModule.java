@@ -32,9 +32,7 @@ public class BrewerModule implements StompModule {
         });
         registry.subscribe(StatesEvent.class, evt -> {
             log.info("STATES event: {}", evt);
-            // a StatesEvent may contain only one of the states
             evt.isWaterPumpOn().ifPresent(this.brewerStatus::setWaterPump);
-            evt.isBrewValveOpen().ifPresent(this.brewerStatus::setBrewValve);
             // result of a command: correlates with the commandId from the 202 confirmation
             if (evt.getCommandId() != null)
                 this.brewerStatus.completeCommand(evt.getCommandId());

@@ -34,38 +34,7 @@ paths:
               schema:
                 $ref: 'base.yaml#/components/schemas/Problem'
         '409':
-          description: Pump can't be turned on while the brew valve is closed
-          content:
-            application/problem+json:
-              schema:
-                $ref: 'base.yaml#/components/schemas/Problem'
-
-  /restapi/brewer/SetBrewValve:
-    post:
-      tags: [ brewer ]
-      summary: Send SetBrewValve request to the brewer subsystem
-      operationId: setBrewValveCommand
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/SetBrewValveRequest'
-      responses:
-        '202':
-          description: Command accepted, the result follows as StatesEvent with the same commandId
-          content:
-            application/json:
-              schema:
-                $ref: 'base.yaml#/components/schemas/CommandAccepted'
-        '400':
-          description: Malformed request
-          content:
-            application/problem+json:
-              schema:
-                $ref: 'base.yaml#/components/schemas/Problem'
-        '409':
-          description: Valve can't be closed while the water pump is running
+          description: Pump can't be turned on while the water heater is off or the pump is jammed
           content:
             application/problem+json:
               schema:
@@ -92,23 +61,3 @@ components:
                 isOn:
                   type: boolean
                   description: Indicates whether the water pump should be turned on
-
-    SetBrewValveRequest:
-      allOf:
-        - $ref: 'base.yaml#/components/schemas/BaseRequest'
-        - type: object
-          required: [ subsystem, topic, parameters ]
-          properties:
-            subsystem:
-              enum: [ brewer ]
-              default: brewer
-            topic:
-              enum: [ SetBrewValve ]
-              default: SetBrewValve
-            parameters:
-              type: object
-              required: [ isOpen ]
-              properties:
-                isOpen:
-                  type: boolean
-                  description: Indicates whether the brew valve should be opened

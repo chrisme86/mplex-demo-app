@@ -43,7 +43,7 @@ public class HomeController {
         brewerError.setError(this.brewerService.getBrewerError());
         val heaterError = new com.cmiethling.mplex.device_events.api.heater.ErrorEvent();
         heaterError.setError(this.heaterService.getHeaterError());
-        final List<DeviceEvent> errorEvents = Arrays.asList(brewerError, heaterError);
+        final List<DeviceEvent> errorEvents = Arrays.asList(heaterError, brewerError);
         model.addAttribute("errorEvents", errorEvents);
 
         // Mapping of Subsystem to its corresponding error types
@@ -54,15 +54,20 @@ public class HomeController {
         model.addAttribute("errorTypesMap", errorTypesMap);
 
         // current device states, set by commands from the client
-        model.addAttribute("brewerStatus", this.brewerService.getBrewerStatus());
+        addStates(model);
 
         return "home";
     }
 
     @GetMapping("/states")
     public String getStates(final Model model) {
-        model.addAttribute("brewerStatus", this.brewerService.getBrewerStatus());
+        addStates(model);
         return "home :: statesTable"; // only return th:fragment="statesTable"
+    }
+
+    private void addStates(final Model model) {
+        model.addAttribute("brewerStatus", this.brewerService.getBrewerStatus());
+        model.addAttribute("heaterStatus", this.heaterService.getHeaterStatus());
     }
 
     // browser listens here and reloads the states table on each "update" event

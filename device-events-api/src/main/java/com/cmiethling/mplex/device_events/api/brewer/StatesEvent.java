@@ -23,7 +23,6 @@ public final class StatesEvent extends AbstractBrewerDeviceEvent {
     public static final String TOPIC = "states";
 
     private Boolean waterPumpOn;
-    private Boolean brewValveOpen;
     // ID of the command that caused this change, null for spontaneous changes of the device
     private UUID commandId;
 
@@ -36,10 +35,6 @@ public final class StatesEvent extends AbstractBrewerDeviceEvent {
 
     public Optional<Boolean> isWaterPumpOn() {
         return Optional.ofNullable(this.waterPumpOn);
-    }
-
-    public Optional<Boolean> isBrewValveOpen() {
-        return Optional.ofNullable(this.brewValveOpen);
     }
 }
 

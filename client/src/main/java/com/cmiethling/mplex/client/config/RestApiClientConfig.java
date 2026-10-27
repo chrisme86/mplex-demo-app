@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
 
 import com.cmiethling.mplex.client_api.api.BrewerApi;
+import com.cmiethling.mplex.client_api.api.HeaterApi;
 import com.cmiethling.mplex.client_api.invoker.ApiClient;
 
 import lombok.val;
@@ -33,5 +34,10 @@ public class RestApiClientConfig {
     @Bean
     public BrewerApi brewerApi(final ApiClient apiClient) {
         return new BrewerApi(apiClient);
+    }
+
+    @Bean
+    public HeaterApi heaterApi(final ApiClient apiClient) {
+        return new HeaterApi(apiClient);
     }
 }

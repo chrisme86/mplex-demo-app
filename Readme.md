@@ -2,7 +2,7 @@
 
 A small Spring Boot demo of how a control software talks to a device. The communication is a simplified, web-based
 remake of the Modaplex software (originally a JavaFX desktop application for a laboratory device). For illustration, the
-laboratory subsystems were replaced by a coffee machine: a `BREWER` with water pump and brew valve, and a `HEATER`.
+laboratory subsystems were replaced by a coffee machine: a `HEATER` with water heater and a `BREWER` with water pump.
 Instead of real hardware, an emulator plays the device.
 
 ## What it shows
@@ -12,9 +12,9 @@ Instead of real hardware, an emulator plays the device.
 - **Events via STOMP over WebSocket:** state changes and errors of the device reach the client without polling.
 - **Live browser update via Server-Sent Events:** the browser pages update themselves as soon as an event arrives.
 - **API first:** the REST interface is defined in OpenAPI, client and server code are generated from it.
-- **Device rules and errors:** invalid commands are rejected with `409 Conflict` as ProblemDetail (RFC 9457), eg the
-  pump can't run while the valve is closed. A jammed pump (`PUMP_JAMMED`) or cold water (`HEATER` error `TOO_COLD`)
-  switches the pump off and blocks it, a rule across two subsystems.
+- **Device rules across subsystems:** invalid commands are rejected with `409 Conflict` as ProblemDetail (RFC 9457),
+  eg the pump can't run while the water heater is off. An overheated heater (`OVERHEATED`) switches itself off and with
+  it the pump, a jammed pump (`PUMP_JAMMED`) switches off only the pump.
 - **Robust connection:** the client reconnects 3 times (after 2, 4, 8 s) and shows the connection state. On every connect and
   reconnect the emulator sends its current states.
 
@@ -56,19 +56,22 @@ Lombok, Bootstrap 5, Maven, Docker Compose.
 
 ## Getting started
 
-Requirements: JDK 21 (or Docker, see below).
-
 ```bash
 git clone https://github.com/chrisme86/mplex-demo-app.git
 cd mplex-demo-app
-mvn clean install
-./start-all.sh        # stop with Ctrl + C
 ```
 
-Or with Docker (no local JDK or Maven needed):
+With Docker (no local JDK or Maven needed):
 
 ```bash
-docker compose up --build
+docker compose up --build        # stop with Ctrl + C
+```
+
+Or with JDK 21 and Maven:
+
+```bash
+mvn clean install
+./start-all.sh        # stop with Ctrl + C
 ```
 
 | URL                                   | What                                                      |
@@ -80,8 +83,10 @@ docker compose up --build
 
 Things to try:
 
-- Close the valve while the pump runs: `409 Conflict` "Water pump is running".
-- Set `PUMP_JAMMED` in the emulator: the pump switches off and can't be switched on until the error is `NONE`.
-- Set the heater error `TOO_COLD`: same for the pump, no cold coffee.
+- Switch the pump on while the heater is off: `409 Conflict` "Water heater is off". So first the heater, then the pump.
+- Switch the heater off while the pump runs: `409 Conflict` "Water pump is running".
+- Set the heater error `OVERHEATED` in the emulator: the heater switches off and with it the pump (no cold coffee). The
+  heater can't be switched on until the error is `NONE`.
+- Set `PUMP_JAMMED`: only the pump switches off and is blocked.
 - Stop the emulator: the client shows the reconnect attempts, after a restart "Reconnect" brings back the current
   states.
