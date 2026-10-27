@@ -5,8 +5,6 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.cmiethling.mplex.client.config.Utils;
@@ -19,7 +17,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class LoginController {
 
-    @RequestMapping(value = Utils.LOGIN, method = { RequestMethod.GET, RequestMethod.POST })
+    // POST /login is handled by Spring Security itself
+    @GetMapping(Utils.LOGIN)
     public String login(final Model model, // /login?error=true
             @RequestParam(required = false) final boolean error) {
 

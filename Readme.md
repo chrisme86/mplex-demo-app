@@ -1,126 +1,78 @@
-# Mplex Demo Project in Spring Boot
+# Mplex Demo App
 
-This project is a demonstration of a Spring Boot application simulating key functionalities of the Modaplex software. It
-serves as a simplified, backend-focused example of the original JavaFX-based desktop application, designed to showcase
-proficiency in Spring Boot and to illustrate a transition from desktop to web-based architecture.
+A small Spring Boot demo of how a control software talks to a laboratory device. It is a simplified, web-based remake of
+the communication in the Modaplex software (originally a JavaFX desktop application). Instead of real hardware, an
+emulator plays the device.
 
-## Project Structure
+## What it shows
 
-The project is organized into the following main components:
+- **Commands via REST, results as events:** the client sends a command (eg "gel pump on"), the device only confirms it
+  (`202 Accepted` + `commandId`). The result follows asynchronously as event with the same `commandId`.
+- **Events via STOMP over WebSocket:** state changes and errors of the device reach the client without polling.
+- **Live browser update via Server-Sent Events:** the browser pages update themselves as soon as an event arrives.
+- **API first:** the REST interface is defined in OpenAPI, client and server code are generated from it.
+- **Device rules and errors:** invalid commands are rejected with `409 Conflict` as ProblemDetail (RFC 9457), eg the
+  pump can't run while the valve is closed. A `GEL_PUMP_ERROR` switches the pump off and blocks it.
+- **Robust connection:** the client reconnects 3 times (after 2, 4, 8 s) and shows the connection state. On every connect and
+  reconnect the emulator sends its current states.
 
-**client**
+## Architecture
 
-- The main application that contains the logic for controlling the laboratory device.
-- it runs on [http://localhost:8090](http://localhost:8090).
-- The application includes a **service client**, which is used by a service technician for maintenance or control of the
-  device. Log in credentials:
-    - Username: `service`
-    - Password: `service`
-
-**emulator**
-
-- Application for simulating the hardware environment for testing purposes.
-- It runs on [http://localhost:8091](http://localhost:8091).
-- It allows the software to be tested without needing the physical device.
-
-**device (deprecated)**
-
-- This was a shared module that acted as interface between the client and the emulator.
-- It was initially designed to handle both **_synchronous commands and asynchronous events via one WebSocket_**
-  connection.
-- this was replaced by the `rest-api` and `websocket` modules which separate the two communation ways. They
-  make use of a microservice approach and they use Spring Boot features like STOMP.
-- technologies:
-    - Jackson for JSON binding
-    - Spring Events for receiving events from the device
-    - org.springframework.web.socket for WebSocket server connection in the emulator
-
-**rest-api**
-
-- A shared module that defines a REST API communication between the client and the emulator. The client sends a
-  request to the emulator, waits while the emulator processes the request and sends a response back. This is
-  synchronous.
-- it does the work of the former commands in the `device` module.
-- technologies:
-    - openapi-generator for generating the API commands on the client and emulator side
-    - Spring REST client for handling the API commands in the client
-- advantages:
-    - Ensures that both the client and emulator are in sync with the API definitions.
-    - Reduces boilerplate code by generating the necessary classes and interfaces.
-    - Benefits of REST for Commands: By adopting HTTP REST for the synchronous calls, we align with a common pattern for
-      microservices public APIs (client-to-service calls). HTTP/JSON is human-readable (easy to log and inspect), and
-      tools like Postman or Swagger-UI can be used to test the emulator’s API. We’ve effectively externalized the device
-      commands as a service API, which is easier to work with than an opaque WebSocket protocol. Additionally, we let
-      Spring handle a lot of work (threads, JSON binding, error handling via exceptions), so we write less custom code.
-
-**websocket**
-
-- the module includes STOMP via WebSocket
-- it lets the emulator send asynchronous events to the client
-- it publishes the events to the destination "/topic/{{subsystem}}.{{topic}}" ie "topic/fluidics.errors"
--
-
-## Current State
-
-- The WebSocket connects when the client sends a command.
-- The emulator can send events and receive commands.
-- The emulator features a log page where all commands and events are recorded.
-- Users can log in as a service technician in the client (Username + Password: `service`)
-
-## Technologies Used
-
-- **Java 21**: The primary programming language.
-- **OpenAPI Generator**: For generating API client and server code from OpenAPI specifications.
-- **Spring Boot**: For building the RESTful backend services:
-    - **_Spring Security_** for logging in as service technician in client (Username + Password: `service`)
-    - **_Spring REST client_** for synchronous commands from client to emulator.
-    - **_STOMP via Spring WebSocket_** for asynchronous events from emulator to client.
-    - _deprecated_ (used by device):
-        - **_Spring Events_** for receiving events from the device.
-        - **_org.springframework.web.socket_** for WebSocket server connection in the emulator.
-        - **_Jackson_** for device interface API.
-- **Lombok** for reducing boilerplate code.
-- **JUnit**: For unit testing the components.
-- **Maven**: For project management and dependency resolution.
-
-## Getting Started
-
-- Ensure that JDK 21 or higher is installed and that it is set as your JAVA_HOME
-
-1. Clone the repository:
-    ```bash
-    git clone https://github.com/cmiethling/mplex_demo_app.git
-    ```  
-2. Navigate to the project directory:
-   ```bash
-   cd mplex_demo_app
-   ```
-
-3. Build the project:
-   ```bash
-   mvn clean install
-   ```
-
-#### Running the Applications:
-
-Start the Spring Boot applications using the script:
-
-```bash
-./start-all.sh
+```mermaid
+sequenceDiagram
+    participant B as Browser
+    participant C as Client :8090
+    participant E as Emulator :8091
+    Note over B, E: 1. Connect (also after every reconnect)
+    C ->> E: STOMP subscribe /topic/FLUIDICS.states, ...
+    E -->> C: current states
+    Note over B, E: 2. Command
+    B ->> C: Gel pump ON (service client)
+    C ->> E: POST /restapi/fluidics/SetGelPump
+    E -->> C: 202 Accepted {commandId}
+    C -->> B: SSE update: "pending"
+    Note over E: device executes the command (1 s)
+    E -->> C: StatesEvent {gelPumpOn: true, commandId}
+    C -->> B: SSE update: ON
 ```
 
-- The client will start on http://localhost:8090.
-- The emulator will start on http://localhost:8091.
-- Stop the apps by pressing `Ctrl + C`
+If no result event arrives within 5 s, the client shows "no result from device".
 
-#### Running Tests
+## Modules
 
-Execute the unit tests using Maven:
+| Module              | Content                                                                                          |
+|---------------------|--------------------------------------------------------------------------------------------------|
+| `rest-api`          | OpenAPI specs of the commands, generates `client-api` (RestClient) and `server-api` (interfaces) |
+| `device-events-api` | Event classes (eg `StatesEvent`, `ErrorEvent`) with their STOMP destination                      |
+| `emulator`          | Plays the device: executes commands, sends events, web page to trigger errors                    |
+| `client`            | Control software: status page, service client with commands (login required)                     |
+
+## Technologies
+
+Java 21, Spring Boot 3.5 (Web MVC, WebSocket/STOMP, Security, Thymeleaf), OpenAPI Generator, springdoc (Swagger UI),
+Lombok, Bootstrap 5, Maven.
+
+## Getting started
+
+Requirements: JDK 21.
 
 ```bash
-mvn test
+git clone https://github.com/chrisme86/mplex-demo-app.git
+cd mplex-demo-app
+mvn clean install
+./start-all.sh        # stop with Ctrl + C
 ```
 
-## Project Scope
+| URL                                   | What                                                      |
+|---------------------------------------|-----------------------------------------------------------|
+| http://localhost:8090                 | Client: current device states (read only)                 |
+| http://localhost:8090/service_client  | Service client with commands, login `service` / `service` |
+| http://localhost:8091                 | Emulator: device states, trigger errors                   |
+| http://localhost:8091/swagger-ui.html | Swagger UI of the device REST API                         |
 
-This demo project is an ongoing effort and future updates may include additional features.
+Things to try:
+
+- Close the valve while the pump runs: `409 Conflict` "Gel pump is running".
+- Set `GEL_PUMP_ERROR` in the emulator: the pump switches off and can't be switched on until the error is `NONE`.
+- Stop the emulator: the client shows the reconnect attempts, after a restart "Reconnect" brings back the current
+  states.

@@ -30,18 +30,6 @@ Author URL: http://w3layouts.com
     <h4>Devices</h4>
     <div th:replace="~{status :: statusTable}"></div>
 </section>
-<!-- <section class="services-w3l-block py-5">
-    <div>
-        <h2>WebSocket Test</h2>
-        <form method="post" th:action="@{/service_client/test}">
-            <label>
-                <input name="bla" placeholder="Enter your message" type="text">
-            </label>
-            <button id="postButton">Send Message</button>
-        </form>
-    </div>
-</section> -->
-
 <!-- live update of the device status via Server-Sent Events -->
 <!--suppress HtmlUnknownTarget -->
 <script data-status-url="/service_client/status" src="/assets/js/eventStream.js"></script>

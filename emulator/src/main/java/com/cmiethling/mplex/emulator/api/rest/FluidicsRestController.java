@@ -25,7 +25,6 @@ public class FluidicsRestController implements FluidicsApi {
     @Override
     public ResponseEntity<CommandAccepted> setGelPumpCommand(final SetGelPumpRequest req) {
         log.info("Received request: {}", req);
-        // TODO handle request, eg with 25% error...
         final var commandId = this.fluidicsService.setGelPump(req.getParameters().getIsOn());
         log.info("Accepted SetGelPump: {}", commandId);
         return ResponseEntity.accepted().body(new CommandAccepted().commandId(commandId));

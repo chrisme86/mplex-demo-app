@@ -44,8 +44,8 @@ public class ServiceClientController {
         return "redirect:" + Utils.SERVICE_CLIENT;
     }
 
-    @PostMapping("/sendGelPumpModeCommand2")
-    public String sendGelPumpModeCommand(@RequestParam final boolean isOn, final RedirectAttributes redirect) {
+    @PostMapping("/sendGelPumpCommand")
+    public String sendGelPumpCommand(@RequestParam final boolean isOn, final RedirectAttributes redirect) {
         try {
             this.fluidicsService.setGelPumpCommand(isOn);
         } catch (final DeviceCommandException e) {

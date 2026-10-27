@@ -5,11 +5,13 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import com.cmiethling.mplex.device_events.api.DeviceEvent;
@@ -71,10 +73,14 @@ public class HomeController {
 
     @PostMapping("/send-event")
     public String sendEvent(@RequestParam final Subsystem subsystem, @RequestParam final String newValue) {
-        switch (subsystem) {
-        case FLUIDICS -> this.fluidicsService.processError(newValue);
-        case HIGH_VOLTAGE -> this.highVoltageService.processError(newValue);
-        default -> throw new IllegalArgumentException("invalid subsystem: " + subsystem);
+        try {
+            switch (subsystem) {
+            case FLUIDICS -> this.fluidicsService.processError(newValue);
+            case HIGH_VOLTAGE -> this.highVoltageService.processError(newValue);
+            default -> throw new IllegalArgumentException("invalid subsystem: " + subsystem);
+            }
+        } catch (final IllegalArgumentException e) { // eg unknown error name
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
         return "redirect:/home";
     }
