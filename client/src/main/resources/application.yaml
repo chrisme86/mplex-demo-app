@@ -5,16 +5,7 @@ server:
 spring:
   devtools:
     livereload:
-      port=35729
-
-# OpenApi
-springdoc:
-  swagger-ui:
-    path: /swagger-ui
-    operationsSorter: alpha
-    tagsSorter: alpha
-  api-docs:
-    path: /api-docs
+      port: 35729
 # merged spec always generates 'servers: - url: "http://localhost:8080"'
 restapiUrl: http://localhost:8091
 stomp:

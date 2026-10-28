@@ -27,15 +27,12 @@ public class ProjectSecurityConfig {
 
             auth.requestMatchers(Utils.SERVICE_CLIENT + "/**").authenticated();
             auth.requestMatchers(Utils.LOGIN, Utils.LOGOUT).permitAll();
-            // for OpenAPI
-            auth.requestMatchers("/api-docs/**", "/swagger-ui/**", "/api/**").permitAll();
         });
         http.httpBasic(Customizer.withDefaults());
 
         http.formLogin(loginConfigure -> loginConfigure.loginPage(Utils.LOGIN).defaultSuccessUrl(Utils.SERVICE_CLIENT)
                 .failureUrl(Utils.LOGIN + "?error=true").permitAll());
 
-        http.csrf(csrfConfigurer -> csrfConfigurer.ignoringRequestMatchers("/api/**"));
         return http.build();
     }
 

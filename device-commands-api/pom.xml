@@ -19,11 +19,6 @@
     </modules>
 
     <dependencies>
-        <!-- OpenAPI -->
-        <dependency>
-            <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-        </dependency>
         <!-- OpenAPI Generator -->
         <dependency>
             <groupId>org.openapitools</groupId>

@@ -17,6 +17,14 @@
         <openapi-generator.package>com.cmiethling.mplex.server_api</openapi-generator.package>
     </properties>
 
+    <dependencies>
+        <!-- annotations of the generated interfaces, Swagger UI of the app that implements them -->
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+        </dependency>
+    </dependencies>
+
     <build>
         <plugins>
             <!-- OpenAPI for Server stub generation -->
