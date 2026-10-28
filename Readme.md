@@ -42,12 +42,12 @@ If no result event arrives within 5 s, the client shows "no result from device".
 
 ## Modules
 
-| Module              | Content                                                                                          |
-|---------------------|--------------------------------------------------------------------------------------------------|
-| `rest-api`          | OpenAPI specs of the commands, generates `client-api` (RestClient) and `server-api` (interfaces) |
-| `device-events-api` | Event classes (eg `StatesEvent`, `ErrorEvent`) with their STOMP destination                      |
-| `emulator`          | Plays the device: executes commands, sends events, web page to trigger errors                    |
-| `client`            | Control software: status page, service client with commands (login required)                     |
+| Module                | Content                                                                                         |
+|-----------------------|-------------------------------------------------------------------------------------------------|
+| `device-commands-api` | Commands to the device (REST): OpenAPI specs, generate `client-api` and `server-api`            |
+| `device-events-api`   | Events from the device (STOMP): classes like `StatesEvent`, `ErrorEvent` with their destination |
+| `emulator`            | Plays the device: executes commands, sends events, web page to trigger errors                   |
+| `client`              | Control software: status page, service client with commands (login required)                    |
 
 ## Technologies
 

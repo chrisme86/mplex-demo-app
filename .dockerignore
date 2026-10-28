@@ -2,4 +2,4 @@
 .git
 .idea
 **/*.iml
-rest-api/src/main/resources/specs/merged_spec.yaml
+device-commands-api/src/main/resources/specs/merged_spec.yaml

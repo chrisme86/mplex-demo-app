@@ -1,5 +1,5 @@
 # mplex
-/rest-api/src/main/resources/specs/merged_spec.yaml
+/device-commands-api/src/main/resources/specs/merged_spec.yaml
 
 # Default ignored files
 /shelf/

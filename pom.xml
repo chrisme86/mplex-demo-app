@@ -3,11 +3,11 @@
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.cmiethling.mplex</groupId>
-    <artifactId>mplex-suite</artifactId>
+    <artifactId>mplex-demo-app</artifactId>
     <version>1.0.0</version>
     <packaging>pom</packaging>
 
-    <name>MPLEX Suite</name>
+    <name>Mplex Demo App</name>
     <description>
         Aggregator that manages all modules and parent that defines plugin versions and dependencies.
     </description>
@@ -34,15 +34,15 @@
     <distributionManagement>
         <!-- This supposed to be the place where the documentation will be deployed. It is required by some plugins. -->
         <site>
-            <id>mplex-suite-site</id>
-            <name>MPLEX Suite Site</name>
+            <id>mplex-demo-app-site</id>
+            <name>Mplex Demo App Site</name>
             <url>http://localhost:8090/mplex</url>
         </site>
     </distributionManagement>
 
     <!-- All modules are build with this reactor. -->
     <modules>
-        <module>rest-api</module>
+        <module>device-commands-api</module>
         <module>device-events-api</module>
         <module>emulator</module>
         <module>client</module>
@@ -62,7 +62,7 @@
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>rest-api</artifactId>
+                <artifactId>device-commands-api</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

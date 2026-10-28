@@ -6,37 +6,44 @@
 
     <parent>
         <groupId>com.cmiethling.mplex</groupId>
-        <artifactId>rest-api</artifactId>
+        <artifactId>device-commands-api</artifactId>
         <version>1.0.0</version>
     </parent>
 
-    <artifactId>client-api</artifactId>
-    <name>Client API</name>
+    <artifactId>server-api</artifactId>
+    <name>Server API</name>
 
     <properties>
-        <openapi-generator.package>com.cmiethling.mplex.client_api</openapi-generator.package>
+        <openapi-generator.package>com.cmiethling.mplex.server_api</openapi-generator.package>
     </properties>
 
     <build>
         <plugins>
-            <!-- OpenAPI for Client api generation -->
+            <!-- OpenAPI for Server stub generation -->
             <plugin>
                 <groupId>org.openapitools</groupId>
                 <artifactId>openapi-generator-maven-plugin</artifactId>
                 <configuration>
-                    <!-- https://openapi-generator.tech/docs/generators/java -->
-                    <generatorName>java</generatorName>
+                    <!-- https://openapi-generator.tech/docs/generators/spring  -->
+                    <generatorName>spring</generatorName>
 
                     <configOptions>
-                        <library>resttemplate</library>
-                        <useJakartaEe>true</useJakartaEe>
-                        <generateClientAsBean>true</generateClientAsBean>
+                        <useSpringBoot3>true</useSpringBoot3>
+                        <interfaceOnly>true</interfaceOnly>
+                        <useResponseEntity>true</useResponseEntity>
+                        <useTags>true</useTags>
+                        <additionalModelTypeAnnotations>
+                            @lombok.Getter
+                            <!-- @lombok.RequiredArgsConstructor -->
+                        </additionalModelTypeAnnotations>
+                        <useSwaggerUI>true</useSwaggerUI>
                     </configOptions>
                 </configuration>
+
                 <executions>
-                    <!-- will generate client-api code -->
+                    <!-- will generate server-api code -->
                     <execution>
-                        <id>client</id>
+                        <id>server</id>
                         <goals>
                             <goal>generate</goal>
                         </goals>
@@ -45,5 +52,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>

@@ -5,13 +5,13 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.cmiethling.mplex</groupId>
-        <artifactId>mplex-suite</artifactId>
+        <artifactId>mplex-demo-app</artifactId>
         <version>1.0.0</version>
     </parent>
 
-    <artifactId>rest-api</artifactId>
+    <artifactId>device-commands-api</artifactId>
     <packaging>pom</packaging>
-    <name>REST API</name>
+    <name>Device Commands API</name>
 
     <modules>
         <module>client-api</module>
