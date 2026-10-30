@@ -7,7 +7,7 @@ COPY . .
 RUN --mount=type=cache,target=/root/.m2 mvn -B -q package -DskipTests
 
 FROM eclipse-temurin:21-jre AS emulator
-COPY --from=build /build/emulator/target/emulator-*.jar /app.jar
+COPY --from=build /build/emulator/target/emulator-*-exec.jar /app.jar
 EXPOSE 8091
 ENTRYPOINT ["java", "-jar", "/app.jar"]
 

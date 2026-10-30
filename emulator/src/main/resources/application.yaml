@@ -1,0 +1,18 @@
+# suppress inspection "UnusedProperty" for whole file
+server:
+  port: 8091
+spring:
+  devtools:
+    livereload:
+      # only changes in client triggers livereload!??? (also of emulator)
+      port: 35730
+  mvc:
+    problemdetails:
+      # errors as ProblemDetail (RFC 9457, application/problem+json)
+      enabled: true
+# Swagger UI of the device REST API
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
