@@ -11,15 +11,15 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestClientResponseException;
 
-import com.cmiethling.mplex.client.model.EventEntry;
+import com.cmiethling.mplex.client.model.DeviceState;
 import com.cmiethling.mplex.client_api.model.CommandAccepted;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * Sends a command to the device. The device only confirms it (202), the row stays pending until the StatesEvent with
- * this commandId arrives.
+ * Sends a command to the device. The device only confirms it (202), the device state stays pending until the
+ * StatesEvent with this commandId arrives.
  */
 @Component
 @RequiredArgsConstructor
@@ -31,7 +31,7 @@ public class CommandSender {
     private final BrowserUpdateService browserUpdateService;
     private final ThreadPoolTaskScheduler scheduler;
 
-    public void send(final String command, final EventEntry entry, final Supplier<CommandAccepted> call) {
+    public void send(final String command, final DeviceState deviceState, final Supplier<CommandAccepted> call) {
         final UUID commandId;
         try {
             commandId = call.get().getCommandId();
@@ -43,18 +43,18 @@ public class CommandSender {
             throw new DeviceCommandException("%s failed: response without commandId".formatted(command), null);
         }
         log.info("{} accepted: {}", command, commandId);
-        entry.setPendingCommandId(commandId);
-        entry.setCommandError(null);
+        deviceState.setPendingCommandId(commandId);
+        deviceState.setCommandError(null);
         this.browserUpdateService.notifyBrowsers();
-        this.scheduler.schedule(() -> checkResult(command, entry, commandId), Instant.now().plus(RESULT_TIMEOUT));
+        this.scheduler.schedule(() -> checkResult(command, deviceState, commandId), Instant.now().plus(RESULT_TIMEOUT));
     }
 
-    private void checkResult(final String command, final EventEntry entry, final UUID commandId) {
-        if (!commandId.equals(entry.getPendingCommandId()))
+    private void checkResult(final String command, final DeviceState deviceState, final UUID commandId) {
+        if (!commandId.equals(deviceState.getPendingCommandId()))
             return; // result arrived (or a newer command was sent)
         log.warn("{} {}: no result from device within {} s", command, commandId, RESULT_TIMEOUT.toSeconds());
-        entry.setPendingCommandId(null);
-        entry.setCommandError("%s: no result from device".formatted(command));
+        deviceState.setPendingCommandId(null);
+        deviceState.setCommandError("%s: no result from device".formatted(command));
         this.browserUpdateService.notifyBrowsers();
     }
 

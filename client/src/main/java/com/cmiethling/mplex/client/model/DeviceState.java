@@ -10,7 +10,7 @@ import com.cmiethling.mplex.device_events.api.Subsystem;
 import lombok.Data;
 
 @Data
-public class EventEntry {
+public class DeviceState {
     @NonNull
     private Subsystem subsystem;
     @NonNull
@@ -24,7 +24,7 @@ public class EventEntry {
     @Nullable
     private String commandError;
 
-    public EventEntry(@NonNull final Subsystem subsystem, @NonNull final String topic) {
+    public DeviceState(@NonNull final Subsystem subsystem, @NonNull final String topic) {
         this.subsystem = subsystem;
         this.topic = topic;
         this.currentState = null;

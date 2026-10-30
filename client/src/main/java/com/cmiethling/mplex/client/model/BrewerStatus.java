@@ -13,19 +13,19 @@ import lombok.Getter;
 public class BrewerStatus {
     // one row each in the status table
     @Getter
-    private final EventEntry errorsEvent;
+    private final DeviceState errors;
     @Getter
-    private final EventEntry waterPump;
+    private final DeviceState waterPump;
 
     // initialize so that subsystem and topic are not null
     public BrewerStatus() {
         final var error = new ErrorEvent();
-        this.errorsEvent = new EventEntry(error.getSubsystem(), error.getTopic());
-        this.waterPump = new EventEntry(Subsystem.BREWER, "Water Pump");
+        this.errors = new DeviceState(error.getSubsystem(), error.getTopic());
+        this.waterPump = new DeviceState(Subsystem.BREWER, "Water Pump");
     }
 
-    public void setErrorsEvent(final ErrorEvent errorEvent) {
-        this.errorsEvent.setCurrentState(errorEvent.getError().toString());
+    public void setErrors(final ErrorEvent errorEvent) {
+        this.errors.setCurrentState(errorEvent.getError().toString());
     }
 
     public void setWaterPump(final boolean isOn) {
@@ -33,7 +33,7 @@ public class BrewerStatus {
     }
 
     /**
-     * The result event of a command arrived, so its row is no longer pending.
+     * The result event of a command arrived, so its device state is no longer pending.
      */
     public void completeCommand(final UUID commandId) {
         if (commandId.equals(this.waterPump.getPendingCommandId()))

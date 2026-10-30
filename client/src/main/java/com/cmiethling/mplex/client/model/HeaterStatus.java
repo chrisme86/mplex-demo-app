@@ -13,19 +13,19 @@ import lombok.Getter;
 public class HeaterStatus {
     // one row each in the status table
     @Getter
-    private final EventEntry errorsEvent;
+    private final DeviceState errors;
     @Getter
-    private final EventEntry waterHeater;
+    private final DeviceState waterHeater;
 
     // initialize so that subsystem and topic are not null
     public HeaterStatus() {
         final var error = new ErrorEvent();
-        this.errorsEvent = new EventEntry(error.getSubsystem(), error.getTopic());
-        this.waterHeater = new EventEntry(Subsystem.HEATER, "Water Heater");
+        this.errors = new DeviceState(error.getSubsystem(), error.getTopic());
+        this.waterHeater = new DeviceState(Subsystem.HEATER, "Water Heater");
     }
 
-    public void setErrorsEvent(final ErrorEvent errorEvent) {
-        this.errorsEvent.setCurrentState(errorEvent.getError().toString());
+    public void setErrors(final ErrorEvent errorEvent) {
+        this.errors.setCurrentState(errorEvent.getError().toString());
     }
 
     public void setWaterHeater(final boolean isOn) {
@@ -33,7 +33,7 @@ public class HeaterStatus {
     }
 
     /**
-     * The result event of a command arrived, so its row is no longer pending.
+     * The result event of a command arrived, so its device state is no longer pending.
      */
     public void completeCommand(final UUID commandId) {
         if (commandId.equals(this.waterHeater.getPendingCommandId()))

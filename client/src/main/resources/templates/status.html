@@ -31,9 +31,9 @@
         </tr>
         </thead>
         <tbody id="events">
-        <tr th:with="entry=${heaterStatus.waterHeater}">
-            <td th:text="${entry.subsystem}"></td>
-            <td th:text="${entry.topic}"></td>
+        <tr th:with="deviceState=${heaterStatus.waterHeater}">
+            <td th:text="${deviceState.subsystem}"></td>
+            <td th:text="${deviceState.topic}"></td>
             <td th:if="${serviceMode}">
                 <!-- the clicked button sends its value -->
                 <form method="post" th:action="@{/service_client/sendWaterHeaterCommand}">
@@ -41,30 +41,30 @@
                     <button class="btn btn-outline-primary btn-sm" name="isOn" type="submit" value="false">Off</button>
                 </form>
             </td>
-            <td th:replace="~{status :: stateCell(${entry})}"></td>
+            <td th:replace="~{status :: stateCell(${deviceState})}"></td>
         </tr>
-        <tr th:with="entry=${heaterStatus.errorsEvent}">
-            <td th:text="${entry.subsystem}"></td>
-            <td th:text="${entry.topic}"></td>
+        <tr th:with="deviceState=${heaterStatus.errors}">
+            <td th:text="${deviceState.subsystem}"></td>
+            <td th:text="${deviceState.topic}"></td>
             <td th:if="${serviceMode}"></td>
-            <td th:replace="~{status :: stateCell(${entry})}"></td>
+            <td th:replace="~{status :: stateCell(${deviceState})}"></td>
         </tr>
-        <tr th:with="entry=${brewerStatus.waterPump}">
-            <td th:text="${entry.subsystem}"></td>
-            <td th:text="${entry.topic}"></td>
+        <tr th:with="deviceState=${brewerStatus.waterPump}">
+            <td th:text="${deviceState.subsystem}"></td>
+            <td th:text="${deviceState.topic}"></td>
             <td th:if="${serviceMode}">
                 <form method="post" th:action="@{/service_client/sendWaterPumpCommand}">
                     <button class="btn btn-primary btn-sm" name="isOn" type="submit" value="true">On</button>
                     <button class="btn btn-outline-primary btn-sm" name="isOn" type="submit" value="false">Off</button>
                 </form>
             </td>
-            <td th:replace="~{status :: stateCell(${entry})}"></td>
+            <td th:replace="~{status :: stateCell(${deviceState})}"></td>
         </tr>
-        <tr th:with="entry=${brewerStatus.errorsEvent}">
-            <td th:text="${entry.subsystem}"></td>
-            <td th:text="${entry.topic}"></td>
+        <tr th:with="deviceState=${brewerStatus.errors}">
+            <td th:text="${deviceState.subsystem}"></td>
+            <td th:text="${deviceState.topic}"></td>
             <td th:if="${serviceMode}"></td>
-            <td th:replace="~{status :: stateCell(${entry})}"></td>
+            <td th:replace="~{status :: stateCell(${deviceState})}"></td>
         </tr>
         </tbody>
     </table>
@@ -72,18 +72,18 @@
 
 <!-- state as badge, same colors as the command buttons: filled = on, outlined = off;
      plus "pending" while a command waits for its result event -->
-<td th:fragment="stateCell(entry)">
-    <th:block th:switch="${entry.currentState}">
+<td th:fragment="stateCell(deviceState)">
+    <th:block th:switch="${deviceState.currentState}">
         <span class="text-secondary" th:case="${null}">unknown</span>
-        <span class="badge text-bg-primary" th:case="'ON'" th:text="${entry.currentState}"></span>
-        <span class="badge border border-primary text-primary" th:case="'OFF'" th:text="${entry.currentState}"></span>
-        <span class="badge text-bg-secondary" th:case="'NONE'" th:text="${entry.currentState}"></span>
-        <span class="badge text-bg-danger" th:case="*" th:text="${entry.currentState}"></span>
+        <span class="badge text-bg-primary" th:case="'ON'" th:text="${deviceState.currentState}"></span>
+        <span class="badge border border-primary text-primary" th:case="'OFF'" th:text="${deviceState.currentState}"></span>
+        <span class="badge text-bg-secondary" th:case="'NONE'" th:text="${deviceState.currentState}"></span>
+        <span class="badge text-bg-danger" th:case="*" th:text="${deviceState.currentState}"></span>
     </th:block>
-    <span class="ms-2 text-secondary" th:if="${entry.pendingCommandId != null}">
+    <span class="ms-2 text-secondary" th:if="${deviceState.pendingCommandId != null}">
         <i class="bi bi-hourglass-split"></i> pending
     </span>
-    <span class="ms-2 small text-danger" th:if="${entry.commandError != null}" th:text="${entry.commandError}"></span>
+    <span class="ms-2 small text-danger" th:if="${deviceState.commandError != null}" th:text="${deviceState.commandError}"></span>
 </td>
 </body>
 </html>

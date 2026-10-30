@@ -27,7 +27,7 @@ public class HeaterModule implements StompModule {
                 log.info("Heater error cleared");
             else
                 log.warn("Heater error: {}", evt.getError());
-            this.heaterStatus.setErrorsEvent(evt);
+            this.heaterStatus.setErrors(evt);
             this.browserUpdateService.notifyBrowsers();
         });
         registry.subscribe(StatesEvent.class, evt -> {

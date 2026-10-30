@@ -27,7 +27,7 @@ public class BrewerModule implements StompModule {
                 log.info("Brewer error cleared");
             else
                 log.warn("Brewer error: {}", evt.getError());
-            this.brewerStatus.setErrorsEvent(evt);
+            this.brewerStatus.setErrors(evt);
             this.browserUpdateService.notifyBrowsers();
         });
         registry.subscribe(StatesEvent.class, evt -> {
