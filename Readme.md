@@ -1,5 +1,7 @@
 # Mplex Demo App
 
+[![CI](https://github.com/chrisme86/mplex-demo-app/actions/workflows/ci.yml/badge.svg)](https://github.com/chrisme86/mplex-demo-app/actions/workflows/ci.yml)
+
 A small Spring Boot demo of how a control software talks to a device. The communication is a simplified, web-based
 remake of the Modaplex software (originally a JavaFX desktop application for a laboratory device). For illustration, the
 laboratory subsystems were replaced by a coffee machine: a `HEATER` with water heater and a `BREWER` with water pump.
@@ -52,7 +54,7 @@ If no result event arrives within 5 s, the client shows "no result from device".
 ## Technologies
 
 Java 21, Spring Boot 3.5 (Web MVC, WebSocket/STOMP, Security, Thymeleaf), OpenAPI Generator, springdoc (Swagger UI),
-Lombok, Bootstrap 5, Maven, Docker Compose.
+Lombok, Bootstrap 5, Maven, Docker Compose, JUnit 5, Mockito, Awaitility, GitHub Actions.
 
 ## Getting started
 
@@ -90,3 +92,20 @@ Things to try:
 - Set `PUMP_JAMMED`: only the pump switches off and is blocked.
 - Stop the emulator: the client shows the reconnect attempts, after a restart "Reconnect" brings back the current
   states.
+
+## Tests
+
+```bash
+mvn test        # unit tests
+mvn verify      # unit tests and integration test
+```
+
+| Test                            | What it checks                                                                       |
+|---------------------------------|--------------------------------------------------------------------------------------|
+| `DeviceRulesTest` (emulator)    | device rules: `409` cases, result events with `commandId`, `OVERHEATED` switches off |
+| `RestControllerTest` (emulator) | HTTP answers with MockMvc: `202` + `commandId`, `409` as ProblemDetail, `400`        |
+| `CommandSenderTest` (client)    | generated OpenAPI client against a mocked device: pending, timeout, `409`, offline   |
+| `ClientEmulatorIT` (client)     | client and emulator for real: command via REST, result via STOMP                     |
+
+GitHub Actions runs `mvn verify` and builds the Docker images on every push.
+
